@@ -1,0 +1,2 @@
+-- Initial schema placeholder
+-- Add CREATE TABLE statements as the domain model takes shape
