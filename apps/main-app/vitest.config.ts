@@ -6,11 +6,17 @@ export default defineConfig({
     globals: true,
     include: ['src/**/*.test.{ts,tsx}'],
     passWithNoTests: true,
+    maxWorkers: 4,
+    minWorkers: 1,
+    maxConcurrency: 4,
+    testTimeout: 30000,
+    hookTimeout: 30000,
 
     pool: 'forks',
     poolOptions: {
       forks: {
-        singleFork: true,
+        minForks: 1,
+        maxForks: 4,
       },
     },
   },
