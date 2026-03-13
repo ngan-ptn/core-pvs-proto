@@ -6,6 +6,7 @@ playwright-report/
 test-results/
 coverage/
 .DS_Store
+.obsidian/
 *.db
 *.db-wal
 *.db-shm
