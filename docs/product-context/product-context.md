@@ -3,6 +3,8 @@
 **Version:** 1.1.0
 **Last Updated:** 2026-03-13
 
+**Note:** This document primarily describes the main application (`apps/main-app/`). The event-demo application (`apps/event-demo/`) may only implement a subset of what's described here.
+
 **See also:**
 - Design system: [tini-library](https://github.com/tini-works/tini-library)
 - Copy & tone: `../../guidelines/copy-guidelines.md`
@@ -174,7 +176,7 @@ Building modular, certification-ready components. Phase 1 first.
 
 ## Roadmap Summary
 
-Seven phases, derived from four requirement sources (KVDT, ICD-10-GM, SV Components, Crucial Workflows). Full details in `PRD260311-pvs-core-roadmap.md`.
+Seven phases, derived from four requirement sources (KVDT, ICD-10-GM, SV Components, Crucial Workflows). Full details in [roadmap-phases](https://github.com/tini-works/requirement-documents/tree/main/docs/roadmap-phases).
 
 **Phase 1 — Patient Data Management** (~72 reqs + SV)
 Complete patient registration — eGK card reading, manual entry, cost carrier resolution, Schein lifecycle, and HZV/FAV enrollment and participation workflows.

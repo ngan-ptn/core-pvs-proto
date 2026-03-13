@@ -35,13 +35,27 @@ Our users are healthcare professionals (doctors, nurses, admins) working in high
 ## 3. Date, Time & Numbers
 Critical for patient safety. Ambiguity is dangerous.
 
-*   **Date Format:** Use unambiguous formats. Given the German context (even in English UI), prefer `DD.MM.YYYY` or `DD Mon YYYY`.
-    *   *Example:* `12.04.2026` or `12 Apr 2026`
+*   **Date Format:** Given the German context (even in English UI), use the following formats:
+
+    | Format | Example | Usage |
+    | :--- | :--- | :--- |
+    | DD.MM.YYYY | 12.04.2026 | Standard numeric format for German context. |
+    | dd Mmm yyyy | 26 Mar 2024 | Day, abbreviated month, and year. |
+    | Mmm yyyy | Mar 2024 | When the day is irrelevant or not provided. |
+    | dd Mmm yyyy, DOW | 15 Mar 2024, Tue | Use a comma after the year for clarity. |
+    | dd-dd Mmm yyyy | 25-31 Mar 2024 | Use a hyphen to denote a date range. No comma needed. |
 *   **Time:** 24-hour format is standard in healthcare.
     *   *Example:* `14:30` (not 2:30 PM)
-*   **Names:** Display distinctively.
-    *   *Format:* **Last Name**, First Name (DOB)
-    *   *Example:* **Mustermann**, Erika (12.04.1985)
+*   **Names:** Display format varies by person type and context. Name components: **Salutation** (Herr/Frau), **Title** (Dr., Prof., Dipl.-Ing.), **Name suffix** (Freifrau, Baron), **Intend word** (von, de), **Firstname**, **Lastname**.
+
+    | Person | Context | Order | Example |
+    | :--- | :--- | :--- | :--- |
+    | Doctors | General | `Salutation` `Title` `name suffix` `Firstname` `Intend word` `Lastname` | Frau Dr. med. Freifrau Sarah von Mueller |
+    | Doctors | Login | `Lastname`, `Firstname` | Topp-Glücklich, Hans |
+    | Patients | General | `Title` `Intend word` `Lastname`, `Firstname` | Dr. med. von Mueller, Sarah |
+    | Patients | Printed forms | `Salutation` `Title` `Intend word` `Lastname`, `name suffix` `Firstname` | Herr Dr. Dipl.-Ing. von Maastricht, Baron Otto |
+    | Patients | KV / SV forms | See [KV/SV Personalienfeld](../templates/form-patient-name-format.png) | — |
+
 
 ## 4. UI Elements
 
