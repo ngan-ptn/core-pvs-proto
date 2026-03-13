@@ -1,0 +1,28 @@
+name: PR Slack Notification
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post to Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          REPO: ${{ github.repository }}
+        run: |
+          PAYLOAD=$(jq -n \
+            --arg repo "$REPO" \
+            --arg title "$PR_TITLE" \
+            --arg url "$PR_URL" \
+            --arg author "$PR_AUTHOR" \
+            '{text: "New PR in \($repo): <\($url)|\($title)> by \($author)"}')
+
+          curl -fsS -X POST "$SLACK_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "$PAYLOAD"
