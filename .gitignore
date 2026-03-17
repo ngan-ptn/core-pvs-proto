@@ -10,8 +10,8 @@ coverage/
 *.db
 *.db-wal
 *.db-shm
-
-
+.firecrawl/
+docs/plans/
 
 # Personal files
 docs/_ngan/
