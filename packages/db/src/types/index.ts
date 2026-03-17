@@ -30,6 +30,20 @@ export type DocumentType = 'form' | 'lab_report' | 'imaging_report' | 'prescript
 export type LetterSentVia = 'kim' | 'print' | 'fax' | 'email'
 export type LetterStatus = 'draft' | 'finalized' | 'sent'
 
+// 006_referral
+export type ReferralDirection = 'incoming' | 'outgoing'
+export type ReferralUrgency = 'routine' | 'urgent' | 'emergency'
+export type ReferralStatus = 'pending' | 'accepted' | 'in_treatment' | 'completed' | 'declined'
+
+// 007_patient_details
+export type ConsentType = 'data_usage' | 'data_sharing' | 'living_will' | 'contact_agreement' | 'billing_submission' | 'medical_history'
+export type ContactRelationship = 'spouse' | 'parent' | 'child' | 'sibling' | 'guardian' | 'other'
+export type HistoryType = 'past_diagnosis' | 'past_procedure' | 'past_medication' | 'pregnancy'
+
+// 008_encounter_extensions
+export type ServiceStatus = 'documented' | 'billed' | 'cancelled'
+export type NoteType = 'soap_s' | 'soap_o' | 'soap_a' | 'soap_p' | 'free_text' | 'clinical'
+
 // ─── Row interfaces ─────────────────────────────────────────────────
 
 // 002_foundation
@@ -298,6 +312,111 @@ export interface DoctorLetter {
   sent_via: LetterSentVia | null
   sent_at: string | null
   status: LetterStatus
+  created_at: string
+  updated_at: string
+}
+
+// 006_referral
+
+export interface Referral {
+  id: string
+  patient_id: string
+  treatment_case_id: string | null
+  direction: ReferralDirection
+  from_practice_id: string | null
+  from_doctor_id: string | null
+  from_external_name: string | null
+  from_external_id: string | null
+  to_practice_id: string | null
+  to_doctor_id: string | null
+  to_external_name: string | null
+  to_external_id: string | null
+  reason: string | null
+  diagnosis_at_referral: string | null
+  specialty: string | null
+  urgency: ReferralUrgency
+  status: ReferralStatus
+  referred_at: string
+  accepted_at: string | null
+  completed_at: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+// 007_patient_details
+
+export interface PatientConsent {
+  id: string
+  patient_id: string
+  consent_type: ConsentType
+  is_granted: number
+  granted_at: string | null
+  revoked_at: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface PatientContact {
+  id: string
+  patient_id: string
+  relationship: ContactRelationship
+  first_name: string
+  last_name: string
+  phone: string | null
+  mobile: string | null
+  email: string | null
+  is_emergency: number
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface PatientHistory {
+  id: string
+  patient_id: string
+  history_type: HistoryType
+  description: string
+  icd_code: string | null
+  date_recorded: string | null
+  date_resolved: string | null
+  details: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface PatientNote {
+  id: string
+  patient_id: string
+  author_id: string | null
+  content: string
+  is_pinned: number
+  created_at: string
+  updated_at: string
+}
+
+// 008_encounter_extensions
+
+export interface EncounterService {
+  id: string
+  encounter_id: string
+  gop_code: string
+  description: string | null
+  quantity: number
+  status: ServiceStatus
+  performed_by: string | null
+  performed_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface EncounterNote {
+  id: string
+  encounter_id: string
+  note_type: NoteType
+  content: string
+  author_id: string | null
   created_at: string
   updated_at: string
 }
