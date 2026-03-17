@@ -1,0 +1,7 @@
+{
+  "title": "Event Demo",
+  "description": "Event demo variant — ready for development.",
+  "nav": {
+    "toggleTheme": "Toggle theme"
+  }
+}
