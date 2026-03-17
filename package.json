@@ -9,6 +9,7 @@
     "build:packages": "pnpm --filter @pvs/db build && pnpm --filter @pvs/shared build",
     "test": "pnpm -r test",
     "test:e2e": "playwright test",
+    "auto:screenshot": "node docs/_ngan/command/take-screenshots.mjs",
     "db:migrate": "pnpm --filter @pvs/db migrate",
     "db:seed": "pnpm --filter @pvs/db seed",
     "db:reset": "pnpm --filter @pvs/db reset",

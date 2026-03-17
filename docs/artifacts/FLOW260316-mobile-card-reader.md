@@ -2,6 +2,10 @@
 
 **Version:** 1.0.0
 **Last Updated:** 2026-03-16 by Ngan
+**Figma link:** https://www.figma.com/design/N51gPbqnXKEkE7G6KFZh57/Mobile-Card-Reader?m=auto&t=WZsK91bbM2NAVzm8-6
+**Artifact Date:** 2026-03-16
+**Artifact Scope:** Mobile card reader base flow and mixed-insurance patient extension
+**Artifact Status:** Aspirational, inferred from current Figma flow metadata
 
 ## V2
 
@@ -30,14 +34,14 @@ flowchart TD
 
     subgraph MAIN2["Main flow"]
         subgraph BASE2["Inherited from V1 base flow"]
-            MCR2_010["MCR2_010 Mobile card reader overview"]
+            MCR2_010["MCR_V2_010_MOBILE_CARD_READER_OVERVIEW"]
         end
 
         subgraph DELTA2["New / Modified in V2"]
-            MCR2_020["MCR2_020 Insurance selection dialog"]
+            MCR2_020["MCR_V2_020_INSURANCE_SELECTION_DIALOG"]
             MCR2_DECISION{"Need new insurance?"}
-            MCR2_030["MCR2_030 Create insurance drawer"]
-            MCR2_040["MCR2_040 Return to mixed insurance patient flow"]
+            MCR2_030["MCR_V2_030_CREATE_INSURANCE_DRAWER"]
+            MCR2_040["MCR_V2_040_RETURN_TO_MIXED_INSURANCE_PATIENT_FLOW"]
         end
     end
 
@@ -70,12 +74,6 @@ flowchart TD
     class MCR2_040 modified;
     class MCR2_010 unchanged;
     class ACT2_010,ACT2_020,ACT2_030,ACT2_040 info;
-
-    click MCR2_010 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_010-mobile-card-reader-overview.png" "Open screenshot"
-    click MCR2_020 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_020-insurance-selection-dialog.png" "Open screenshot"
-    click MCR2_DECISION "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_decision-need-new-insurance.png" "Open screenshot"
-    click MCR2_030 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_030-create-insurance-drawer.png" "Open screenshot"
-    click MCR2_040 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_040-return-to-mixed-insurance-flow.png" "Open screenshot"
 ```
 
 ### Product Flow
@@ -146,11 +144,11 @@ flowchart TD
     END([Continue patient creation or update])
 
     subgraph MAIN["Main flow"]
-        MCR_010["MCR_010 Mobile card reader overview"]
-        MCR_020["MCR_020 Card information"]
-        MCR_030["MCR_030 Update patient details"]
+        MCR_010["MCR_V1_010_MOBILE_CARD_READER_OVERVIEW"]
+        MCR_020["MCR_V1_020_CARD_INFORMATION"]
+        MCR_030["MCR_V1_030_UPDATE_PATIENT_DETAILS"]
         MCR_DECISION{"Patient data matches?"}
-        MCR_040["MCR_040 Errors to be resolved before create patient"]
+        MCR_040["MCR_V1_040_ERRORS_TO_BE_RESOLVED_BEFORE_CREATE_PATIENT"]
     end
 
     subgraph ACTIONS["Related user actions"]
@@ -173,13 +171,8 @@ flowchart TD
     MCR_030 -.-> ACT_030
     MCR_040 -.-> ACT_040
 
-    click MCR_010 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_010-mobile-card-reader-overview.png" "Open screenshot"
-    click MCR_020 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_020-card-information.png" "Open screenshot"
-    click MCR_030 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_030-update-patient-details.png" "Open screenshot"
-    click MCR_DECISION "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_decision-patient-data-matches.png" "Open screenshot"
-    click MCR_040 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_040-errors-before-create-patient.png" "Open screenshot"
-```
 
+```
 ### Product Flow
 
 1. A user sees card-reader records in a main overview.
@@ -235,3 +228,7 @@ The user can:
 - correct missing or conflicting information
 - go back through the form and make changes
 - continue only after the errors are resolved
+
+
+
+
