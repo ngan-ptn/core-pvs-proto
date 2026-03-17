@@ -1,0 +1,7 @@
+{
+  "title": "Main App",
+  "description": "Main application variant — ready for development.",
+  "nav": {
+    "toggleTheme": "Toggle theme"
+  }
+}
