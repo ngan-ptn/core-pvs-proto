@@ -13,6 +13,7 @@ packages/
   shared/         # Shared utilities and components
 e2e/              # Playwright end-to-end tests
 data/             # SQLite data directory (gitignored)
+AGENTS.md         # AI agent rules for working in this codebase
 ```
 
 ## Tech Stack
