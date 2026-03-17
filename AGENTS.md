@@ -33,7 +33,12 @@ Rules for AI agents working in the CorePVS codebase.
 
 - **Monorepo awareness.** Workspace layout: `apps/`*, `packages/*`, `e2e/`, `docs/`. Shared logic belongs in `@pvs/shared`. Database logic belongs in `@pvs/db`. Do not duplicate code across apps.
 - **Package boundaries.** Dependency direction: `apps → packages`, `apps → @tini/`*. No cross-app imports. Packages must not import from apps.
-- **Database conventions.** Use `openMemoryDatabase()` for tests. Migrations are numbered SQL files in `packages/db/src/migrations/`. Never modify an existing migration file — always create a new one.
+- **Shared database.** Both `event-demo` and `main-app` share the same `data/pvs.db`. All schema changes go through `@pvs/db` migrations.
+- **Database conventions.** Use `openMemoryDatabase()` for tests. Migrations are numbered SQL files in `packages/db/src/migrations/` (currently 001–010). Never modify an existing migration file — always create a new one.
+- **FK policy.** Default to `ON DELETE RESTRICT` for clinical data (patient, treatment_case, diagnosis, etc.). Use `CASCADE` only for fully-owned children (address, patient_contact, user_practice).
+- **User ↔ Practice is M:N.** Users belong to practices via the `user_practice` junction table. Role is per-practice, not global. LANR and specialty are on `user` (personal credentials). BSNR is on `practice` (location identifier).
+- **Types mirror schema.** TypeScript interfaces in `packages/db/src/types/index.ts` must match SQL column names exactly. Import types from `@pvs/db/types`.
+- **Search infrastructure.** Search index is extracted from SQL views (`v_patient_search`, `v_medication_search`) to `apps/*/public/search-index.json`. Run `pnpm db:search-index` after seeding. Frontend uses fuse.js via `@pvs/shared` search engine.
 
 ## Workflow
 
