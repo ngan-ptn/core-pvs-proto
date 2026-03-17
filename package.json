@@ -11,6 +11,7 @@
     "test:e2e": "playwright test",
     "db:migrate": "pnpm --filter @pvs/db migrate",
     "db:seed": "pnpm --filter @pvs/db seed",
+    "db:search-index": "pnpm --filter @pvs/db search:extract",
     "db:reset": "pnpm --filter @pvs/db reset"
   },
   "devDependencies": {
