@@ -11,10 +11,13 @@
     "test:e2e": "playwright test",
     "db:migrate": "pnpm --filter @pvs/db migrate",
     "db:seed": "pnpm --filter @pvs/db seed",
-    "db:reset": "pnpm --filter @pvs/db reset"
+    "db:search-index": "pnpm --filter @pvs/db search:extract",
+    "db:reset": "pnpm --filter @pvs/db reset",
+    "i18n:check": "tsx scripts/check-i18n.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.3.3"
   },
   "engines": {

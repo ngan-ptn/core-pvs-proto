@@ -1,0 +1,31 @@
+{
+  "actions": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "close": "Schließen",
+    "confirm": "Bestätigen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "retry": "Erneut versuchen"
+  },
+  "pagination": {
+    "previous": "Zurück",
+    "next": "Weiter",
+    "morePages": "Weitere Seiten"
+  },
+  "status": {
+    "loading": "Wird geladen...",
+    "noResults": "Keine Ergebnisse gefunden.",
+    "error": "Ein Fehler ist aufgetreten.",
+    "success": "Vorgang abgeschlossen."
+  },
+  "labels": {
+    "language": "Sprache",
+    "theme": "Design"
+  }
+}
