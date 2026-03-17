@@ -31,7 +31,7 @@ Rules for AI agents working in the CorePVS codebase.
 
 ## Architecture
 
-- **Monorepo awareness.** Workspace layout: `apps/`*, `packages/*`, `e2e/`, `docs/`. Shared logic belongs in `@pvs/shared`. Database logic belongs in `@pvs/db`. Do not duplicate code across apps.
+- **Monorepo awareness.** Workspace layout: `apps/`*, `packages/`*, `e2e/`, `docs/`. Shared logic belongs in `@pvs/shared`. Database logic belongs in `@pvs/db`. Do not duplicate code across apps.
 - **Package boundaries.** Dependency direction: `apps → packages`, `apps → @tini/`*. No cross-app imports. Packages must not import from apps.
 - **Shared database.** Both `event-demo` and `main-app` share the same `data/pvs.db`. All schema changes go through `@pvs/db` migrations.
 - **Database conventions.** Use `openMemoryDatabase()` for tests. Migrations are numbered SQL files in `packages/db/src/migrations/` (currently 001–010). Never modify an existing migration file — always create a new one.
