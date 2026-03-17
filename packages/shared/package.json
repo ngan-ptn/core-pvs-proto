@@ -22,7 +22,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "fuse.js": "^7.1.0"
+    "fuse.js": "^7.1.0",
+    "i18next": "^25.8.18"
   },
   "devDependencies": {
     "tsup": "^8.0.1",

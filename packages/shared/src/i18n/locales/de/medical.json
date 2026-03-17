@@ -1,0 +1,14 @@
+{
+  "patient_one": "{{count}} Patient",
+  "patient_other": "{{count}} Patienten",
+  "patient": "Patient",
+  "diagnosis": "Diagnose",
+  "treatment": "Behandlung",
+  "appointment": "Termin",
+  "practitioner": "Arzt",
+  "location": "Standort",
+  "insurance": "Versicherung",
+  "referral": "Überweisung",
+  "prescription": "Rezept",
+  "mvz": "MVZ"
+}

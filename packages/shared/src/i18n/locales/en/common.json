@@ -1,0 +1,31 @@
+{
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "retry": "Retry"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "morePages": "More pages"
+  },
+  "status": {
+    "loading": "Loading...",
+    "noResults": "No results found.",
+    "error": "An error occurred.",
+    "success": "Operation completed."
+  },
+  "labels": {
+    "language": "Language",
+    "theme": "Theme"
+  }
+}
