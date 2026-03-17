@@ -16,6 +16,20 @@ export type AddressType = 'home' | 'billing' | 'additional'
 export type InsuranceType = 'GKV' | 'PKV' | 'BG' | 'SZ'
 export type InsuranceStatus = '1' | '3' | '5'
 
+// 004_clinical
+export type ScheinType = '0101' | '0102' | '0103' | '0104'
+export type CaseStatus = 'open' | 'billed' | 'cancelled'
+export type DiagnosisCertainty = 'V' | 'G' | 'A' | 'Z'
+
+// 005_orders_rx
+export type PrescriptionType = 'kassenrezept' | 'privatrezept' | 'btm'
+export type PrescriptionStatus = 'draft' | 'signed' | 'dispensed' | 'cancelled'
+export type OrderStatus = 'ordered' | 'in_progress' | 'completed' | 'cancelled'
+export type ImagingModality = 'xray' | 'ct' | 'mri' | 'ultrasound' | 'other'
+export type DocumentType = 'form' | 'lab_report' | 'imaging_report' | 'prescription_print' | 'letter' | 'referral_letter' | 'arztbrief'
+export type LetterSentVia = 'kim' | 'print' | 'fax' | 'email'
+export type LetterStatus = 'draft' | 'finalized' | 'sent'
+
 // ─── Row interfaces ─────────────────────────────────────────────────
 
 // 002_foundation
@@ -131,6 +145,159 @@ export interface PatientInsurance {
   valid_from: string | null
   valid_to: string | null
   is_primary: number
+  created_at: string
+  updated_at: string
+}
+
+// 004_clinical
+
+export interface TreatmentCase {
+  id: string
+  patient_id: string
+  practice_id: string
+  doctor_id: string
+  patient_insurance_id: string
+  quarter: string
+  schein_type: ScheinType
+  status: CaseStatus
+  opened_at: string
+  closed_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface Encounter {
+  id: string
+  treatment_case_id: string
+  practice_id: string
+  doctor_id: string
+  encounter_date: string
+  chief_complaint: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface Diagnosis {
+  id: string
+  treatment_case_id: string
+  encounter_id: string | null
+  icd_code: string
+  icd_display: string | null
+  certainty: DiagnosisCertainty
+  is_permanent: number
+  diagnosed_at: string
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface VitalSigns {
+  id: string
+  patient_id: string
+  encounter_id: string | null
+  measured_at: string
+  height_cm: number | null
+  weight_kg: number | null
+  bmi: number | null
+  systolic_bp: number | null
+  diastolic_bp: number | null
+  heart_rate: number | null
+  temperature_c: number | null
+  respiratory_rate: number | null
+  oxygen_saturation: number | null
+  notes: string | null
+  measured_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+// 005_orders_rx
+
+export interface Medication {
+  id: string
+  pzn: string
+  name: string
+  active_ingredient: string | null
+  dosage_form: string | null
+  strength: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface Prescription {
+  id: string
+  treatment_case_id: string
+  doctor_id: string
+  medication_id: string | null
+  medication_name: string
+  medication_pzn: string | null
+  dosage_instructions: string | null
+  quantity: string | null
+  prescription_type: PrescriptionType
+  status: PrescriptionStatus
+  prescribed_at: string
+  created_at: string
+  updated_at: string
+}
+
+export interface LabOrder {
+  id: string
+  treatment_case_id: string
+  doctor_id: string
+  description: string
+  status: OrderStatus
+  result_summary: string | null
+  result_details: string | null
+  ordered_at: string
+  completed_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface ImagingOrder {
+  id: string
+  treatment_case_id: string
+  doctor_id: string
+  modality: ImagingModality | null
+  body_region: string | null
+  description: string
+  status: OrderStatus
+  result_summary: string | null
+  result_details: string | null
+  ordered_at: string
+  completed_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface Document {
+  id: string
+  patient_id: string
+  treatment_case_id: string | null
+  document_type: DocumentType
+  title: string
+  content: string | null
+  generated_by: string | null
+  generated_at: string
+  created_at: string
+  updated_at: string
+}
+
+export interface DoctorLetter {
+  id: string
+  document_id: string
+  encounter_id: string | null
+  treatment_case_id: string | null
+  recipient_name: string
+  recipient_institution: string | null
+  recipient_address: string | null
+  recipient_lanr: string | null
+  recipient_bsnr: string | null
+  purpose: string
+  sent_via: LetterSentVia | null
+  sent_at: string | null
+  status: LetterStatus
   created_at: string
   updated_at: string
 }

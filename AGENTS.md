@@ -13,6 +13,12 @@ Rules for AI agents working in the CorePVS codebase.
 - **tini-library first.** Prioritize tokens and UI components from `@tini/tokens` and `@tini/ui`. If a needed UI component is not available in tini-library, report back to the user before building a custom one.
 - **No direct Radix UI.** Import from `@tini/ui`, not from `@radix-ui/`* directly. Radix is an implementation detail of the design system.
 
+## Internationalization
+
+- **i18n required.** All user-facing strings must use `react-i18next` translation keys — never hardcode text in components. Use namespace conventions: `common:` and `medical:` from `@pvs/shared`, `app:` for app-specific strings.
+- **Date/number formatting.** Always use the shared Intl-based formatters from `@pvs/shared` (`formatDate`, `formatTime`, `formatNumber`). Dates and numbers always use `de-DE` locale regardless of UI language, per copy guidelines.
+- **Translation coverage.** When adding a new feature, add translation keys for both `en` and `de` locales. Never leave a locale file incomplete.
+
 ## Development Process
 
 - **TDD.** Always apply test-driven development: write the test first, watch it fail, then write the minimal code to pass.
