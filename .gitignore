@@ -12,5 +12,7 @@ coverage/
 
 
 
-# Personal files
-docs/_ngan/
+# Personal files (ignore all except doc-reader tool)
+docs/_ngan/*
+!docs/_ngan/doc-reader/
+docs/_ngan/doc-reader/index.html
