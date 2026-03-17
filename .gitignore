@@ -10,3 +10,8 @@ coverage/
 *.db
 *.db-wal
 *.db-shm
+
+
+
+# Personal files
+docs/_ngan/
