@@ -22,23 +22,23 @@ export function RecommendationCard({ data }: RecommendationCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Lightbulb className="w-4 h-4 text-[var(--status-warning)]" />
-            <span className="font-semibold text-sm">{t('recommendations.title')}</span>
+            <span className="font-semibold text-sm tracking-figma text-[var(--color-text-primary)]">{t('recommendations.title')}</span>
           </div>
           <Badge variant={impactVariant[data.impact] ?? 'secondary'}>
             {t(`recommendations.${data.impact}`)}
           </Badge>
         </div>
-        <p className="text-sm italic">
+        <p className="text-sm tracking-figma text-[var(--color-text-primary)] italic leading-[22px]">
           &ldquo;{t(data.messageKey)}&rdquo;
         </p>
         <div className="space-y-1.5">
-          <p className="text-xs font-medium text-muted-foreground">{t('recommendations.factors.title')}:</p>
+          <p className="text-xs font-semibold tracking-figma text-[var(--color-text-placeholder)]">{t('recommendations.factors.title')}:</p>
           {data.factors.map((f, i) => (
-            <div key={i} className="flex items-center gap-2 text-xs">
+            <div key={i} className="flex items-center gap-2 text-xs tracking-figma text-[var(--color-text-primary)]">
               {f.check ? (
                 <Check className="w-3.5 h-3.5 text-[var(--status-normal)]" />
               ) : (
-                <Info className="w-3.5 h-3.5 text-muted-foreground" />
+                <Info className="w-3.5 h-3.5 text-[var(--color-text-muted-icon)]" />
               )}
               <span>
                 {t(f.labelKey)}{f.value ? `: ${f.value}` : ''}
@@ -47,13 +47,13 @@ export function RecommendationCard({ data }: RecommendationCardProps) {
             </div>
           ))}
         </div>
-        <div className="rounded bg-muted p-2 text-xs text-muted-foreground">
+        <div className="rounded bg-[var(--color-surface-muted)] p-2 text-xs tracking-figma text-[var(--color-text-placeholder)]">
           {t(data.disclaimerKey)}
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">{t('recommendations.viewDetails')}</Button>
-          <Button variant="ghost" size="sm">{t('recommendations.defer')}</Button>
-          <Button variant="ghost" size="sm">{t('recommendations.dismiss')}</Button>
+          <Button variant="outline" size="sm" className="tracking-figma">{t('recommendations.viewDetails')}</Button>
+          <Button variant="ghost" size="sm" className="tracking-figma">{t('recommendations.defer')}</Button>
+          <Button variant="ghost" size="sm" className="tracking-figma">{t('recommendations.dismiss')}</Button>
         </div>
       </CardContent>
     </Card>

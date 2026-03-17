@@ -25,28 +25,28 @@ export function LocationCard({ location, onNavigate }: LocationCardProps) {
     }, 'neutral' as 'critical' | 'warning' | 'normal' | 'neutral')
 
   const borderColor = {
-    critical: 'border-l-[var(--status-critical)]',
-    warning: 'border-l-[var(--status-warning)]',
+    critical: 'border-l-4 border-l-[var(--status-critical)]',
+    warning: 'border-l-4 border-l-[var(--status-warning)]',
     normal: '',
     neutral: '',
   }[worstStatus]
 
   return (
-    <Card className={cn('border-l-4', borderColor || 'border-l-transparent')}>
+    <Card className={cn(borderColor)}>
       <CardContent className="p-4">
-        <h3 className="font-semibold mb-3">{location.name}</h3>
+        <h3 className="font-bold text-base leading-6 tracking-figma text-[var(--color-text-primary)] mb-3">{location.name}</h3>
         <div className="space-y-1.5">
           {kpiKeys.map(({ key, labelKey, tab }) => {
             const kpi = location[key]
             return (
               <button
                 key={key}
-                className="flex items-center gap-2 w-full text-left text-sm hover:bg-accent/50 rounded px-1 py-0.5 transition-colors"
+                className="flex items-center gap-2 w-full text-left text-sm tracking-figma hover:bg-[var(--color-surface-muted)] rounded px-1 py-0.5 transition-colors"
                 onClick={() => onNavigate(tab)}
               >
                 <StatusDot status={kpi.status} className="w-2.5 h-2.5" />
-                <span className="text-muted-foreground min-w-[80px]">{t(labelKey)}:</span>
-                <span className="font-medium">{kpi.value}{kpi.unit}</span>
+                <span className="text-[var(--color-text-muted-icon)] min-w-[80px]">{t(labelKey)}:</span>
+                <span className="font-semibold text-[var(--color-text-primary)]">{kpi.value}{kpi.unit}</span>
               </button>
             )
           })}

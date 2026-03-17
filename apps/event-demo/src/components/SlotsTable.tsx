@@ -20,20 +20,20 @@ export function SlotsTable({ data }: SlotsTableProps) {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead>{t('resources.columnLocation')}</TableHead>
-          <TableHead>{t('resources.columnSpecialty')}</TableHead>
-          <TableHead>{t('resources.columnTimeWindow')}</TableHead>
-          <TableHead className="text-right">{t('resources.columnCount')}</TableHead>
+        <TableRow className="bg-[var(--color-surface-muted)]">
+          <TableHead className="text-xs font-semibold uppercase tracking-figma text-[var(--color-text-placeholder)]">{t('resources.columnLocation')}</TableHead>
+          <TableHead className="text-xs font-semibold uppercase tracking-figma text-[var(--color-text-placeholder)]">{t('resources.columnSpecialty')}</TableHead>
+          <TableHead className="text-xs font-semibold uppercase tracking-figma text-[var(--color-text-placeholder)]">{t('resources.columnTimeWindow')}</TableHead>
+          <TableHead className="text-xs font-semibold uppercase tracking-figma text-[var(--color-text-placeholder)] text-right">{t('resources.columnCount')}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {data.map((slot, i) => (
-          <TableRow key={i}>
-            <TableCell>{locationNames[slot.location]}</TableCell>
-            <TableCell>{slot.specialty}</TableCell>
-            <TableCell>{slot.timeWindow}</TableCell>
-            <TableCell className="text-right font-medium">{slot.count}</TableCell>
+          <TableRow key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#F7F9FB]'}>
+            <TableCell className="text-sm tracking-figma text-[var(--color-text-primary)] py-2 px-4">{locationNames[slot.location]}</TableCell>
+            <TableCell className="text-sm tracking-figma text-[var(--color-text-primary)] py-2 px-4">{slot.specialty}</TableCell>
+            <TableCell className="text-sm tracking-figma text-[var(--color-text-primary)] py-2 px-4">{slot.timeWindow}</TableCell>
+            <TableCell className="text-sm tracking-figma text-[var(--color-text-primary)] font-semibold text-right py-2 px-4">{slot.count}</TableCell>
           </TableRow>
         ))}
       </TableBody>

@@ -20,7 +20,7 @@ export function ResourcesTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold mb-4">{t('resources.barTitle')}</h2>
+        <h2 className="text-base font-semibold leading-6 tracking-figma text-[var(--color-text-primary)] mb-4">{t('resources.barTitle')}</h2>
         <HorizontalBarChart
           data={barData}
           referenceLine={{ value: 40, label: t('resources.underutilizedThreshold') }}
@@ -30,7 +30,7 @@ export function ResourcesTab() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-4">{t('resources.slotsTitle')}</h2>
+        <h2 className="text-base font-semibold leading-6 tracking-figma text-[var(--color-text-primary)] mb-4">{t('resources.slotsTitle')}</h2>
         <SlotsTable data={availableSlots} />
       </div>
 

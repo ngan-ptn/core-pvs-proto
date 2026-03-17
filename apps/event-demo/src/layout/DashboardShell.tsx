@@ -42,16 +42,17 @@ export function DashboardShell() {
 
   return (
     <TooltipProvider>
-      <div className="flex h-screen bg-background text-foreground">
+      <div className="flex h-screen bg-background text-[var(--color-text-primary)]">
         <NavRail />
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="px-6 py-4 border-b">
-            <h1 className="text-xl font-semibold">{t('dashboard.title')}</h1>
-            <p className="text-sm text-muted-foreground">{t('dashboard.subtitle')}</p>
+          {/* Header - Figma: 16px padding, section divider bottom */}
+          <header className="px-4 py-4 divider-bottom">
+            <h1 className="text-lg font-bold leading-6 tracking-figma">{t('dashboard.title')}</h1>
+            <p className="text-sm text-[var(--color-text-placeholder)] tracking-figma leading-[22px]">{t('dashboard.subtitle')}</p>
           </header>
           <FilterBar />
           <TabBar activeTab={activeTab} onTabChange={handleTabChange} />
-          <main className="flex-1 overflow-auto p-6">
+          <main className="flex-1 overflow-auto p-4">
             {tabContent()}
           </main>
         </div>

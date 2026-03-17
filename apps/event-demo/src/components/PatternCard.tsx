@@ -22,22 +22,22 @@ export function PatternCard({ data }: PatternCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-[var(--status-warning)]" />
-            <span className="font-semibold text-sm">{t('patterns.title')}</span>
+            <span className="font-semibold text-sm tracking-figma text-[var(--color-text-primary)]">{t('patterns.title')}</span>
           </div>
           <Badge variant={confidenceVariant[data.confidence] ?? 'secondary'}>
             {t(`patterns.${data.confidence}`)}
           </Badge>
         </div>
-        <p className="text-sm italic">
+        <p className="text-sm tracking-figma text-[var(--color-text-primary)] italic leading-[22px]">
           &ldquo;{t(data.messageKey)}&rdquo;
         </p>
-        <div className="text-xs text-muted-foreground space-y-1">
+        <div className="text-xs tracking-figma text-[var(--color-text-placeholder)] space-y-1">
           <p>{t('patterns.basedOn', { weeks: data.basedOnWeeks, location: t(`locations.${data.location}`) })}</p>
           <p>{t('patterns.threshold', { value: data.threshold })}</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">{t('patterns.viewData')}</Button>
-          <Button variant="ghost" size="sm">{t('patterns.dismiss')}</Button>
+          <Button variant="outline" size="sm" className="tracking-figma">{t('patterns.viewData')}</Button>
+          <Button variant="ghost" size="sm" className="tracking-figma">{t('patterns.dismiss')}</Button>
         </div>
       </CardContent>
     </Card>

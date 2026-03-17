@@ -26,23 +26,23 @@ export function KpiCard({ label, kpi, tooltipText, onClick }: KpiCardProps) {
           <CardContent className="p-4 space-y-2">
             <div className="flex items-center gap-2">
               <StatusDot status={kpi.status} />
-              <span className="text-sm text-muted-foreground truncate">{label}</span>
+              <span className="text-xs font-semibold tracking-figma text-[var(--color-text-secondary)] truncate">{label}</span>
             </div>
-            <div className="text-2xl font-semibold">
+            <div className="text-2xl font-bold tracking-figma text-[var(--color-text-primary)]">
               {kpi.value}{kpi.unit}
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs tracking-figma text-[var(--color-text-placeholder)]">
                 {deltaText} {t('common.vsLastQuarter')}
               </span>
-              <Sparkline data={kpi.sparkline} color="var(--muted-foreground)" />
+              <Sparkline data={kpi.sparkline} color="var(--color-text-muted-icon)" />
             </div>
           </CardContent>
         </Card>
       </TooltipTrigger>
       <TooltipContent side="bottom" className="max-w-xs">
-        <p className="text-sm">{tooltipText}</p>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-sm tracking-figma">{tooltipText}</p>
+        <p className="text-xs tracking-figma text-[var(--color-text-placeholder)] mt-1">
           {kpi.value}{kpi.unit} | {deltaText} | {t('common.threshold')}
         </p>
       </TooltipContent>

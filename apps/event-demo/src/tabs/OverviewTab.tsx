@@ -34,7 +34,7 @@ export function OverviewTab({ onNavigate }: OverviewTabProps) {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-4">{t('overview.locationsTitle')}</h2>
+        <h2 className="text-base font-semibold leading-6 tracking-figma text-[var(--color-text-primary)] mb-4">{t('overview.locationsTitle')}</h2>
         <div className="grid grid-cols-2 gap-4">
           {locationKpis.map(loc => (
             <LocationCard key={loc.id} location={loc} onNavigate={onNavigate} />

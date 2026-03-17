@@ -24,7 +24,7 @@ export function NoShowTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold mb-4">{t('noShowTab.barTitle')}</h2>
+        <h2 className="text-base font-semibold leading-6 tracking-figma text-[var(--color-text-primary)] mb-4">{t('noShowTab.barTitle')}</h2>
         <HorizontalBarChart
           data={barData}
           referenceLine={{ value: Math.round(mvzAvg * 10) / 10, label: `${t('common.mvzAverage')} ${Math.round(mvzAvg * 10) / 10}%` }}
@@ -34,8 +34,8 @@ export function NoShowTab() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-1">{t('noShowTab.heatmapTitle')}</h2>
-        <p className="text-sm text-muted-foreground mb-4">{t('noShowTab.heatmapSubtitle')}</p>
+        <h2 className="text-base font-semibold leading-6 tracking-figma text-[var(--color-text-primary)] mb-1">{t('noShowTab.heatmapTitle')}</h2>
+        <p className="text-sm tracking-figma text-[var(--color-text-placeholder)] mb-4">{t('noShowTab.heatmapSubtitle')}</p>
         <Heatmap data={noShowHeatmap} days={days} hours={hours} />
       </div>
 

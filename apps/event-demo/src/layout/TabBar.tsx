@@ -19,12 +19,12 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
 
   return (
     <Tabs value={activeTab} onValueChange={(v) => onTabChange(v as TabId)}>
-      <TabsList className="w-full justify-start px-6 border-b rounded-none bg-transparent h-auto py-0">
+      <TabsList className="w-full justify-start px-4 divider-bottom rounded-none bg-transparent h-auto py-0">
         {tabs.map(tab => (
           <TabsTrigger
             key={tab.id}
             value={tab.id}
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none px-4 py-2.5"
+            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none px-4 py-2.5 text-sm tracking-figma text-[var(--color-text-secondary)] data-[state=active]:text-[var(--color-text-primary)] data-[state=active]:font-semibold"
           >
             {t(tab.labelKey)}
           </TabsTrigger>

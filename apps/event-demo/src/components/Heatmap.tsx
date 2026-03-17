@@ -18,7 +18,7 @@ function getSeverityClass(value: number): string {
 }
 
 function getTextClass(value: number): string {
-  return value >= 20 ? 'text-white' : 'text-foreground'
+  return value >= 20 ? 'text-white' : 'text-[var(--color-text-primary)]'
 }
 
 export function Heatmap({ data, days, hours }: HeatmapProps) {
@@ -33,14 +33,14 @@ export function Heatmap({ data, days, hours }: HeatmapProps) {
       >
         <div />
         {hours.map(h => (
-          <div key={h} className="text-xs text-muted-foreground text-center font-medium py-1">
+          <div key={h} className="text-xs font-semibold tracking-figma text-[var(--color-text-placeholder)] text-center py-1 uppercase">
             {h}
           </div>
         ))}
 
         {days.map(day => (
           <>
-            <div key={`label-${day}`} className="text-xs font-medium flex items-center">
+            <div key={`label-${day}`} className="text-xs font-semibold tracking-figma text-[var(--color-text-primary)] flex items-center">
               {day}
             </div>
             {hours.map(hour => {
@@ -51,7 +51,7 @@ export function Heatmap({ data, days, hours }: HeatmapProps) {
                   <TooltipTrigger asChild>
                     <div
                       className={cn(
-                        'rounded text-xs text-center py-2 cursor-default transition-transform hover:scale-105',
+                        'rounded text-xs font-semibold tracking-figma text-center py-2 cursor-default transition-transform hover:scale-105',
                         getSeverityClass(value),
                         getTextClass(value),
                         isCritical && 'ring-2 ring-[var(--status-critical)]'
@@ -61,8 +61,8 @@ export function Heatmap({ data, days, hours }: HeatmapProps) {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p className="text-sm font-medium">{day} {hour}: {value}%</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-sm font-semibold tracking-figma">{day} {hour}: {value}%</p>
+                    <p className="text-xs tracking-figma text-[var(--color-text-placeholder)]">
                       {t('common.mvzAverage')}: 12% | {t('common.critical')}
                     </p>
                   </TooltipContent>
