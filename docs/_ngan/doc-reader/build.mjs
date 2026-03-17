@@ -5,7 +5,7 @@
 // Scans *.md files in this directory and generates a self-contained index.html.
 // Run: node docs/_ngan/doc-reader/build.mjs
 
-import { readFileSync, readdirSync, writeFileSync } from 'fs';
+import { readFileSync, readdirSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -17,15 +17,50 @@ const mdFiles = readdirSync(__dirname)
   .filter(f => f.endsWith('.md'))
   .sort();
 
-// Read each file into documents array
-const documents = mdFiles.map(filename => ({
-  filename,
-  content: readFileSync(join(__dirname, filename), 'utf8'),
-}));
+// Read each file and process screenshots
+const screenshots = {};
+
+const documents = mdFiles.map(filename => {
+  let content = readFileSync(join(__dirname, filename), 'utf8');
+
+  // Extract click directives referencing image files
+  const clickRegex = /click\s+(\S+)\s+"([^"]+\.(?:png|jpg|jpeg|gif|webp))"\s+"[^"]*"/g;
+  let match;
+  while ((match = clickRegex.exec(content)) !== null) {
+    const nodeId = match[1];
+    const imagePath = match[2];
+    if (existsSync(imagePath)) {
+      const imageData = readFileSync(imagePath);
+      const ext = imagePath.split('.').pop().toLowerCase();
+      const mimeType = ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg'
+        : ext === 'png' ? 'image/png'
+        : ext === 'gif' ? 'image/gif'
+        : 'image/webp';
+      screenshots[nodeId] = 'data:' + mimeType + ';base64,' + imageData.toString('base64');
+      console.log('  Screenshot embedded: ' + nodeId + ' <- ' + imagePath);
+    } else {
+      console.log('  Screenshot not found (skipping): ' + imagePath);
+    }
+  }
+
+  // Rewrite click directives
+  content = content.replace(
+    /click\s+(\S+)\s+"([^"]+\.(?:png|jpg|jpeg|gif|webp))"\s+"[^"]*"/g,
+    function(_, nodeId) {
+      if (screenshots[nodeId]) {
+        return 'click ' + nodeId + ' callback "showScreenshot"';
+      }
+      return ''; // remove directive if no screenshot
+    }
+  );
+
+  return { filename, content };
+});
 
 // Build embedded JavaScript as a string (not template literals) to avoid backtick conflicts
 const jsLines = [
   'const DOCUMENTS = ' + JSON.stringify(documents) + ';',
+  'const SCREENSHOTS = ' + JSON.stringify(screenshots) + ';',
   '',
   'mermaid.initialize({',
   '  startOnLoad: false,',
@@ -35,6 +70,8 @@ const jsLines = [
   '});',
   '',
   'let currentIndex = -1;',
+  'let tocVisible = false;',
+  'let diagramsOnly = false;',
   '',
   'function populateSidebar() {',
   '  const list = document.getElementById(\'doc-list\');',
@@ -56,18 +93,107 @@ const jsLines = [
   '  renderDocument();',
   '}',
   '',
+  'function generateTocHtml(content) {',
+  '  const headingRegex = /^(#{1,4})\\s+(.+)$/gm;',
+  '  let match;',
+  '  let items = [];',
+  '  while ((match = headingRegex.exec(content)) !== null) {',
+  '    const level = match[1].length;',
+  '    const text = match[2].trim();',
+  '    const id = text.toLowerCase().replace(/<[^>]+>/g, \'\').replace(/[^a-z0-9]+/g, \'-\').replace(/^-|-$/g, \'\');',
+  '    items.push({ level: level, text: text, id: id });',
+  '  }',
+  '  if (items.length === 0) return \'\';',
+  "  let html = '<div class=\"toc\">';",
+  "  html += '<div class=\"toc-title\">Table of Contents</div>';",
+  "  html += '<ul class=\"toc-list\">';",
+  '  items.forEach(function(item) {',
+  '    const cls = \'toc-h\' + item.level;',
+  '    html += \'<li class="\' + cls + \'"><a href="#\' + item.id + \'">\' + item.text + \'</a></li>\';',
+  '  });',
+  "  html += '</ul></div>';",
+  '  return html;',
+  '}',
+  '',
   'function renderDocument() {',
   '  if (currentIndex < 0 || currentIndex >= DOCUMENTS.length) return;',
   '  const doc = DOCUMENTS[currentIndex];',
   "  const main = document.getElementById('main-content');",
+  '',
+  '  if (diagramsOnly) {',
+  '    renderDiagramsOnly(doc, main);',
+  '    return;',
+  '  }',
+  '',
   '  let html = marked.parse(doc.content);',
   '  // Add IDs to headings for TOC linking',
   "  html = html.replace(/<(h[1-4])>(.*?)<\\/\\1>/gi, function(match, tag, text) {",
   "    const id = text.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');",
   '    return \'<\' + tag + \' id="\' + id + \'">\' + text + \'</\' + tag + \'>\';',
   '  });',
-  '  main.innerHTML = \'<div class="content">\' + html + \'</div>\';',
+  '',
+  '  let tocHtml = \'\';',
+  '  if (tocVisible) {',
+  '    tocHtml = generateTocHtml(doc.content);',
+  '  }',
+  '',
+  '  main.innerHTML = \'<div class="content">\' + tocHtml + html + \'</div>\';',
   '  renderMermaidDiagrams();',
+  '}',
+  '',
+  'function renderDiagramsOnly(doc, main) {',
+  '  const bt = String.fromCharCode(96, 96, 96);',
+  '  const blockRegex = new RegExp(bt + \'mermaid\\\\n([\\\\s\\\\S]*?)\' + bt, \'g\');',
+  '  const headingRegex = /^#{1,4}\\s+(.+)$/m;',
+  '  const lines = doc.content.split(\'\\n\');',
+  '  let diagrams = [];',
+  '  let i = 0;',
+  '  while (i < lines.length) {',
+  '    if (lines[i].trimEnd() === bt + \'mermaid\') {',
+  '      // Find nearest preceding heading',
+  '      let heading = \'\';',
+  '      for (let j = i - 1; j >= 0; j--) {',
+  '        const hm = lines[j].match(/^(#{1,4})\\s+(.+)$/);',
+  '        if (hm) { heading = hm[2].trim(); break; }',
+  '      }',
+  '      // Collect block content',
+  '      let codeLines = [];',
+  '      i++;',
+  '      while (i < lines.length && lines[i].trimEnd() !== bt) {',
+  '        codeLines.push(lines[i]);',
+  '        i++;',
+  '      }',
+  '      diagrams.push({ heading: heading, code: codeLines.join(\'\\n\') });',
+  '    }',
+  '    i++;',
+  '  }',
+  '',
+  '  if (diagrams.length === 0) {',
+  '    main.innerHTML = \'<div class="empty-state">No diagrams found in this document</div>\';',
+  '    return;',
+  '  }',
+  '',
+  '  let html = \'<div class="content">\';',
+  '  diagrams.forEach(function(d, idx) {',
+  '    if (d.heading) {',
+  '      html += \'<h2>\' + d.heading + \'</h2>\';',
+  '    }',
+  '    html += \'<div class="mermaid-container" id="diagonly-\' + idx + \'"></div>\';',
+  '  });',
+  '  html += \'</div>\';',
+  '  main.innerHTML = html;',
+  '',
+  '  diagrams.forEach(function(d, idx) {',
+  '    const container = document.getElementById(\'diagonly-\' + idx);',
+  '    mermaid.render(\'diagonly-svg-\' + idx, d.code).then(function(result) {',
+  '      container.innerHTML = result.svg;',
+  '    }).catch(function(err) {',
+  '      const errDiv = document.createElement(\'div\');',
+  '      errDiv.className = \'mermaid-error\';',
+  '      errDiv.innerHTML = \'<pre>\' + d.code.replace(/</g, \'&lt;\').replace(/>/g, \'&gt;\') + \'</pre>\';',
+  '      container.replaceWith(errDiv);',
+  '    });',
+  '  });',
   '}',
   '',
   'function renderMermaidDiagrams() {',
@@ -92,9 +218,43 @@ const jsLines = [
   '  });',
   '}',
   '',
-  'function toggleToc() {}',
-  'function toggleDiagrams() {}',
-  'function closeModal() {}',
+  'function toggleToc() {',
+  '  tocVisible = !tocVisible;',
+  "  document.getElementById('btn-toc').classList.toggle('active', tocVisible);",
+  '  renderDocument();',
+  '}',
+  '',
+  'function toggleDiagrams() {',
+  '  diagramsOnly = !diagramsOnly;',
+  "  document.getElementById('btn-diagrams').classList.toggle('active', diagramsOnly);",
+  '  renderDocument();',
+  '}',
+  '',
+  'window.showScreenshot = function(nodeId) {',
+  '  const src = SCREENSHOTS[nodeId];',
+  "  const modal = document.getElementById('modal');",
+  "  const modalTitle = document.getElementById('modal-title');",
+  "  const modalBody = document.getElementById('modal-body');",
+  '  if (!src) {',
+  "    modalTitle.textContent = 'Screenshot not found';",
+  "    modalBody.innerHTML = '<p style=\"color:#a3a3a3;font-size:13px;\">No screenshot available for node: ' + nodeId + '</p>';",
+  '  } else {',
+  '    modalTitle.textContent = nodeId;',
+  "    modalBody.innerHTML = '<img src=\"' + src + '\" style=\"max-width:100%;height:auto;display:block;\" />';",
+  '  }',
+  "  modal.style.display = 'flex';",
+  '};',
+  '',
+  'function closeModal(event) {',
+  '  if (event && event.target !== event.currentTarget) return;',
+  "  document.getElementById('modal').style.display = 'none';",
+  '}',
+  '',
+  'document.addEventListener(\'keydown\', function(e) {',
+  "  if (e.key === 'Escape') {",
+  "    document.getElementById('modal').style.display = 'none';",
+  '  }',
+  '});',
   '',
   'populateSidebar();',
   'if (DOCUMENTS.length > 0) { selectDocument(0); }',
@@ -244,6 +404,35 @@ const cssLines = [
   '  font-size: 13px;',
   '}',
   '',
+  '.toc {',
+  '  border: 1px solid #e5e5e5;',
+  '  border-radius: 8px;',
+  '  background: #fff;',
+  '  padding: 20px 24px;',
+  '  margin-bottom: 24px;',
+  '}',
+  '',
+  '.toc-title {',
+  '  font-family: \'JetBrains Mono\', monospace;',
+  '  font-size: 12px;',
+  '  font-weight: 600;',
+  '  text-transform: uppercase;',
+  '  letter-spacing: 0.05em;',
+  '  color: #a3a3a3;',
+  '  margin-bottom: 12px;',
+  '}',
+  '',
+  '.toc a {',
+  '  display: block;',
+  '  font-family: \'JetBrains Mono\', monospace;',
+  '  font-size: 13px;',
+  '  color: #525252;',
+  '  text-decoration: none;',
+  '  padding: 4px 0;',
+  '}',
+  '',
+  '.toc a:hover { color: #1a1a1a; }',
+  '',
   '.toc-list { list-style: none; padding: 0; }',
   '.toc-h1 { font-weight: 700; }',
   '.toc-h2 { padding-left: 0; }',
@@ -332,8 +521,8 @@ const htmlParts = [
   '      <div class="empty-state">Select a document to begin</div>',
   '    </main>',
   '  </div>',
-  '  <div class="modal-overlay" id="modal">',
-  '    <div class="modal">',
+  '  <div class="modal-overlay" id="modal" onclick="closeModal(event)">',
+  '    <div class="modal" onclick="event.stopPropagation()">',
   '      <div class="modal-header">',
   '        <div class="modal-title" id="modal-title"></div>',
   '        <button class="modal-close" onclick="closeModal()">&times;</button>',
