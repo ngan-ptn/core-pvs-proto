@@ -28,8 +28,7 @@ Examples: `FLOW260210-as-built.md`, `IA260210-as-built.md`, `OOUX260210-dot-map.
 
 Apply by default unless a specific artifact explicitly overrides:
 
-- Visual system and tokens: `docs/guidelines/visual-guideline.md`
-- Design tokens (JSON): `docs/guidelines/docliq-tokens.json`
+- Design system (visual guidelines & tokens): [tini-library](https://github.com/tini-works/tini-library)
 
 ## Common Rules
 
@@ -75,6 +74,13 @@ User flows rendered as Mermaid `flowchart TD` diagrams.
 - Use `flowchart TD` (top-down) for vertical flow
 - Group related screens with Mermaid subgraphs
 - Label edges with user actions
+
+**Versioned flows:**
+- When a single artifact documents multiple versions, list the latest version first on the page
+- Treat each newer version as inheriting the previous version by default unless explicitly noted otherwise
+- For each newer version, include a short `What's New/Modified` summary relative to the prior version
+- Reflect those deltas in the Mermaid diagram with visual highlighting
+- Use this color mapping for version deltas: `New` = green, `Modified` = yellow, `Unchanged` = white, `Info/Reference` = blue
 
 **Node shapes:**
 - Rounded rectangle `([...])`: start/end states

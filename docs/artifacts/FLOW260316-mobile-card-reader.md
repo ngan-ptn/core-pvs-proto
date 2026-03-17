@@ -3,7 +3,138 @@
 **Version:** 1.0.0
 **Last Updated:** 2026-03-16 by Ngan
 
-## User Flow
+## V2
+
+V2 appears to inherit the core V1 structure and extend it for the `Create schein for mixed insurance patients` scenario.
+
+### What's New/Modified In V2
+
+- `🆕 New` introduces an `Insurance selection dialog` as a distinct decision step
+- `🆕 New` introduces a `Create insurance drawer` when an existing insurance option is not suitable
+- `✏️ Modified` adds a mixed-insurance-specific branch instead of staying only in the base card-reader flow
+- `✏️ Modified` adds a return step back into the main create-schein process after insurance handling
+- `✏️ Modified` shifts the focus from general card-reader management to scenario-specific insurance handling for patient creation
+- `⚪ Unchanged` keeps the shared `Mobile card reader overview` pattern, but uses it as the entry point for this specialized case
+
+### User Flow
+
+**Date:** 2026-03-16
+**Scope:** Create schein for mixed insurance patients
+**Status:** Aspirational, inferred from current Figma flow metadata
+**Legend:** 🆕 New · ✏️ Modified · ⚪ Unchanged · 🔵 Info/Reference
+
+```mermaid
+flowchart TD
+    START2([Start flow])
+    END2([Continue create schein])
+
+    subgraph MAIN2["Main flow"]
+        subgraph BASE2["Inherited from V1 base flow"]
+            MCR2_010["MCR2_010 Mobile card reader overview"]
+        end
+
+        subgraph DELTA2["New / Modified in V2"]
+            MCR2_020["MCR2_020 Insurance selection dialog"]
+            MCR2_DECISION{"Need new insurance?"}
+            MCR2_030["MCR2_030 Create insurance drawer"]
+            MCR2_040["MCR2_040 Return to mixed insurance patient flow"]
+        end
+    end
+
+    subgraph ACTIONS2["Related user actions"]
+        ACT2_010(["Inherited from V1 pattern: View records / Start flow / Open related actions"])
+        ACT2_020(["New in V2: Review insurance options / Select existing insurance / Choose to create new insurance"])
+        ACT2_030(["New in V2: Enter insurance details / Add address and contact information / Save insurance"])
+        ACT2_040(["Modified in V2: Review updated state / Continue creating schein"])
+    end
+
+    START2 -->|"Open mixed insurance patient flow"| MCR2_010
+    MCR2_010 -->|"Choose insurance handling"| MCR2_020
+    MCR2_020 -->|"Check available option"| MCR2_DECISION
+    MCR2_DECISION -->|"No"| END2
+    MCR2_DECISION -->|"Yes"| MCR2_030
+    MCR2_030 -->|"Save new insurance"| MCR2_040
+    MCR2_040 -->|"Continue create schein"| END2
+
+    MCR2_010 -.-> ACT2_010
+    MCR2_020 -.-> ACT2_020
+    MCR2_030 -.-> ACT2_030
+    MCR2_040 -.-> ACT2_040
+
+    classDef new fill:#d4edda,stroke:#7aa874,color:#1f3b24;
+    classDef modified fill:#fff3cd,stroke:#c9a227,color:#5c4400;
+    classDef unchanged fill:#ffffff,stroke:#9aa0a6,color:#1f2933;
+    classDef info fill:#d1ecf1,stroke:#6ea8b3,color:#0c3c44;
+
+    class MCR2_020,MCR2_DECISION,MCR2_030 new;
+    class MCR2_040 modified;
+    class MCR2_010 unchanged;
+    class ACT2_010,ACT2_020,ACT2_030,ACT2_040 info;
+
+    click MCR2_010 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_010-mobile-card-reader-overview.png" "Open screenshot"
+    click MCR2_020 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_020-insurance-selection-dialog.png" "Open screenshot"
+    click MCR2_DECISION "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_decision-need-new-insurance.png" "Open screenshot"
+    click MCR2_030 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_030-create-insurance-drawer.png" "Open screenshot"
+    click MCR2_040 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v2-mcr2_040-return-to-mixed-insurance-flow.png" "Open screenshot"
+```
+
+### Product Flow
+
+1. A user opens the mixed-insurance-patient scenario from the mobile card reader flow.
+2. The app shows the relevant patient or history context for the selected case.
+3. The user chooses how to handle insurance information.
+4. If an existing insurance option works, the user selects it and continues.
+5. If a new insurance record is needed, the user opens the create-insurance form and enters the required information.
+6. After saving or selecting insurance, the user returns to the flow and continues creating the schein.
+
+### Main Screens Or Major UI States
+
+1. `Mobile card reader overview`
+
+This is the entry screen for the mixed-insurance-patient scenario. It gives the user the record context and a way to begin the next step.
+
+The user can:
+
+- review history rows or record states
+- start the mixed-insurance-patient flow
+- open related actions from the record area
+- move into the create-schein process
+
+2. `Insurance selection dialog`
+
+This is a choice screen where the user decides which insurance should be used for the current patient.
+
+The user can:
+
+- review available insurance options
+- select an existing insurance option
+- choose to create a new insurance entry instead
+- confirm or cancel the selection step
+
+3. `Create insurance drawer`
+
+This is a form state for creating a new insurance entry when an existing option is not suitable.
+
+The user can:
+
+- enter insurance details
+- add address information
+- add contact-related information
+- save the new insurance entry or leave the form
+
+4. `Return to mixed insurance patient flow`
+
+This is the follow-up state after insurance handling is complete. It brings the user back to the main process so they can continue.
+
+The user can:
+
+- review the updated state after insurance selection or creation
+- confirm that the insurance step is complete
+- continue creating the schein
+
+## V1
+
+### User Flow
 
 **Date:** 2026-03-16
 **Scope:** Mobile Card Reader flow from overview to patient update validation
@@ -41,9 +172,15 @@ flowchart TD
     MCR_020 -.-> ACT_020
     MCR_030 -.-> ACT_030
     MCR_040 -.-> ACT_040
+
+    click MCR_010 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_010-mobile-card-reader-overview.png" "Open screenshot"
+    click MCR_020 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_020-card-information.png" "Open screenshot"
+    click MCR_030 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_030-update-patient-details.png" "Open screenshot"
+    click MCR_DECISION "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_decision-patient-data-matches.png" "Open screenshot"
+    click MCR_040 "/Users/nganpham/core-pvs-proto/docs/screenshots/FLOW260316-mobile-card-reader/v1-mcr_040-errors-before-create-patient.png" "Open screenshot"
 ```
 
-## Product Flow
+### Product Flow
 
 1. A user sees card-reader records in a main overview.
 2. They open one record to inspect card information.
@@ -52,7 +189,7 @@ flowchart TD
 5. If some things conflict, the app shows comparison screens and prompts the user to choose or correct data.
 6. If required information is invalid or missing, the app blocks progress and shows error states until the data is fixed.
 
-## Main Screens Or Major UI States
+### Main Screens/Major UI States
 
 1. `Mobile card reader overview`
 
