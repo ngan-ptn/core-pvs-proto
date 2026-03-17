@@ -1,0 +1,122 @@
+{
+  "dashboard": {
+    "title": "Smart PVS Dashboard",
+    "subtitle": "MVZ-Betriebsübersicht"
+  },
+  "tabs": {
+    "overview": "Übersicht",
+    "noShow": "No-Show",
+    "treatmentDuration": "Behandlungsdauer",
+    "resources": "Ressourcen"
+  },
+  "filters": {
+    "thisMonth": "Dieser Monat",
+    "thisQuarter": "Dieses Quartal",
+    "lastQuarter": "Letztes Quartal",
+    "allLocations": "Alle Standorte"
+  },
+  "kpis": {
+    "noShowRate": {
+      "label": "No-Show-Rate",
+      "unit": "%",
+      "tooltip": "Anteil ausgefallener Termine ohne rechtzeitige Absage"
+    },
+    "treatmentDuration": {
+      "label": "Ø Behandlungsdauer",
+      "unit": "min",
+      "tooltip": "Durchschnittliche Behandlungszeit pro Patient"
+    },
+    "deviceUtilization": {
+      "label": "Geräteauslastung",
+      "unit": "%",
+      "tooltip": "Durchschnittliche Auslastung medizinischer Geräte"
+    },
+    "availableSlots": {
+      "label": "Verfügbare Termine",
+      "unit": "",
+      "tooltip": "Anzahl offener Terminslots in den nächsten 2 Wochen"
+    }
+  },
+  "locations": {
+    "mitte": "Standort Mitte",
+    "nord": "Standort Nord",
+    "sued": "Standort Süd",
+    "west": "Standort West",
+    "ost": "Standort Ost"
+  },
+  "overview": {
+    "locationsTitle": "Standorte im Überblick",
+    "noShow": "No-Show",
+    "treatmentDuration": "Behandl.",
+    "deviceUtilization": "Geräte",
+    "availableSlots": "Termine"
+  },
+  "noShowTab": {
+    "barTitle": "No-Show-Rate nach Standort",
+    "heatmapTitle": "No-Show-Verteilung: Wochentag × Uhrzeit",
+    "heatmapSubtitle": "(Standort Nord)"
+  },
+  "weekdays": {
+    "mo": "Mo",
+    "di": "Di",
+    "mi": "Mi",
+    "do": "Do",
+    "fr": "Fr"
+  },
+  "patterns": {
+    "title": "Erkanntes Muster",
+    "tuesdayMorning": "Dienstag vormittags zeigt 23% höhere No-Show-Rate als der MVZ-Durchschnitt.",
+    "confidence": "Konfidenz",
+    "basedOn": "Basierend auf: {weeks} Wochen Daten, {location}",
+    "threshold": "Schwellenwert: {value} Abweichung vom MVZ-Durchschnitt",
+    "viewData": "Daten anzeigen",
+    "dismiss": "Verwerfen",
+    "medium": "Mittel",
+    "high": "Hoch",
+    "low": "Niedrig"
+  },
+  "treatment": {
+    "barTitle": "Ø Behandlungsdauer nach Fachgebiet",
+    "dotPlotTitle": "Behandler vs. Fachgebiet-Benchmark",
+    "specialtyFilter": "Alle",
+    "disclaimer": "Diese Zahlen spiegeln betriebliche Muster wider, keine klinischen Qualitätsbewertungen. Fallmix-Daten nicht verfügbar — mit Vorsicht interpretieren.",
+    "shorterLabel": "← kürzer",
+    "longerLabel": "länger →",
+    "benchmark": "Benchmark"
+  },
+  "resources": {
+    "barTitle": "Geräteauslastung nach Standort",
+    "slotsTitle": "Verfügbare Termine",
+    "columnLocation": "Standort",
+    "columnSpecialty": "Fachgebiet",
+    "columnTimeWindow": "Zeitfenster",
+    "columnCount": "Anz.",
+    "underutilizedThreshold": "Schwelle 40%"
+  },
+  "recommendations": {
+    "title": "Empfehlung",
+    "capacityRedistribution": "Verfügbare Kapazität am Standort Süd könnte Terminüberlauf vom Standort Nord aufnehmen.",
+    "impact": "Wirkung",
+    "factors": {
+      "title": "Faktoren",
+      "proximity": "Geografische Nähe",
+      "specialtyMatch": "Fachgebiet-Kompatibilität",
+      "deviceAvailability": "Geräteverfügbarkeit",
+      "historicalFlow": "Historischer Patientenfluss"
+    },
+    "disclaimer": "Dies ist ein Vorschlag — es wird keine Aktion automatisch ausgeführt.",
+    "viewDetails": "Details anzeigen",
+    "defer": "Zurückstellen",
+    "dismiss": "Verwerfen",
+    "high": "Hohe Wirkung",
+    "medium": "Mittlere Wirkung",
+    "low": "Geringe Wirkung"
+  },
+  "common": {
+    "vsLastQuarter": "vs Vorquartal",
+    "mvzAverage": "MVZ-Ø",
+    "threshold": "Schwellenwert",
+    "critical": ">20% = Kritisch",
+    "crossover": "Überkreuzung"
+  }
+}

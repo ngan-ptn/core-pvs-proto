@@ -1,2 +1,11 @@
 @import "tailwindcss";
 @import "@tini/ui/css";
+
+@layer base {
+  :root {
+    --status-critical: #D84B4B;
+    --status-warning: #D17624;
+    --status-normal: #028A4B;
+    --status-neutral: #9AA7B2;
+  }
+}
