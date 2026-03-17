@@ -44,6 +44,10 @@ export type HistoryType = 'past_diagnosis' | 'past_procedure' | 'past_medication
 export type ServiceStatus = 'documented' | 'billed' | 'cancelled'
 export type NoteType = 'soap_s' | 'soap_o' | 'soap_a' | 'soap_p' | 'free_text' | 'clinical'
 
+// 009_timeline_audit
+export type AuditAction = 'create' | 'update' | 'delete'
+export type TimelineEventType = 'encounter' | 'diagnosis' | 'prescription' | 'lab' | 'imaging' | 'document' | 'vitals' | 'referral'
+
 // ─── Row interfaces ─────────────────────────────────────────────────
 
 // 002_foundation
@@ -419,4 +423,66 @@ export interface EncounterNote {
   author_id: string | null
   created_at: string
   updated_at: string
+}
+
+// 009_timeline_audit
+
+export interface AuditLog {
+  id: string
+  entity_type: string
+  entity_id: string
+  action: AuditAction
+  actor_id: string | null
+  practice_id: string | null
+  changes: string | null
+  created_at: string
+}
+
+export interface TimelineEvent {
+  id: string
+  patient_id: string
+  event_type: TimelineEventType
+  occurred_at: string
+  summary: string | null
+  actor_id: string | null
+  treatment_case_id: string | null
+}
+
+// 010_search_views
+
+export interface PatientSearchRecord {
+  id: string
+  first_name: string
+  last_name: string
+  display_name: string
+  search_name: string
+  date_of_birth: string
+  kvnr: string | null
+  external_patient_id: string | null
+  source_system: string
+  phone: string | null
+  email: string | null
+  postal_code: string | null
+  city: string | null
+  insurance_name: string | null
+  ik_number: string | null
+}
+
+export interface MedicationSearchRecord {
+  id: string
+  name: string
+  display_name: string
+  active_ingredient: string | null
+  pzn: string
+  dosage_form: string | null
+  strength: string | null
+}
+
+export type SearchRecord =
+  | { type: 'patient'; data: PatientSearchRecord }
+  | { type: 'medication'; data: MedicationSearchRecord }
+
+export interface SearchIndex {
+  patients: PatientSearchRecord[]
+  medications: MedicationSearchRecord[]
 }
