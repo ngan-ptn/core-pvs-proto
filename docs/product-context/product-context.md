@@ -290,29 +290,37 @@ Definition of done for design: every PM requirement must be verifiable against d
 
 ## UX/UI Anti-Patterns
 
-Patterns to actively avoid. Derived from CorePVS product principles and German healthcare market research.
+**Notes:** Derived from CorePVS product principles and German healthcare market research.
 
-**Key sources:** Zi PVS Survey (10,245 evaluations), gematik TI-Score, AHRQ/PSNet Alert Fatigue research, Nielsen Norman Group Medical Usability, KBV Anforderungskatalog.
+### Enforcement levels
 
-| # | Anti-Pattern | Why It Fails | Better Pattern |
-|:--|:--|:--|:--|
-| | **— CorePVS Product Principles** | | |
-| 1 | **Auto-Execution Without Confirmation** | Violates "decision support, not automation". Billing/prescription auto-actions carry legal risk; propagate across MVZ locations. | Suggest, never auto-execute. Confirmation proportional to impact. <br>*E.g., "Rebalance Kardio appointments to Standort B?" with confirm/dismiss — not auto-moved.* |
-| 2 | **Ambiguous Edit States** | External data (HIS records) accidentally modified = legal risk. Read-only vs. editable must be instant. | Visually distinct treatments for external (read-only) vs. own (editable) data. <br>*E.g., hospital referral data in grey with lock icon; own Befund in white with editable fields.* |
-| 3 | **Generic Error Messages** | "Something went wrong" blocks MFA from recovering rejected billing or failed E-Rezept signing. | Actionable, domain-specific: entity + problem + fix step. <br>*E.g., "Schein 0101: missing ICD for GOP 01100 — add diagnosis to continue."* |
-| | **— German Healthcare Market** | | |
-| 4 | **Certification-Driven UI** | KBV tests billing format, not usability. UIs mirror KVDT fields instead of clinical workflow. | Design for encounters first; map to KVDT in the data layer. <br>*E.g., registration screen groups by patient context, not by Feldkennung 3000–3999.* |
-| 5 | **Schein-Centric Navigation** | Forces Schein selection before documenting. Wrong-Schein errors multiply in multi-specialty MVZ. | Patient-centric nav with automatic Schein resolution from context. <br>*E.g., opening a patient auto-selects the correct Schein based on physician Fachgruppe + Kassenart + quarter.* |
-| 6 | **TI-Error-Wall** | Raw Konnektor error codes block check-in. 62.4% of practices report connector issues. | Graceful degradation + plain-language recovery + offline Ersatzverfahren. <br>*E.g., "eGK read failed — continue with Ersatzverfahren?" instead of "VSDM Error 4085".* |
-| 7 | **Undifferentiated Alert Fatigue** | ABDA, Priscus, BtM, budget alerts all equal. 49-96% override rates. Safety alerts get ignored. | Severity-tiered, role-tailored. Hard-stop only for critical interactions. <br>*E.g., red blocking alert for severe drug interaction; yellow inline note for Wirtschaftlichkeit.* |
-| 8 | **Modal-Dialog Gauntlet** | Each E-Rezept step as blocking modal. 15s paper task → 45s click-through. Blocks data comparison. | Single composable view, smart defaults, batch-sign per session. <br>*E.g., prescription panel with drug, dosage, Dosieranweisung inline; one HBA PIN for all pending Rezepte.* |
-| 9 | **Context-Blind Quartalsabrechnung** | Monolithic end-of-quarter error dump. MFA fixes errors from weeks ago. | Continuous inline validation throughout the quarter. <br>*E.g., after each encounter: "Schein complete" or "Missing: ICD for GOP 01100" — not 300 errors on March 31.* |
-| 10 | **One-Size-Fits-All MVZ Interface** | Same UI for Hausarzt, Kardiologe, Psychotherapeut despite different workflows. | Specialty-adaptive workspaces over shared patient data. <br>*E.g., Kardiologe sees EKG/Echo panel by default; Psychotherapeut sees session notes and therapy hours.* |
-| 11 | **eGK-Before-Everything Gate** | Clinical workflow blocked when card reader/TI fails or patient forgot eGK. | Decouple clinical from insurance. Provisional encounter → async reconciliation. <br>*E.g., "Start encounter without eGK" button; insurance data reconciled when card is read later.* |
-| 12 | **Copy-Paste Documentation** | Poor templating → Befund-Klonen with carried-forward errors. Legal risk (Dokumentationspflicht). | Structured templates with explicit changed/unchanged markers. <br>*E.g., Befund template shows prior values greyed out with "Confirm or update" per field.* |
-| 13 | **Hidden Workflow State** | No visibility of patient flow (Anmeldung → Abrechnung). MFA uses paper lists. | Explicit patient flow board with color-coded real-time status. <br>*E.g., Wartezimmer board: green = ready, yellow = in Behandlung, red = waiting >30 min.* |
-| 14 | **Monolithic Patient Record** | Entire history in one scroll. Needle-in-haystack for long-term patients. | Visit-focused summary with progressive disclosure. <br>*E.g., default view: today's diagnoses, current meds, recent labs; "Show full history" expands timeline.* |
-| 15 | **Disconnected Formularverwaltung** | Each Muster form as isolated module. Redundant data entry. | Context-aware forms auto-filled from encounter data. <br>*E.g., clicking "Überweisung" pre-fills patient, ICD, LANR/BSNR from current encounter — MFA only selects target Fachrichtung.* |
+| Level | Meaning | AI behavior |
+|:--|:--|:--|
+| **Hard** | Legal or safety requirement — never violate | AI flags violation and does not proceed without explicit override |
+| **Strong** | Core UX principle — violate only with documented justification | AI asks: "This conflicts with anti-pattern #X — proceed with justification?" |
+| **Guide** | Best practice — trade-offs acceptable when balanced against other constraints | AI follows by default; allows override without friction |
+
+### Anti-pattern table
+
+| # | Lvl | Anti-Pattern | Why It Fails | Better Pattern |
+|:--|:--|:--|:--|:--|
+| | | **— CorePVS Product Principles** | | |
+| 1 | **Hard** | **Auto-Execution Without Confirmation** | Violates "decision support, not automation". Billing/prescription auto-actions carry legal risk; propagate across MVZ locations. | Suggest, never auto-execute. Confirmation proportional to impact. <br>*E.g., "Rebalance Kardio appointments to Standort B?" with confirm/dismiss — not auto-moved.* |
+| 2 | **Hard** | **Ambiguous Edit States** | External data (HIS records) accidentally modified = legal risk. Read-only vs. editable must be instant. | Visually distinct treatments for external (read-only) vs. own (editable) data. <br>*E.g., hospital referral data in grey with lock icon; own Befund in white with editable fields.* |
+| 3 | **Strong** | **Generic Error Messages** | "Something went wrong" blocks MFA from recovering rejected billing or failed E-Rezept signing. | Actionable, domain-specific: entity + problem + fix step. <br>*E.g., "Schein 0101: missing ICD for GOP 01100 — add diagnosis to continue."* |
+| | | **— German Healthcare Market** | | |
+| 4 | **Strong** | **Certification-Driven UI** | KBV tests billing format, not usability. UIs mirror KVDT fields instead of clinical workflow. | Design for encounters first; map to KVDT in the data layer. <br>*E.g., registration screen groups by patient context, not by Feldkennung 3000–3999.* |
+| 5 | **Strong** | **Schein-Centric Navigation** | Forces Schein selection before documenting. Wrong-Schein errors multiply in multi-specialty MVZ. | Patient-centric nav with automatic Schein resolution from context. <br>*E.g., opening a patient auto-selects the correct Schein based on physician Fachgruppe + Kassenart + quarter.* |
+| 6 | **Strong** | **TI-Error-Wall** | Raw Konnektor error codes block check-in. 62.4% of practices report connector issues. | Graceful degradation + plain-language recovery + offline Ersatzverfahren. <br>*E.g., "eGK read failed — continue with Ersatzverfahren?" instead of "VSDM Error 4085".* |
+| 7 | **Strong** | **Undifferentiated Alert Fatigue** | ABDA, Priscus, BtM, budget alerts all equal. 49-96% override rates. Safety alerts get ignored. | Severity-tiered, role-tailored. Hard-stop only for critical interactions. <br>*E.g., red blocking alert for severe drug interaction; yellow inline note for Wirtschaftlichkeit.* |
+| 8 | **Guide** | **Modal-Dialog Gauntlet** | Each E-Rezept step as blocking modal. 15s paper task → 45s click-through. Blocks data comparison. | Single composable view, smart defaults, batch-sign per session. Modals acceptable for true safety gates (BtM, QES signing). <br>*E.g., prescription panel with drug, dosage, Dosieranweisung inline; one HBA PIN for all pending Rezepte.* |
+| 9 | **Strong** | **Context-Blind Quartalsabrechnung** | Monolithic end-of-quarter error dump. MFA fixes errors from weeks ago. | Continuous inline validation throughout the quarter. <br>*E.g., after each encounter: "Schein complete" or "Missing: ICD for GOP 01100" — not 300 errors on March 31.* |
+| 10 | **Guide** | **One-Size-Fits-All MVZ Interface** | Same UI for Hausarzt, Kardiologe, Psychotherapeut despite different workflows. | Specialty-adaptive workspaces over shared patient data. Full adaptation may be phased incrementally. <br>*E.g., Kardiologe sees EKG/Echo panel by default; Psychotherapeut sees session notes and therapy hours.* |
+| 11 | **Strong** | **eGK-Before-Everything Gate** | Clinical workflow blocked when card reader/TI fails or patient forgot eGK. | Decouple clinical from insurance. Provisional encounter → async reconciliation. <br>*E.g., "Start encounter without eGK" button; insurance data reconciled when card is read later.* |
+| 12 | **Guide** | **Copy-Paste Documentation** | Poor templating → Befund-Klonen with carried-forward errors. Legal risk (Dokumentationspflicht). | Structured templates with explicit changed/unchanged markers. <br>*E.g., Befund template shows prior values greyed out with "Confirm or update" per field.* |
+| 13 | **Guide** | **Hidden Workflow State** | No visibility of patient flow (Anmeldung → Abrechnung). MFA uses paper lists. | Explicit patient flow board with color-coded real-time status. <br>*E.g., Wartezimmer board: green = ready, yellow = in Behandlung, red = waiting >30 min.* |
+| 14 | **Guide** | **Monolithic Patient Record** | Entire history in one scroll. Needle-in-haystack for long-term patients. | Visit-focused summary with progressive disclosure. <br>*E.g., default view: today's diagnoses, current meds, recent labs; "Show full history" expands timeline.* |
+| 15 | **Guide** | **Disconnected Formularverwaltung** | Each Muster form as isolated module. Redundant data entry. | Context-aware forms auto-filled from encounter data. <br>*E.g., clicking "Überweisung" pre-fills patient, ICD, LANR/BSNR from current encounter — MFA only selects target Fachrichtung.* |
 
 ---
 
