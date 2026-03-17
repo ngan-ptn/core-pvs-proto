@@ -11,7 +11,13 @@ coverage/
 *.db-wal
 *.db-shm
 
+#IDE
+.vscode/
+.idea/
+.cursor/
+.cursorrules/
 
 
 # Personal files
 docs/_ngan/
+docs/_lia/
