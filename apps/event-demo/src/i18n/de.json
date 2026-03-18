@@ -13,7 +13,8 @@
     "thisMonth": "Dieser Monat",
     "thisQuarter": "Dieses Quartal",
     "lastQuarter": "Letztes Quartal",
-    "allLocations": "Alle Standorte"
+    "allLocations": "Alle Standorte",
+    "locationCount": "{count} Standorte"
   },
   "kpis": {
     "noShowRate": {
@@ -111,6 +112,19 @@
     "high": "Hohe Wirkung",
     "medium": "Mittlere Wirkung",
     "low": "Geringe Wirkung"
+  },
+  "error": {
+    "title": "Fehler beim Laden",
+    "message": "Die Daten konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+    "retry": "Erneut versuchen"
+  },
+  "empty": {
+    "defaultTitle": "Keine Daten verfügbar",
+    "defaultMessage": "Für die gewählten Filter wurden keine Daten gefunden. Versuchen Sie, den Zeitraum oder die Standortauswahl anzupassen.",
+    "noLocations": "Keine Standorte ausgewählt",
+    "noLocationsMessage": "Wählen Sie mindestens einen Standort aus dem Filter, um Daten anzuzeigen.",
+    "noSlots": "Keine verfügbaren Termine",
+    "noSlotsMessage": "Keine offenen Terminslots entsprechen den aktuellen Filterkriterien."
   },
   "common": {
     "vsLastQuarter": "vs Vorquartal",

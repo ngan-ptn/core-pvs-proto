@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Card, CardContent, Tooltip, TooltipTrigger, TooltipContent } from '@tini/ui'
 import { StatusDot } from './StatusDot'
 import { Sparkline } from './Sparkline'
@@ -11,7 +12,7 @@ interface KpiCardProps {
   onClick?: () => void
 }
 
-export function KpiCard({ label, kpi, tooltipText, onClick }: KpiCardProps) {
+export const KpiCard = memo(function KpiCard({ label, kpi, tooltipText, onClick }: KpiCardProps) {
   const { t } = useTranslation()
   const deltaPrefix = kpi.delta > 0 ? '▲ ' : kpi.delta < 0 ? '▼ ' : '─ '
   const deltaText = `${deltaPrefix}${Math.abs(kpi.delta)}${kpi.deltaUnit}`
@@ -20,7 +21,7 @@ export function KpiCard({ label, kpi, tooltipText, onClick }: KpiCardProps) {
     <Tooltip>
       <TooltipTrigger asChild>
         <Card
-          className="cursor-pointer transition-shadow hover:shadow-md"
+          className="cursor-pointer transition-shadow hover:shadow-md active:shadow-sm"
           onClick={onClick}
         >
           <CardContent className="p-4 space-y-2">
@@ -48,4 +49,4 @@ export function KpiCard({ label, kpi, tooltipText, onClick }: KpiCardProps) {
       </TooltipContent>
     </Tooltip>
   )
-}
+})

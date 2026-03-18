@@ -29,7 +29,7 @@ export function FilterBar() {
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm" className="ml-2 tracking-figma">
-            {isAllLocations ? t('filters.allLocations') : `${selectedLocations.length} Standorte`}
+            {isAllLocations ? t('filters.allLocations') : t('filters.locationCount', { count: selectedLocations.length })}
             <ChevronDown className="w-3.5 h-3.5 ml-1" />
           </Button>
         </PopoverTrigger>

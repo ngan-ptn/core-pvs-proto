@@ -2,7 +2,7 @@ import { Home, Lock } from 'lucide-react'
 
 export function NavRail() {
   return (
-    <nav className="w-[60px] h-screen bg-[var(--nav-rail-bg)] flex flex-col items-center shrink-0 relative">
+    <nav className="w-[60px] h-screen bg-[var(--nav-rail-bg)] flex flex-col items-center shrink-0 relative" aria-label="Main navigation">
       {/* 1. Logo area */}
       <div className="flex items-center justify-center w-full py-5 px-4">
         <div className="w-8 h-8 rounded-[3px] bg-white/10 flex items-center justify-center">
@@ -20,7 +20,7 @@ export function NavRail() {
       </div>
 
       {/* Home nav item - active */}
-      <button className="w-[60px] h-11 flex items-center justify-center hover:bg-white/10 transition-colors bg-white/10">
+      <button className="w-[60px] h-11 flex items-center justify-center hover:bg-white/10 transition-colors bg-white/10" aria-label="Dashboard" aria-current="page">
         <Home className="w-5 h-5 text-white" />
       </button>
 
@@ -38,9 +38,9 @@ export function NavRail() {
       </div>
 
       {/* Bottom collapse area */}
-      <div className="w-full h-[60px] flex items-center justify-center">
+      <button className="w-full h-[60px] flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Sidebar ein-/ausblenden">
         <Lock className="w-5 h-5 text-white" />
-      </div>
+      </button>
     </nav>
   )
 }

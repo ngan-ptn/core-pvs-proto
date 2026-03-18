@@ -20,11 +20,19 @@ interface StatusDotProps {
   className?: string
 }
 
+const statusLabels: Record<Status, string> = {
+  critical: 'Kritisch',
+  warning: 'Warnung',
+  normal: 'Normal',
+  neutral: 'Neutral',
+}
+
 export function StatusDot({ status, className }: StatusDotProps) {
   return (
     <span
       className={cn('inline-block w-3 h-3 shrink-0', statusColors[status], statusShapes[status], className)}
-      aria-label={status}
+      role="img"
+      aria-label={statusLabels[status]}
     />
   )
 }

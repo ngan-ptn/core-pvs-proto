@@ -5,13 +5,14 @@ export function LanguageToggle() {
   const { locale, setLocale } = useTranslation()
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex rounded-full bg-background/80 backdrop-blur border shadow-sm text-sm overflow-hidden">
+    <div className="fixed bottom-4 right-4 z-50 flex rounded-full bg-background/80 backdrop-blur border shadow-sm text-sm overflow-hidden" role="group" aria-label="Language selection">
       <button
         className={cn(
           'px-3 py-1.5 transition-colors',
           locale === 'de' ? 'bg-primary text-primary-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
         )}
         onClick={() => setLocale('de')}
+        aria-pressed={locale === 'de'}
       >
         DE
       </button>
@@ -21,6 +22,7 @@ export function LanguageToggle() {
           locale === 'en' ? 'bg-primary text-primary-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
         )}
         onClick={() => setLocale('en')}
+        aria-pressed={locale === 'en'}
       >
         EN
       </button>

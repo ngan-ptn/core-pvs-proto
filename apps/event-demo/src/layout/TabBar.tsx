@@ -24,7 +24,7 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
           <TabsTrigger
             key={tab.id}
             value={tab.id}
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none px-4 py-2.5 text-sm tracking-figma text-[var(--color-text-secondary)] data-[state=active]:text-[var(--color-text-primary)] data-[state=active]:font-semibold"
+            className="rounded-none border-b-[3px] border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none px-4 py-2.5 text-sm tracking-figma text-[var(--color-text-secondary)] data-[state=active]:text-[var(--color-text-primary)] data-[state=active]:font-semibold transition-colors"
           >
             {t(tab.labelKey)}
           </TabsTrigger>

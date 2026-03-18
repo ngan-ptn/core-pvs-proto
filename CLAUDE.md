@@ -104,3 +104,28 @@ See `docs/product-context/product-context.md` for full product vision and `docs/
 ## Documentation Conventions
 
 Artifact files follow the naming pattern: `[CODE][YYMMDD]-[slug].md` (e.g., `FLOW260316-mobile-card-reader.md`). See `docs/guidelines/naming-conventions.md` for artifact codes and rules.
+
+## Design Context
+
+See `.impeccable.md` for the full design context document. Key points:
+
+### Users
+MVZ managers, site managers, and medical directors on desktop workstations (1920×1080). Busy professionals who need operational insights fast.
+
+### Brand Personality
+**Modern, Intelligent, Calm.** Quiet confidence through precision, not decoration. Emotional goals: confidence & control, trust & reliability, efficiency & focus.
+
+### Aesthetic Direction
+- **References:** Linear/Notion (clean density), Stripe Dashboard (polished data viz), German institutional portals (conservative trust)
+- **Anti-references:** No flashy SaaS/startup aesthetics, no legacy enterprise/SAP patterns, no consumer health/wellness vibes
+- **Theme:** Light mode only
+
+### Accessibility
+**WCAG 2.1 AAA compliance.** Enhanced contrast (7:1 normal text), no color-only signaling, full keyboard nav, screen reader support, reduced motion support, 200% text resize.
+
+### Design Principles
+1. **Signal over noise** — Status and insight before raw data
+2. **Progressive disclosure** — Scan → understand → act (three-level hierarchy)
+3. **Quiet confidence** — Authority through precision, not decoration
+4. **Compliant by design** — Decision support only, anonymized by default, rules always visible
+5. **Density with clarity** — Show more on desktop, but density serves comprehension

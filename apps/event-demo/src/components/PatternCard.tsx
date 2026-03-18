@@ -29,7 +29,7 @@ export function PatternCard({ data }: PatternCardProps) {
           </Badge>
         </div>
         <p className="text-sm tracking-figma text-[var(--color-text-primary)] italic leading-[22px]">
-          &ldquo;{t(data.messageKey)}&rdquo;
+          &bdquo;{t(data.messageKey)}&ldquo;
         </p>
         <div className="text-xs tracking-figma text-[var(--color-text-placeholder)] space-y-1">
           <p>{t('patterns.basedOn', { weeks: data.basedOnWeeks, location: t(`locations.${data.location}`) })}</p>

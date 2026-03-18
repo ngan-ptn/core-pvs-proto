@@ -29,7 +29,7 @@ export function RecommendationCard({ data }: RecommendationCardProps) {
           </Badge>
         </div>
         <p className="text-sm tracking-figma text-[var(--color-text-primary)] italic leading-[22px]">
-          &ldquo;{t(data.messageKey)}&rdquo;
+          &bdquo;{t(data.messageKey)}&ldquo;
         </p>
         <div className="space-y-1.5">
           <p className="text-xs font-semibold tracking-figma text-[var(--color-text-placeholder)]">{t('recommendations.factors.title')}:</p>

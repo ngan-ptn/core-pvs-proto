@@ -40,13 +40,22 @@
     --color-text-muted-icon: #9AA7B2;
     --color-divider: #DCE0E4;
     --color-surface-muted: #F0F2F4;
+    --color-surface-stripe: #F7F9FB;
     --color-tag-patient-bg: #CFF0FE;
     --color-tag-patient-text: #086280;
     --color-avatar-bg: #CFF0FE;
 
-    /* Override token values to match Figma */
-    --radius: 4px;
-    --border: #DCE0E4;
+    /* Heatmap severity scale (green → yellow → orange → red) */
+    --severity-0: #E8F5E9;
+    --severity-2: #C8E6C9;
+    --severity-4: #FFF9C4;
+    --severity-6: #FFE0B2;
+    --severity-8: #FFAB91;
+    --severity-10: #E53935;
+
+    /* Chart accent colors */
+    --chart-1: #5B8DEF;
+    --chart-2: #7C6BC4;
   }
 }
 
@@ -65,4 +74,23 @@
   .tracking-figma {
     letter-spacing: -0.2px;
   }
+}
+
+/* Reduced motion: disable transitions/animations for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible focus indicators for keyboard navigation (WCAG AAA) */
+:focus-visible {
+  outline: 2px solid var(--nav-rail-bg);
+  outline-offset: 2px;
+  border-radius: 2px;
 }

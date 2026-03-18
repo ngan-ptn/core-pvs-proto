@@ -13,7 +13,8 @@
     "thisMonth": "This Month",
     "thisQuarter": "This Quarter",
     "lastQuarter": "Last Quarter",
-    "allLocations": "All Locations"
+    "allLocations": "All Locations",
+    "locationCount": "{count} Locations"
   },
   "kpis": {
     "noShowRate": {
@@ -111,6 +112,19 @@
     "high": "High Impact",
     "medium": "Medium Impact",
     "low": "Low Impact"
+  },
+  "error": {
+    "title": "Loading Error",
+    "message": "The data could not be loaded. Please try again.",
+    "retry": "Try Again"
+  },
+  "empty": {
+    "defaultTitle": "No Data Available",
+    "defaultMessage": "No data found for the selected filters. Try adjusting the date range or location selection.",
+    "noLocations": "No Locations Selected",
+    "noLocationsMessage": "Select at least one location from the filter to view data.",
+    "noSlots": "No Available Slots",
+    "noSlotsMessage": "No open appointment slots match the current filter criteria."
   },
   "common": {
     "vsLastQuarter": "vs Last Quarter",

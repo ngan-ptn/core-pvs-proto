@@ -29,7 +29,7 @@ export function SlotsTable({ data }: SlotsTableProps) {
       </TableHeader>
       <TableBody>
         {data.map((slot, i) => (
-          <TableRow key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#F7F9FB]'}>
+          <TableRow key={i} className={i % 2 === 0 ? '' : 'bg-[var(--color-surface-stripe)]'}>
             <TableCell className="text-sm tracking-figma text-[var(--color-text-primary)] py-2 px-4">{locationNames[slot.location]}</TableCell>
             <TableCell className="text-sm tracking-figma text-[var(--color-text-primary)] py-2 px-4">{slot.specialty}</TableCell>
             <TableCell className="text-sm tracking-figma text-[var(--color-text-primary)] py-2 px-4">{slot.timeWindow}</TableCell>

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Card, CardContent, cn } from '@tini/ui'
 import { StatusDot } from './StatusDot'
 import type { LocationKpis, TabId } from '../data/types'
@@ -15,7 +16,7 @@ const kpiKeys: { key: keyof Pick<LocationKpis, 'noShow' | 'treatmentDuration' | 
   { key: 'availableSlots', labelKey: 'overview.availableSlots', tab: 'resources' },
 ]
 
-export function LocationCard({ location, onNavigate }: LocationCardProps) {
+export const LocationCard = memo(function LocationCard({ location, onNavigate }: LocationCardProps) {
   const { t } = useTranslation()
 
   const worstStatus = [location.noShow, location.treatmentDuration, location.deviceUtilization, location.availableSlots]
@@ -27,8 +28,8 @@ export function LocationCard({ location, onNavigate }: LocationCardProps) {
   const borderColor = {
     critical: 'border-l-4 border-l-[var(--status-critical)]',
     warning: 'border-l-4 border-l-[var(--status-warning)]',
-    normal: '',
-    neutral: '',
+    normal: 'border-l-4 border-l-transparent',
+    neutral: 'border-l-4 border-l-transparent',
   }[worstStatus]
 
   return (
@@ -54,4 +55,4 @@ export function LocationCard({ location, onNavigate }: LocationCardProps) {
       </CardContent>
     </Card>
   )
-}
+})
