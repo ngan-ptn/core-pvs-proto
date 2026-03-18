@@ -22,10 +22,6 @@ temp/
 tmp/
 *.tmp
 *.temp
-*.tmp.
-*.temp.
-*.tmp.
-*.temp.
 
 #Log
 logs/
@@ -38,6 +34,8 @@ logs/
 .cursor/
 .cursorrules/
 
+.firecrawl/
+docs/plans/
 
 # Personal files
 docs/_ngan/

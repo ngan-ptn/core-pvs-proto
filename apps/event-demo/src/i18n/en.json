@@ -1,0 +1,136 @@
+{
+  "dashboard": {
+    "title": "Smart PVS Dashboard",
+    "subtitle": "MVZ Operations Overview"
+  },
+  "tabs": {
+    "overview": "Overview",
+    "noShow": "No-Show",
+    "treatmentDuration": "Treatment Duration",
+    "resources": "Resources"
+  },
+  "filters": {
+    "thisMonth": "This Month",
+    "thisQuarter": "This Quarter",
+    "lastQuarter": "Last Quarter",
+    "allLocations": "All Locations",
+    "locationCount": "{count} Locations"
+  },
+  "kpis": {
+    "noShowRate": {
+      "label": "No-Show Rate",
+      "unit": "%",
+      "tooltip": "Percentage of missed appointments without timely cancellation"
+    },
+    "treatmentDuration": {
+      "label": "Avg. Treatment Duration",
+      "unit": "min",
+      "tooltip": "Average treatment time per patient"
+    },
+    "deviceUtilization": {
+      "label": "Device Utilization",
+      "unit": "%",
+      "tooltip": "Average utilization of medical devices"
+    },
+    "availableSlots": {
+      "label": "Available Slots",
+      "unit": "",
+      "tooltip": "Number of open appointment slots in the next 2 weeks"
+    }
+  },
+  "locations": {
+    "mitte": "Location Mitte",
+    "nord": "Location Nord",
+    "sued": "Location Süd",
+    "west": "Location West",
+    "ost": "Location Ost"
+  },
+  "overview": {
+    "locationsTitle": "Locations Overview",
+    "noShow": "No-Show",
+    "treatmentDuration": "Duration",
+    "deviceUtilization": "Devices",
+    "availableSlots": "Slots"
+  },
+  "noShowTab": {
+    "barTitle": "No-Show Rate by Location",
+    "heatmapTitle": "No-Show Distribution: Weekday × Time",
+    "heatmapSubtitle": "(Location Nord)"
+  },
+  "weekdays": {
+    "mo": "Mon",
+    "di": "Tue",
+    "mi": "Wed",
+    "do": "Thu",
+    "fr": "Fri"
+  },
+  "patterns": {
+    "title": "Detected Pattern",
+    "tuesdayMorning": "Tuesday mornings show 23% higher no-show rate than the MVZ average.",
+    "confidence": "Confidence",
+    "basedOn": "Based on: {weeks} weeks of data, {location}",
+    "threshold": "Threshold: {value} deviation from MVZ average",
+    "viewData": "View Data",
+    "dismiss": "Dismiss",
+    "medium": "Medium",
+    "high": "High",
+    "low": "Low"
+  },
+  "treatment": {
+    "barTitle": "Avg. Treatment Duration by Specialty",
+    "dotPlotTitle": "Practitioners vs. Specialty Benchmark",
+    "specialtyFilter": "All",
+    "disclaimer": "These figures reflect operational patterns, not clinical quality assessments. Case-mix data unavailable — interpret with caution.",
+    "shorterLabel": "← shorter",
+    "longerLabel": "longer →",
+    "benchmark": "Benchmark"
+  },
+  "resources": {
+    "barTitle": "Device Utilization by Location",
+    "slotsTitle": "Available Slots",
+    "columnLocation": "Location",
+    "columnSpecialty": "Specialty",
+    "columnTimeWindow": "Time Window",
+    "columnCount": "Count",
+    "underutilizedThreshold": "Threshold 40%"
+  },
+  "recommendations": {
+    "title": "Recommendation",
+    "capacityRedistribution": "Available capacity at Location Süd could absorb appointment overflow from Location Nord.",
+    "impact": "Impact",
+    "factors": {
+      "title": "Factors",
+      "proximity": "Geographic Proximity",
+      "specialtyMatch": "Specialty Compatibility",
+      "deviceAvailability": "Device Availability",
+      "historicalFlow": "Historical Patient Flow"
+    },
+    "disclaimer": "This is a suggestion — no action will be executed automatically.",
+    "viewDetails": "View Details",
+    "defer": "Defer",
+    "dismiss": "Dismiss",
+    "high": "High Impact",
+    "medium": "Medium Impact",
+    "low": "Low Impact"
+  },
+  "error": {
+    "title": "Loading Error",
+    "message": "The data could not be loaded. Please try again.",
+    "retry": "Try Again"
+  },
+  "empty": {
+    "defaultTitle": "No Data Available",
+    "defaultMessage": "No data found for the selected filters. Try adjusting the date range or location selection.",
+    "noLocations": "No Locations Selected",
+    "noLocationsMessage": "Select at least one location from the filter to view data.",
+    "noSlots": "No Available Slots",
+    "noSlotsMessage": "No open appointment slots match the current filter criteria."
+  },
+  "common": {
+    "vsLastQuarter": "vs Last Quarter",
+    "mvzAverage": "MVZ Avg.",
+    "threshold": "Threshold",
+    "critical": ">20% = Critical",
+    "crossover": "Crossover"
+  }
+}

@@ -1,0 +1,35 @@
+import { Tabs, TabsList, TabsTrigger } from '@tini/ui'
+import type { TabId } from '../data/types'
+import { useTranslation } from '../i18n/useTranslation'
+
+interface TabBarProps {
+  activeTab: TabId
+  onTabChange: (tab: TabId) => void
+}
+
+const tabs: { id: TabId; labelKey: string }[] = [
+  { id: 'overview', labelKey: 'tabs.overview' },
+  { id: 'noShow', labelKey: 'tabs.noShow' },
+  { id: 'treatmentDuration', labelKey: 'tabs.treatmentDuration' },
+  { id: 'resources', labelKey: 'tabs.resources' },
+]
+
+export function TabBar({ activeTab, onTabChange }: TabBarProps) {
+  const { t } = useTranslation()
+
+  return (
+    <Tabs value={activeTab} onValueChange={(v) => onTabChange(v as TabId)}>
+      <TabsList className="w-full justify-start px-4 divider-bottom rounded-none bg-transparent h-auto py-0">
+        {tabs.map(tab => (
+          <TabsTrigger
+            key={tab.id}
+            value={tab.id}
+            className="rounded-none border-b-[3px] border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none px-4 py-2.5 text-sm tracking-figma text-[var(--color-text-secondary)] data-[state=active]:text-[var(--color-text-primary)] data-[state=active]:font-semibold transition-colors"
+          >
+            {t(tab.labelKey)}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
+  )
+}
