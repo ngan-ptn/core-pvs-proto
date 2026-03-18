@@ -485,13 +485,22 @@ A **Healthcare Operations Platform**.
 
 ## Strategic Positioning
 
-Traditional PVS:
+Traditional PVS: Practice management software
 
-Practice management software
+Next-generation system: **MVZ Operating System**
 
-Next-generation system:
+### Traditional PVS vs. MVZ Operating System
 
-**MVZ Operating System**
+| Aspect              | **Traditional PVS**          | **MVZ Operating System (Next-gen)**          |
+| ------------------- | ---------------------------- | -------------------------------------------- |
+| Core role           | Practice management tool     | Organization-wide orchestration platform     |
+| Scope               | Single practice (1 location) | Entire MVZ (multiple locations, specialties) |
+| Focus               | Admin + clinical workflows   | Operations + optimization + management       |
+| Data model          | Per practice                 | Shared across organization                   |
+| Scheduling          | Local calendar               | Cross-location scheduling                    |
+| Resource management | Not supported                | Doctors + devices optimized across sites     |
+| Analytics           | Basic reporting              | Real-time operational dashboard              |
+| Decision support    | Minimal                      | Active recommendations                       |
 
 
 ---
