@@ -101,6 +101,23 @@ See `docs/product-context/product-context.md` for full product vision and `docs/
 
 **Always follow `docs/guidelines/dashboard-design-patterns.md`** when implementing dashboard views. It defines KPI card anatomy, traffic-light status rules, chart selection (no pie charts, no 3D), heatmap patterns, comparison/benchmark display, pattern and recommendation cards, practitioner data privacy rules, data visualization color/typography/interaction standards, and dashboard-specific layout within the 3-panel structure. Designed for the Smart PVS Dashboard use case (`docs/artifacts/event-prototype-uc-2.md`).
 
+## Verification: Design Artifacts
+
+### Before starting UI/UX work
+
+- **Read context.** Before making changes that touch UI, read the design decisions log and reconciliation log for relevant prior decisions and context.
+
+### Before claiming work is complete
+
+- **Design decisions.** When making a UI/UX choice that involves trade-offs, choosing between multiple valid approaches, or extending/pushing back on requirements, add an entry to the design decisions log. Follow the DD-NNN format in `docs/templates/design-decisions.md`. Every design choice with a non-obvious rationale deserves an entry.
+- **Reconciliation log.** When a bug fix, new feature, or architecture change requires re-evaluating existing design artifacts (screens, flows, components, guidelines), add an entry to the reconciliation log. Follow the format in `docs/templates/reconciliation.md`. List every file that was reviewed and what changed.
+- **Update before completing work.** Check both files as part of your final verification before claiming work is complete. Ask: "Did I make a design decision worth recording?" and "Did my changes invalidate or update any existing design artifact?"
+- **Cross-reference.** A reconciliation entry may result in new design decision entries. Cross-reference them using DD-NNN identifiers.
+
+### Scope
+
+These logs cover design/UX decisions only. Database, API, and infrastructure decisions are out of scope for these templates.
+
 ## Documentation Conventions
 
 Artifact files follow the naming pattern: `[CODE][YYMMDD]-[slug].md` (e.g., `FLOW260316-mobile-card-reader.md`). See `docs/guidelines/naming-conventions.md` for artifact codes and rules.
