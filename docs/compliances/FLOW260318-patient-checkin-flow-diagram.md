@@ -2,10 +2,12 @@
 Version: 1.7
 Last Updated: 2026-03-18
 Scope: Section 1 — Patient Check-In Compliance Gates
-Source: FLOW260318-compliance-workflows.md vs compliance-inventory.md
+Source: FLOW260318-master-compliance-workflows.md vs compliance-inventory.md
 ---
 
-# Gaps Report: Patient Check-In — Compliance Gates
+# Flow Diagram: Patient Check-In — Compliance Gates
+
+**Related:** [Compliance Screens (screen-level)](DATA260319-checkin-compliance-screens.md) — compliance obligation mapping per screen.
 
 ## 1. Main Diagram — Routing Logic
 

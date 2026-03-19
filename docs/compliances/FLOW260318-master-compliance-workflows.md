@@ -1,6 +1,6 @@
 ---
 Version: 1.1
-Last Updated: 2026-03-18
+Last Updated: 2026-03-19
 Scope: As-built from compliance-inventory.md (604 obligations)
 ---
 
@@ -14,22 +14,22 @@ Derived from the PM Compliance Inventory (604 items across AKA, KBV, KVDT, ICD-1
 
 ## Workflow Diagram Index
 
-| # | Workflow | Inventory Source | Items (est.) | Status |
+| # | Workflow | Inventory Source | Items (est.) | Flow Diagram |
 |---|---|---|---|---|
-| 1 | Patient Check-In — Compliance Gates | PSDV, VERT, KVDT §2–§4 | ~64 | Done |
-| 2 | Contract Participation Management — HZV/FAV Only | VERT (43 items) | ~43 | Diagrammed |
-| 3 | Patient Enrollment — HZV/FAV Only | VERE (25 items) | ~25 | Diagrammed |
-| 4 | Billing Documentation — KV vs HZV/FAV Divergence | ABRD (46 items) | ~46 | Diagrammed |
-| 5 | Billing Submission Process | ABRG (45 items) | ~45 | Diagrammed |
-| 6 | Diagnosis Entry & ICD-10-GM Validation | ICD-10-GM (57 items) | ~57 | Diagrammed |
-| 7 | Service Documentation — EBM / KVDT Compliance | KBV EBM (14 items), KVDT-SD | ~14 | Diagrammed |
-| 8 | Prescription & Drug Safety | Crucial Workflows 3.19, VSST medication | ~54 | Diagrammed |
-| 9 | Form Management — KV vs HZV/FAV Forms | FORM (~25 items) | ~25 | Diagrammed |
-| 10 | Hilfsmittel Prescribing | VSST623–633 | ~12 | Diagrammed |
-| 11 | eDMP & Chronic Care Compliance | Crucial Workflows 3.21 (12 items) | ~12 | Diagrammed |
-| 12 | eAU, eArztbrief & ePA | Crucial Workflows 3.20 (20 items) | ~20 | Diagrammed |
-| 13 | IT Connectivity & Infrastructure | gematik TI/KIM, ITVE | ~40 | Diagrammed |
-| 14 | Compliance Obligation Summary by Path | All sections | 604 | Diagrammed |
+| 1 | Patient Check-In — Compliance Gates | PSDV, VERT, KVDT §2–§4 | ~64 | [View](FLOW260318-patient-checkin-flow-diagram.md) |
+| 2 | Contract Participation Management — HZV/FAV Only | VERT (43 items) | ~43 | Pending |
+| 3 | Patient Enrollment — HZV/FAV Only | VERE (25 items) | ~25 | Pending |
+| 4 | Billing Documentation — KV vs HZV/FAV Divergence | ABRD (46 items) | ~46 | Pending |
+| 5 | Billing Process — KV vs HZV/FAV Submission | ABRG (45 items) | ~45 | Pending |
+| 6 | Diagnosis Entry & Coding Validation | ICD-10-GM (57 items) | ~57 | Pending |
+| 7 | Service Documentation — KVDT Compliance | KBV EBM (14 items), KVDT-SD | ~14 | Pending |
+| 8 | Prescription & Drug Safety | Crucial Workflows 3.19, VSST medication | ~54 | Pending |
+| 9 | Form Management — KV vs HZV/FAV Forms | FORM (~25 items) | ~25 | Pending |
+| 10 | Practice Software (VSST) — Hilfsmittel Path | VSST623–633 | ~12 | Pending |
+| 11 | eDMP & Chronic Care Compliance | Crucial Workflows 3.21 (12 items) | ~12 | Pending |
+| 12 | eArztbrief, eAU & ePA Compliance | Crucial Workflows 3.20 (20 items) | ~20 | Pending |
+| 13 | IT Connectivity & Infrastructure | gematik TI/KIM, ITVE | ~40 | Pending |
+| 14 | Compliance Obligation Summary by Path | All sections | 604 | Pending |
 | — | TSS Appointment Case Management | KVDT §2–§4 (KP2-502–514) | ~14 | Planned |
 | — | Patient Master Data Lifecycle | KVDT §2–§4 (P2-400–470) | ~15 | Planned |
 | — | Quarter Transition & Case Carry-Forward | KVDT §2–§4 (P2-520–540) | ~5 | Planned |
@@ -37,7 +37,7 @@ Derived from the PM Compliance Inventory (604 items across AKA, KBV, KVDT, ICD-1
 | — | Billing Infrastructure — KVDT File & Practice Setup | KVDT §1/§5 | ~30 | Planned |
 | — | GOÄ Private Billing Validation | GOÄ (1 item) | ~1 | Planned |
 
-> **Status key:** `Done` = diagram + gaps report complete. `Diagrammed` = workflow diagram exists, gaps report pending. `Planned` = not yet diagrammed.
+> **Flow Diagram key:** linked = diagram + gaps report complete. `Pending` = workflow diagram exists, gaps report pending. `Planned` = not yet diagrammed.
 
 ---
 
@@ -258,7 +258,7 @@ flowchart TD
     end
 
     START ==> CREATED
-    CREATED -.->|"Missing data"| WARN["Missing Data Warning\n(VERE1857)"]
+    CREATED -.->|"Missing data"| WARN["Missing Data Warning\n(VERE1845)"]
 
     PRINTED --> SIG{"Signature\nRequirement?"}
     SIG -->|"HZV: 2 sigs + TE-Code\n(VERE558)"| HZV_SIG["HZV Signature Dialog"]

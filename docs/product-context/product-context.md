@@ -1,7 +1,7 @@
 # CorePVS — Product Context
 
-**Version:** 1.3.0
-**Last Updated:** 2026-03-16 by Ngan
+**Version:** 1.4.0
+**Last Updated:** 2026-03-19 by Ngan
 
 **Note:** This document primarily describes the main application (`apps/main-app/`). The event-demo application (`apps/event-demo/`) may only implement a subset of what's described here.
 
@@ -58,7 +58,7 @@ MVZs (Medizinische Versorgungszentren) face complexity that single-practice PVS 
 
 ## Competitive Landscape
 
-Primary positioning: clear differentiation from single-practice PVS. Full analysis in [competitive-landscape.md](../_ngan/competitive-landscape.md).
+Primary positioning: clear differentiation from single-practice PVS. Full analysis in [competitive-landscape.md](../product-context/RSYN260316-competitive-landscape.md).
 
 ### What existing PVS systems offer
 
@@ -162,7 +162,7 @@ Core tasks:
 
 ## JTBD Ladder
 
-**Note:** MFA and Doctor jobs are derived from the Roadmap. MVZ Managemet is from use-cases-demo. 
+**Note:** MFA and Doctor jobs are derived from the compliance inventory. MVZ Management is from use-cases-demo. 
 
 ### MFA — Core Jobs
 
@@ -192,50 +192,19 @@ Core tasks:
 
 `<!-- TBD: supporting jobs, emotional jobs, social context -->`
 
----
-
-## Current Scope
-
-Building modular, certification-ready components. Phase 1 first.
-
-### Feature Status
-
-| Feature Area | Status |
-|:--|:--|
-| Patient Data Management (Phase 1) | In progress |
-| Diagnosis, Coding & Service Documentation (Phase 2) | Planned |
-| Billing & Submission (Phase 3) | Planned |
-| Prescription Management / E-Rezept (Phase 4) | Planned |
-| Forms, eAU & ePA (Phase 5) | Planned |
-| eDMP / eDocumentation (Phase 6) | Planned |
-| Foundation & Practice Infrastructure (Phase 7) | Planned |
 
 ---
 
-## Roadmap Summary
+## Compliance Inventory
 
-7 phases, derived from four requirement sources (KVDT, ICD-10-GM, SV Components, Crucial Workflows). Full details in [roadmap-phases](https://github.com/tini-works/requirement-documents/tree/main/docs/roadmap-phases).
+All compliance obligations are tracked in the compliance inventory. See [compliance-inventory.md](../compliances/compliance-inventory.md) for the full phase-by-phase breakdown, requirement counts, and confirmation status across all 604 items.
 
-**Phase 1 — Patient Data Management** (~72 reqs + SV)
-Complete patient registration — eGK card reading, manual entry, cost carrier resolution, Schein lifecycle, and HZV/FAV enrollment and participation workflows.
 
-**Phase 2 — Diagnosis, Coding & Service Documentation** (53 + ~37 reqs + SV)
-ICD-10-GM coding with SDICD/SDVA/SDKRW master data, HZV/FAV diagnosis rules, GOP entry, OPS coding, psychotherapy documentation, and HZV/FAV service filtering.
+---
 
-**Phase 3 — Billing & Submission** (~25 reqs + SV)
-KVDT billing file generation, XPM validation, XKM encryption, 1-Click submission via KIM, and the complete HZV/FAV billing pipeline.
+## Scope & Feature
 
-**Phase 4 — Prescription Management / E-Rezept** (~407 reqs)
-Full electronic prescription workflow — drug search, FHIR bundle generation, QES signing, E-Rezept Fachdienst — plus Heilmittel, Hilfsmittel, eVDGA, and BMP.
-
-**Phase 5 — Forms, eAU & ePA** (~82 reqs)
-Electronic sick leave certificates, BFB form printing with PDF417 barcodes, electronic doctor letters via KIM, and ePA document operations.
-
-**Phase 6 — eDMP / eDocumentation** (~109 reqs)
-Structured data capture for 8 chronic disease management programs and electronic skin cancer screening documentation.
-
-**Phase 7 — Foundation & Practice Infrastructure** (~41 reqs + SV)
-System backbone — master data, user/access control, TI reporting, and HZV/FAV contract infrastructure that every downstream module depends on.
+`<!-- TBD: to be defined based on Compliance Inventory -->`
 
 ---
 
