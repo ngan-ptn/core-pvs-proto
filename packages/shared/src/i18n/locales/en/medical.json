@@ -1,0 +1,14 @@
+{
+  "patient_one": "{{count}} patient",
+  "patient_other": "{{count}} patients",
+  "patient": "Patient",
+  "diagnosis": "Diagnosis",
+  "treatment": "Treatment",
+  "appointment": "Appointment",
+  "practitioner": "Practitioner",
+  "location": "Location",
+  "insurance": "Insurance",
+  "referral": "Referral",
+  "prescription": "Prescription",
+  "mvz": "MVZ"
+}

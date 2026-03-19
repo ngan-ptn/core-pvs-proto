@@ -1,2 +1,96 @@
 @import "tailwindcss";
 @import "@tini/ui/css";
+
+/*
+ * Tell Tailwind v4 to scan @tini/ui component source for class names.
+ * Without this, classes like rounded-xl, border-border, bg-card etc.
+ * used inside pre-built @tini/ui components are never generated.
+ */
+/*
+ * Scan @tini/ui component source so Tailwind generates utility classes
+ * used inside pre-built components (rounded-xl, border-border, etc.)
+ */
+@source inline("rounded-xl border border-border bg-card text-card-foreground shadow-sm p-6 pt-0 text-lg font-semibold leading-none tracking-tight text-sm text-muted-foreground flex flex-col gap-1.5 items-center data-[state=active]:bg-background data-[state=active]:text-foreground h-9 px-4 py-2 inline-flex whitespace-nowrap text-sm font-medium rounded-md border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 px-3 text-xs bg-primary text-primary-foreground hover:bg-primary/90 bg-secondary text-secondary-foreground hover:bg-secondary/80 bg-destructive text-destructive-foreground hover:bg-destructive/90 border-0 bg-transparent animate-pulse bg-muted overflow-auto relative w-full caption-bottom text-sm border-b border-b-border hover:bg-muted/50 h-12 px-4 text-left align-middle font-medium text-muted-foreground p-4 align-middle");
+
+/*
+ * Override tini token theme values with Figma-accurate values.
+ * @theme inline overrides the Tailwind theme layer defaults.
+ */
+@theme inline {
+  --radius: 4px;
+  --color-border: #DCE0E4;
+}
+
+@layer base {
+  :root {
+    /* Status colors (traffic-light) */
+    --status-critical: #D84B4B;
+    --status-warning: #D17624;
+    --status-normal: #028A4B;
+    --status-neutral: #9AA7B2;
+
+    /* Nav rail */
+    --nav-rail-bg: #00077B;
+    --nav-rail-divider: rgba(255, 255, 255, 0.2);
+
+    /* Figma color palette */
+    --color-text-primary: #13324B;
+    --color-text-secondary: #4F6679;
+    --color-text-placeholder: #5E7A8F;
+    --color-text-muted-icon: #9AA7B2;
+    --color-divider: #DCE0E4;
+    --color-surface-muted: #F0F2F4;
+    --color-surface-stripe: #F7F9FB;
+    --color-tag-patient-bg: #CFF0FE;
+    --color-tag-patient-text: #086280;
+    --color-avatar-bg: #CFF0FE;
+
+    /* Heatmap severity scale (green → yellow → orange → red) */
+    --severity-0: #E8F5E9;
+    --severity-2: #C8E6C9;
+    --severity-4: #FFF9C4;
+    --severity-6: #FFE0B2;
+    --severity-8: #FFAB91;
+    --severity-10: #E53935;
+
+    /* Chart accent colors */
+    --chart-1: #5B8DEF;
+    --chart-2: #7C6BC4;
+  }
+}
+
+@layer components {
+  /* Figma divider pattern: bottom inset box-shadow */
+  .divider-bottom {
+    box-shadow: inset 0px -1px 0px var(--color-divider);
+  }
+  .divider-right {
+    box-shadow: inset -1px 0px 0px var(--color-divider);
+  }
+}
+
+@layer utilities {
+  /* Figma letter-spacing for body/caption text */
+  .tracking-figma {
+    letter-spacing: -0.2px;
+  }
+}
+
+/* Reduced motion: disable transitions/animations for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible focus indicators for keyboard navigation (WCAG AAA) */
+:focus-visible {
+  outline: 2px solid var(--nav-rail-bg);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

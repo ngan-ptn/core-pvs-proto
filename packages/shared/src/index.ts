@@ -1,2 +1,9 @@
-// Shared components, hooks, and utilities for PVS apps
-// Add exports here as shared code is extracted from apps
+// i18n
+export {
+  createI18nConfig,
+  sharedResources,
+  formatDate,
+  formatTime,
+  formatNumber,
+} from './i18n'
+export type { SharedResources } from './i18n'

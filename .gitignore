@@ -1,18 +1,43 @@
 node_modules/
 dist/
-data/
 *.tsbuildinfo
+
+#Test
 playwright-report/
 test-results/
 coverage/
+
+#OS
 .DS_Store
+.obsidian/
+
+#Database
 *.db
 *.db-wal
 *.db-shm
+data/
 
+#Temp
+temp/
+tmp/
+*.tmp
+*.temp
 
+#Log
+logs/
+.log/
+*.log
 
-# Personal files (ignore all except doc-reader tool)
-docs/_ngan/*
-!docs/_ngan/doc-reader/
-docs/_ngan/doc-reader/index.html
+#IDE
+.vscode/
+.idea/
+.cursor/
+.cursorrules/
+
+.firecrawl/
+docs/plans/
+
+# Personal files
+docs/_ngan/
+docs/doc-reader/
+docs/_lia/
