@@ -50,6 +50,9 @@ COMP250609-freshbooks-pricing-2.md   # second competitive analysis same day
 | User Interview               | `INTV` | Interview notes and transcripts                 |
 | User Journey Map             | `JMAP` | End-to-end user experience maps                 |
 | User Persona                 | `PERS` | User persona definitions                        |
+| System Audit                 | `AUDIT`| As-is audit of existing/reference systems       |
+| Screen Specification         | `SCRN` | Screen designs, states, and component specs     |
+| Wireframe                    | `WIRE` | Low-fidelity wireframes and layout sketches     |
 
 ## Slug Rules
 

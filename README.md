@@ -16,6 +16,7 @@ data/             # SQLite data directory (gitignored)
 docs/
   product-context/  # Domain glossary, product requirements
   guidelines/       # Copy, naming, visual rules
+  compliances/      # Compliance workflows, gap analysis, screen mappings
 AGENTS.md         # AI agent rules for working in this codebase
 ```
 
