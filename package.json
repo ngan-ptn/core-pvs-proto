@@ -7,7 +7,7 @@
     "dev:main-app": "pnpm --filter main-app dev",
     "build": "pnpm --filter @pvs/db build && pnpm --filter @pvs/shared build && pnpm --filter event-demo build && pnpm --filter main-app build",
     "build:packages": "pnpm --filter @pvs/db build && pnpm --filter @pvs/shared build",
-    "test": "pnpm -r test",
+    "test": "pnpm build:packages && pnpm -r test",
     "test:e2e": "playwright test",
     "auto:screenshot": "node docs/_ngan/command/take-screenshots.mjs",
     "db:migrate": "pnpm --filter @pvs/db migrate",
@@ -15,7 +15,8 @@
     "db:search-index": "pnpm --filter @pvs/db search:extract",
     "db:reset": "pnpm --filter @pvs/db reset",
     "i18n:check": "tsx scripts/check-i18n.ts",
-    "dev:doc-reader": "node docs/doc-reader/build.mjs && open docs/doc-reader/index.html"
+    "open:file": "node scripts/open-file.mjs",
+    "dev:doc-reader": "node docs/doc-reader/build.mjs && pnpm open:file docs/doc-reader/index.html"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",

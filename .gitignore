@@ -38,6 +38,6 @@ logs/
 docs/plans/
 
 # Personal files
-docs/_ngan/
-docs/doc-reader/
+# docs/_ngan/
+# docs/doc-reader/
 docs/_lia/

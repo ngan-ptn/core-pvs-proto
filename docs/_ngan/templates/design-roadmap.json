@@ -1,0 +1,916 @@
+{
+  "generatedAt": "2026-03-17",
+  "totalSurfaces": 88,
+  "tiers": [
+    {
+      "tier": 1,
+      "description": "Foundation Shells. Design FIRST. Screens that every other screen builds upon.",
+      "surfaces": [
+        {
+          "id": "S001",
+          "name": "Card Read / Check-In Screen",
+          "phase": "1.1",
+          "role": "MFA",
+          "workflow": "Patient Check-In & Registration",
+          "complexity": 127.5,
+          "reason": "Explicitly assigned: Foundation Shells",
+          "isGap": false
+        },
+        {
+          "id": "S002",
+          "name": "Patient Record View",
+          "phase": "1.1",
+          "role": "Doctor",
+          "workflow": "Clinical Documentation",
+          "complexity": 278.5,
+          "reason": "Explicitly assigned: Foundation Shells",
+          "isGap": false
+        },
+        {
+          "id": "S005",
+          "name": "Manual Patient Entry Form",
+          "phase": "1.4",
+          "role": "MFA",
+          "workflow": "Patient Check-In & Registration",
+          "complexity": 28.0,
+          "reason": "Explicitly assigned: Foundation Shells",
+          "isGap": false
+        },
+        {
+          "id": "S008",
+          "name": "Schein / Billing Record View",
+          "phase": "1.5",
+          "role": "Doctor",
+          "workflow": "Service & Billing Documentation",
+          "complexity": 260.0,
+          "reason": "Explicitly assigned: Foundation Shells",
+          "isGap": false
+        },
+        {
+          "id": "S026",
+          "name": "Billing Dashboard (KV Mode)",
+          "phase": "3.1",
+          "role": "Doctor",
+          "workflow": "Billing & Submission",
+          "complexity": 20.0,
+          "reason": "Explicitly assigned: Foundation Shells",
+          "isGap": false
+        },
+        {
+          "id": "S074",
+          "name": "System Status Bar",
+          "phase": "7.1",
+          "role": "Admin",
+          "workflow": "Practice Administration",
+          "complexity": 11.5,
+          "reason": "Explicitly assigned: Foundation Shells",
+          "isGap": false
+        },
+        {
+          "id": "S075",
+          "name": "Practice Administration Panel",
+          "phase": "7.2",
+          "role": "Admin",
+          "workflow": "Practice Administration",
+          "complexity": 22.0,
+          "reason": "Explicitly assigned: Foundation Shells",
+          "isGap": false
+        },
+        {
+          "id": "S076",
+          "name": "User & Rights Management Panel",
+          "phase": "7.2",
+          "role": "Admin",
+          "workflow": "Practice Administration",
+          "complexity": 22.0,
+          "reason": "Explicitly assigned: Foundation Shells",
+          "isGap": false
+        },
+        {
+          "id": "S085",
+          "name": "Waiting Room Board",
+          "phase": "1.NEW",
+          "role": "MFA",
+          "workflow": "Patient Check-In & Registration",
+          "complexity": 10.5,
+          "reason": "Explicitly assigned: Foundation Shells",
+          "isGap": true
+        }
+      ]
+    },
+    {
+      "tier": 2,
+      "description": "Core Clinical Workflow. Design SECOND. Daily physician and MFA workflow.",
+      "surfaces": [
+        {
+          "id": "S003",
+          "name": "Temporary Cost Carrier Form",
+          "phase": "1.2",
+          "role": "MFA",
+          "workflow": "Patient Check-In & Registration",
+          "complexity": 53.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S004",
+          "name": "Patient Match Review Panel",
+          "phase": "1.3",
+          "role": "MFA",
+          "workflow": "Patient Check-In & Registration",
+          "complexity": 19.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S006",
+          "name": "Cost Carrier Search Panel",
+          "phase": "1.4",
+          "role": "MFA",
+          "workflow": "Patient Check-In & Registration",
+          "complexity": 28.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S007",
+          "name": "KIM Inbox",
+          "phase": "1.4",
+          "role": "Doctor",
+          "workflow": "Clinical Documentation",
+          "complexity": 28.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S009",
+          "name": "Quarter Transition Dashboard",
+          "phase": "1.5",
+          "role": "MFA",
+          "workflow": "Service & Billing Documentation",
+          "complexity": 45.5,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S023",
+          "name": "PTV Form Print Preview",
+          "phase": "2B.5",
+          "role": "MFA",
+          "workflow": "Forms & Certificates",
+          "complexity": 25.5,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S025",
+          "name": "Referral Form Print Preview",
+          "phase": "2B.8",
+          "role": "MFA",
+          "workflow": "Forms & Certificates",
+          "complexity": 16.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S039",
+          "name": "Prescription Builder",
+          "phase": "4.1",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 43.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S040",
+          "name": "Prescription Queue",
+          "phase": "4.1",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 43.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S041",
+          "name": "Patient Copy Preview",
+          "phase": "4.1",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 43.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S042",
+          "name": "Prescription Status View",
+          "phase": "4.1",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 43.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S051",
+          "name": "DiGA Prescription Builder",
+          "phase": "4.5",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 24.5,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S056",
+          "name": "Form Print Preview",
+          "phase": "5.1",
+          "role": "MFA",
+          "workflow": "Forms & Certificates",
+          "complexity": 22.5,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S058",
+          "name": "eAU Form",
+          "phase": "5.2",
+          "role": "Doctor",
+          "workflow": "Forms & Certificates",
+          "complexity": 34.5,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": false
+        },
+        {
+          "id": "S086",
+          "name": "Clinical Note Editor",
+          "phase": "2.NEW",
+          "role": "Doctor",
+          "workflow": "Clinical Documentation",
+          "complexity": 14.0,
+          "reason": "Explicitly assigned: Core Clinical Workflow",
+          "isGap": true
+        }
+      ]
+    },
+    {
+      "tier": 3,
+      "description": "Extended Clinical & Specialty. Design THIRD. Specialty workflows, drug safety, eDMP.",
+      "surfaces": [
+        {
+          "id": "S022",
+          "name": "Termination Notice Manager",
+          "phase": "2B.5",
+          "role": "Doctor",
+          "workflow": "Service & Billing Documentation",
+          "complexity": 25.5,
+          "reason": "Phase 2 clinical surface",
+          "isGap": false
+        },
+        {
+          "id": "S024",
+          "name": "Nursing Home Flat-Rate Documentation Panel",
+          "phase": "2B.7",
+          "role": "Doctor",
+          "workflow": "Service & Billing Documentation",
+          "complexity": 34.5,
+          "reason": "Phase 2 clinical surface",
+          "isGap": false
+        },
+        {
+          "id": "S043",
+          "name": "Drug Search Panel",
+          "phase": "4.2",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 27.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S044",
+          "name": "Interaction Alert Dialog",
+          "phase": "4.2",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 27.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S045",
+          "name": "Dosage Calculator Panel",
+          "phase": "4.2",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 27.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S046",
+          "name": "Red Hand Letter Alert",
+          "phase": "4.2",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 27.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S047",
+          "name": "Heilmittel Prescription Form",
+          "phase": "4.3",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 24.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S048",
+          "name": "Quantity Tracking Panel",
+          "phase": "4.3",
+          "role": "Doctor",
+          "workflow": "Clinical Documentation",
+          "complexity": 24.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S049",
+          "name": "Hilfsmittel Prescription Form",
+          "phase": "4.4",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 22.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S050",
+          "name": "Hilfsmittelverzeichnis Search",
+          "phase": "4.4",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 22.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S052",
+          "name": "DiGA Directory Browser",
+          "phase": "4.5",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 24.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S053",
+          "name": "Medication Plan Editor",
+          "phase": "4.6",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 30.0,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S054",
+          "name": "BMP Print Preview",
+          "phase": "4.6",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 30.0,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S055",
+          "name": "BMP Import Dialog",
+          "phase": "4.6",
+          "role": "Doctor",
+          "workflow": "Prescriptions",
+          "complexity": 30.0,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S057",
+          "name": "Form Printer Settings",
+          "phase": "5.1",
+          "role": "MFA",
+          "workflow": "Forms & Certificates",
+          "complexity": 22.5,
+          "reason": "Phase 5 forms/certificates surface",
+          "isGap": false
+        },
+        {
+          "id": "S059",
+          "name": "eAU Transmission Status",
+          "phase": "5.2",
+          "role": "Doctor",
+          "workflow": "Forms & Certificates",
+          "complexity": 34.5,
+          "reason": "Phase 5 forms/certificates surface",
+          "isGap": false
+        },
+        {
+          "id": "S060",
+          "name": "eAU Print Preview (Patient / Employer Copies)",
+          "phase": "5.2",
+          "role": "Doctor",
+          "workflow": "Forms & Certificates",
+          "complexity": 34.5,
+          "reason": "Phase 5 forms/certificates surface",
+          "isGap": false
+        },
+        {
+          "id": "S061",
+          "name": "Doctor Letter Composer",
+          "phase": "5.3",
+          "role": "Doctor",
+          "workflow": "Clinical Documentation",
+          "complexity": 31.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S062",
+          "name": "Letter Transmission Status",
+          "phase": "5.3",
+          "role": "Doctor",
+          "workflow": "Forms & Certificates",
+          "complexity": 31.5,
+          "reason": "Phase 5 forms/certificates surface",
+          "isGap": false
+        },
+        {
+          "id": "S063",
+          "name": "Incoming Letter Viewer",
+          "phase": "5.3",
+          "role": "MFA",
+          "workflow": "Clinical Documentation",
+          "complexity": 31.5,
+          "reason": "Phase 5 forms/certificates surface",
+          "isGap": false
+        },
+        {
+          "id": "S064",
+          "name": "ePA Document Browser",
+          "phase": "5.4",
+          "role": "Doctor",
+          "workflow": "ePA & Document Exchange",
+          "complexity": 35.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S065",
+          "name": "ePA Entitlement Manager",
+          "phase": "5.4",
+          "role": "Doctor",
+          "workflow": "ePA & Document Exchange",
+          "complexity": 35.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S066",
+          "name": "Document Upload Dialog",
+          "phase": "5.4",
+          "role": "Doctor",
+          "workflow": "ePA & Document Exchange",
+          "complexity": 35.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S067",
+          "name": "eDMP Documentation Form",
+          "phase": "6.1",
+          "role": "Doctor",
+          "workflow": "Chronic Care Programs",
+          "complexity": 35.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S068",
+          "name": "eDMP Patient Overview",
+          "phase": "6.1",
+          "role": "MFA",
+          "workflow": "Chronic Care Programs",
+          "complexity": 35.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S069",
+          "name": "eDMP Validation Results",
+          "phase": "6.1",
+          "role": "Doctor",
+          "workflow": "Chronic Care Programs",
+          "complexity": 35.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S070",
+          "name": "eHKS Documentation Form",
+          "phase": "6.2",
+          "role": "Doctor",
+          "workflow": "Chronic Care Programs",
+          "complexity": 27.0,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S071",
+          "name": "Scoring Calculator Panel",
+          "phase": "6.3",
+          "role": "Doctor",
+          "workflow": "Chronic Care Programs",
+          "complexity": 24.0,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S072",
+          "name": "Audit Trail Viewer",
+          "phase": "6.3",
+          "role": "Admin",
+          "workflow": "Chronic Care Programs",
+          "complexity": 24.0,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S073",
+          "name": "eDMP / eDoc Submission Dashboard",
+          "phase": "6.4",
+          "role": "Doctor",
+          "workflow": "Chronic Care Programs",
+          "complexity": 25.0,
+          "reason": "Phase 6 chronic care surface",
+          "isGap": false
+        },
+        {
+          "id": "S087",
+          "name": "GDT Device Data Review Surface",
+          "phase": "2.NEW",
+          "role": "Doctor",
+          "workflow": "Clinical Documentation",
+          "complexity": 12.5,
+          "reason": "Explicitly assigned: Extended Clinical & Specialty",
+          "isGap": true
+        }
+      ]
+    },
+    {
+      "tier": 4,
+      "description": "HZV/FAV & Billing Specialty. Design FOURTH. Contract-specific and billing deep-dive.",
+      "surfaces": [
+        {
+          "id": "S011",
+          "name": "TE Form (Enrollment Declaration)",
+          "phase": "1.7",
+          "role": "MFA",
+          "workflow": "Insurance & Enrollment (HZV/FAV)",
+          "complexity": 43.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S012",
+          "name": "TE Overview List",
+          "phase": "1.7",
+          "role": "MFA",
+          "workflow": "Insurance & Enrollment (HZV/FAV)",
+          "complexity": 43.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S013",
+          "name": "Enrollment Settings",
+          "phase": "1.7",
+          "role": "MFA",
+          "workflow": "Insurance & Enrollment (HZV/FAV)",
+          "complexity": 43.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S014",
+          "name": "Participation Management View",
+          "phase": "1.8",
+          "role": "MFA",
+          "workflow": "Insurance & Enrollment (HZV/FAV)",
+          "complexity": 29.5,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S015",
+          "name": "PTV Import Wizard",
+          "phase": "1.9",
+          "role": "MFA",
+          "workflow": "Insurance & Enrollment (HZV/FAV)",
+          "complexity": 29.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S016",
+          "name": "Import Protocol View",
+          "phase": "1.9",
+          "role": "Admin",
+          "workflow": "Data Import & Sync",
+          "complexity": 29.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S030",
+          "name": "ASV Team Configuration (within Practice Settings)",
+          "phase": "3.4",
+          "role": "Admin",
+          "workflow": "Billing & Submission",
+          "complexity": 12.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S031",
+          "name": "Billing Dashboard (ASV Mode)",
+          "phase": "3.4",
+          "role": "Admin",
+          "workflow": "Billing & Submission",
+          "complexity": 12.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S032",
+          "name": "Billing Dashboard (HZV / FAV Mode)",
+          "phase": "3.5",
+          "role": "Doctor",
+          "workflow": "Billing & Submission",
+          "complexity": 17.5,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S033",
+          "name": "Billing Validation Results Panel (within Billing Dashboard, HZV / FAV mode)",
+          "phase": "3.6",
+          "role": "Doctor",
+          "workflow": "Billing & Submission",
+          "complexity": 18.5,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S034",
+          "name": "HZV / FAV Submission Panel (within Billing Dashboard, HZV / FAV mode)",
+          "phase": "3.7",
+          "role": "Doctor",
+          "workflow": "Billing & Submission",
+          "complexity": 32.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S035",
+          "name": "Transmission Protocol View",
+          "phase": "3.7",
+          "role": "Doctor",
+          "workflow": "Billing & Submission",
+          "complexity": 32.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S036",
+          "name": "KV / HZV Conflict Review Panel",
+          "phase": "3.8",
+          "role": "Doctor",
+          "workflow": "Service & Billing Documentation",
+          "complexity": 22.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S037",
+          "name": "Post-Submission Editor (Medi contracts only)",
+          "phase": "3.8",
+          "role": "Doctor",
+          "workflow": "Billing & Submission",
+          "complexity": 22.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        },
+        {
+          "id": "S038",
+          "name": "AOK Check 18+ Panel (within Patient Record)",
+          "phase": "3.8",
+          "role": "MFA",
+          "workflow": "Insurance & Enrollment (HZV/FAV)",
+          "complexity": 22.0,
+          "reason": "Explicitly assigned: HZV/FAV & Billing Specialty",
+          "isGap": false
+        }
+      ]
+    },
+    {
+      "tier": 5,
+      "description": "Admin & Infrastructure. Design LAST or in parallel. Quarterly/annual admin tasks.",
+      "surfaces": [
+        {
+          "id": "S010",
+          "name": "EHIC Patient Entry Form",
+          "phase": "1.6",
+          "role": "MFA",
+          "workflow": "Patient Check-In & Registration",
+          "complexity": 7.5,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S017",
+          "name": "ICode Management View",
+          "phase": "1.9",
+          "role": "Doctor",
+          "workflow": "Data Import & Sync",
+          "complexity": 29.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S018",
+          "name": "Coding Instructions Browser",
+          "phase": "2A.4",
+          "role": "Doctor",
+          "workflow": "Clinical Documentation",
+          "complexity": 13.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S019",
+          "name": "Rule Violation Overview",
+          "phase": "2A.5",
+          "role": "Doctor",
+          "workflow": "Clinical Documentation",
+          "complexity": 27.5,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S020",
+          "name": "Coding Rule Settings",
+          "phase": "2A.5",
+          "role": "Admin",
+          "workflow": "System Infrastructure",
+          "complexity": 27.5,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S021",
+          "name": "Multimorbidity Surcharge Patient List",
+          "phase": "2A.6",
+          "role": "Doctor",
+          "workflow": "System Infrastructure",
+          "complexity": 27.5,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S027",
+          "name": "Patient Receipt Preview",
+          "phase": "3.2",
+          "role": "MFA",
+          "workflow": "Billing & Submission",
+          "complexity": 14.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S028",
+          "name": "Lab Proficiency Gate (within Billing Dashboard)",
+          "phase": "3.3",
+          "role": "Doctor",
+          "workflow": "Service & Billing Documentation",
+          "complexity": 16.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S029",
+          "name": "pnSD Configuration Dialog",
+          "phase": "3.3",
+          "role": "Doctor",
+          "workflow": "Clinical Documentation",
+          "complexity": 16.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S077",
+          "name": "TI Connector Status Panel",
+          "phase": "7.3",
+          "role": "Admin",
+          "workflow": "System Infrastructure",
+          "complexity": 14.5,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S078",
+          "name": "Master Data Management Panel",
+          "phase": "7.4",
+          "role": "Admin",
+          "workflow": "Service & Billing Documentation",
+          "complexity": 32.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S079",
+          "name": "Fee Schedule Browser",
+          "phase": "7.4",
+          "role": "Doctor",
+          "workflow": "Service & Billing Documentation",
+          "complexity": 32.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S080",
+          "name": "Module Management Panel",
+          "phase": "7.5",
+          "role": "Admin",
+          "workflow": "System Infrastructure",
+          "complexity": 23.5,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S081",
+          "name": "System Compliance Settings",
+          "phase": "7.5",
+          "role": "Admin",
+          "workflow": "System Infrastructure",
+          "complexity": 23.5,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S082",
+          "name": "HZV / FAV Contract Management Panel",
+          "phase": "7.6",
+          "role": "Admin",
+          "workflow": "System Infrastructure",
+          "complexity": 37.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S083",
+          "name": "Physician Identity Management Panel",
+          "phase": "7.6",
+          "role": "Admin",
+          "workflow": "System Infrastructure",
+          "complexity": 37.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S084",
+          "name": "Contract Documents Viewer",
+          "phase": "7.6",
+          "role": "Admin",
+          "workflow": "System Infrastructure",
+          "complexity": 37.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": false
+        },
+        {
+          "id": "S088",
+          "name": "MVZ Dashboard",
+          "phase": "7.7",
+          "role": "Admin",
+          "workflow": "Practice Administration",
+          "complexity": 14.0,
+          "reason": "Explicitly assigned: Admin & Infrastructure",
+          "isGap": true
+        }
+      ]
+    }
+  ]
+}

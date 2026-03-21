@@ -1,0 +1,671 @@
+
+<style>
+* { box-sizing: border-box; }
+
+.jm-wrap {
+  overflow-x: auto;
+  padding: 1rem 0 1.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.jm-grid {
+  display: grid;
+  grid-template-columns: 130px repeat(6, 200px);
+  min-width: 1330px;
+  border-top: 0.5px solid #e0e0e0;
+  border-left: 0.5px solid #e0e0e0;
+}
+
+.row-label {
+  padding: 8px 10px;
+  border-right: 0.5px solid #e0e0e0;
+  border-bottom: 0.5px solid #e5e5e5;
+  font-size: 10px;
+  font-weight: 500;
+  color: #525252;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #f5f5f5;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 10px;
+  line-height: 1.4;
+}
+
+.phase-header {
+  padding: 10px 12px;
+  border-right: 0.5px solid #e5e5e5;
+  border-bottom: 0.5px solid #e0e0e0;
+  font-size: 12px;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+.phase-header .phase-num  { font-size: 10px; color: #a3a3a3; }
+.phase-header .phase-name { font-size: 13px; font-weight: 500; margin-top: 2px; }
+.phase-header .phase-time { font-size: 10px; color: #a3a3a3; margin-top: 2px; }
+
+.header-corner {
+  padding: 10px 12px;
+  border-right: 0.5px solid #e0e0e0;
+  border-bottom: 0.5px solid #e0e0e0;
+  background: #f5f5f5;
+  font-size: 13px;
+  font-weight: 500;
+  color: #525252;
+  display: flex;
+  align-items: center;
+}
+
+.ph-1 { border-top: 3px solid #534AB7; }
+.ph-2 { border-top: 3px solid #185FA5; }
+.ph-3 { border-top: 3px solid #0F6E56; }
+.ph-4 { border-top: 3px solid #854F0B; }
+.ph-5 { border-top: 3px solid #993C1D; }
+.ph-6 { border-top: 3px solid #993556; }
+
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 8px;
+  border-right: 0.5px solid #e5e5e5;
+  border-bottom: 0.5px solid #e5e5e5;
+  min-height: 44px;
+  align-content: flex-start;
+}
+
+.chip {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 100px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.chip-purple { background: #EEEDFE; color: #3C3489; }
+.chip-blue   { background: #E6F1FB; color: #0C447C; }
+.chip-teal   { background: #E1F5EE; color: #085041; }
+.chip-amber  { background: #FAEEDA; color: #633806; }
+.chip-coral  { background: #FAECE7; color: #712B13; }
+.chip-pink   { background: #FBEAF0; color: #72243E; }
+.chip-gray   { background: #F1EFE8; color: #444441; }
+
+@media (prefers-color-scheme: dark) {
+  .chip-purple { background: #26215C; color: #CECBF6; }
+  .chip-blue   { background: #042C53; color: #B5D4F4; }
+  .chip-teal   { background: #04342C; color: #9FE1CB; }
+  .chip-amber  { background: #412402; color: #FAC775; }
+  .chip-coral  { background: #4A1B0C; color: #F5C4B3; }
+  .chip-pink   { background: #4B1528; color: #F4C0D1; }
+  .chip-gray   { background: #2C2C2A; color: #D3D1C7; }
+  .pain-card   { background: #501313 !important; border-color: #791F1F !important; color: #F7C1C1 !important; }
+  .gap-high    { background: #501313 !important; color: #F09595 !important; border-color: #791F1F !important; }
+  .gap-medium  { background: #412402 !important; color: #FAC775 !important; border-color: #633806 !important; }
+  .gap-low     { background: #04342C !important; color: #9FE1CB !important; border-color: #085041 !important; }
+}
+
+.emotion-cell {
+  padding: 8px 10px;
+  border-right: 0.5px solid #e5e5e5;
+  border-bottom: 0.5px solid #e5e5e5;
+  min-height: 52px;
+}
+
+.score-bar { display: flex; align-items: center; gap: 4px; margin-bottom: 4px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #e0e0e0; display: inline-block; }
+.dot.filled { border-color: transparent; }
+.score-1 .dot.filled { background: #E24B4A; }
+.score-2 .dot.filled { background: #EF9F27; }
+.score-3 .dot.filled { background: #639922; }
+.score-4 .dot.filled { background: #1D9E75; }
+.score-label { font-size: 11px; color: #a3a3a3; }
+
+.quote-cell {
+  padding: 8px 10px;
+  border-right: 0.5px solid #e5e5e5;
+  border-bottom: 0.5px solid #e5e5e5;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.quote {
+  font-size: 11px;
+  color: #525252;
+  font-style: italic;
+  line-height: 1.5;
+  border-left: 2px solid #e0e0e0;
+  padding-left: 6px;
+}
+
+.pain-cell {
+  padding: 6px 8px;
+  border-right: 0.5px solid #e5e5e5;
+  border-bottom: 0.5px solid #e5e5e5;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pain-card {
+  background: #FCEBEB;
+  border: 0.5px solid #F7C1C1;
+  border-radius: 6px;
+  padding: 4px 7px;
+  font-size: 11px;
+  color: #501313;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.pain-card:hover { opacity: 0.8; }
+
+.gap-cell {
+  padding: 6px 8px;
+  border-right: 0.5px solid #e5e5e5;
+  border-bottom: 0.5px solid #e5e5e5;
+  min-height: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-content: flex-start;
+}
+
+.gap-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.gap-badge:hover { opacity: 0.75; }
+.gap-high   { background: #FCEBEB; color: #A32D2D; border: 0.5px solid #F09595; }
+.gap-medium { background: #FAEEDA; color: #633806; border: 0.5px solid #FAC775; }
+.gap-low    { background: #E1F5EE; color: #085041; border: 0.5px solid #9FE1CB; }
+
+.mot-cell {
+  padding: 6px 8px;
+  border-right: 0.5px solid #e5e5e5;
+  border-bottom: 0.5px solid #e5e5e5;
+  min-height: 60px;
+}
+
+.mot-card {
+  background: #f5f5f5;
+  border: 0.5px solid #e5e5e5;
+  border-left: 3px solid #185FA5;
+  border-radius: 6px;
+  padding: 5px 7px;
+  font-size: 11px;
+  color: #525252;
+  line-height: 1.5;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 12px 0 0;
+  font-size: 11px;
+  color: #525252;
+  align-items: center;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+
+.jm-title { margin-bottom: 12px; }
+.jm-title h2 { font-size: 16px; font-weight: 500; color: #1a1a1a; margin: 0 0 2px; }
+.jm-title p  { font-size: 12px; color: #525252; margin: 0; }
+
+/* cross-ref badge */
+.xref {
+  display: inline-block;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #E6F1FB;
+  color: #0C447C;
+  border: 0.5px solid #B5D4F4;
+  margin-top: 4px;
+  cursor: pointer;
+}
+@media (prefers-color-scheme: dark) {
+  .xref { background: #042C53; color: #B5D4F4; border-color: #185FA5; }
+}
+
+/* Detail modal */
+.detail-panel {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+}
+.detail-panel.open { display: flex; }
+.detail-box {
+  background: #ffffff;
+  border: 0.5px solid #d4d4d4;
+  border-radius: 12px;
+  padding: 20px 24px;
+  max-width: 460px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+.detail-box h3 { font-size: 14px; font-weight: 500; margin: 0 0 6px; color: #1a1a1a; }
+.detail-box p  { font-size: 13px; color: #525252; margin: 0; line-height: 1.6; }
+.detail-close {
+  position: absolute; top: 12px; right: 14px;
+  background: none; border: none; font-size: 18px;
+  cursor: pointer; color: #525252;
+  line-height: 1; padding: 2px 6px;
+}
+.detail-close:hover { color: #1a1a1a; }
+.sev-badge {
+  display: inline-block; font-size: 10px; font-weight: 500;
+  padding: 2px 8px; border-radius: 4px; margin-bottom: 8px;
+}
+.top5-banner {
+  display: flex; align-items: center; gap: 6px;
+  background: #f5f5f5;
+  border: 0.5px solid #e5e5e5;
+  border-radius: 6px; padding: 5px 8px; margin-top: 10px;
+  font-size: 11px; color: #525252;
+}
+</style>
+
+<div class="jm-title">
+  <h2>Doctor (Hausarzt) — User Journey Map, As-Is</h2>
+  <p>General practitioner · MVZ with 2–3 locations · ~40–60 patients/day · ~7–8 min/encounter · Version 1.0 · 2026-03-17</p>
+</div>
+
+<div class="jm-wrap">
+<div class="jm-grid">
+
+  <!-- ── HEADER ROW ── -->
+  <div class="header-corner">Rows</div>
+  <div class="phase-header ph-1">
+    <div class="phase-num">Phase 1</div>
+    <div class="phase-name">Day start &amp; prep</div>
+    <div class="phase-time">~07:30–08:00</div>
+  </div>
+  <div class="phase-header ph-2">
+    <div class="phase-num">Phase 2</div>
+    <div class="phase-name">Patient intake &amp; handoff</div>
+    <div class="phase-time">Recurring throughout day</div>
+  </div>
+  <div class="phase-header ph-3">
+    <div class="phase-num">Phase 3</div>
+    <div class="phase-name">Consultation &amp; clinical assessment</div>
+    <div class="phase-time">~7–8 min per patient</div>
+  </div>
+  <div class="phase-header ph-4">
+    <div class="phase-num">Phase 4</div>
+    <div class="phase-name">Documentation &amp; treatment</div>
+    <div class="phase-time">During / after encounter</div>
+  </div>
+  <div class="phase-header ph-5">
+    <div class="phase-num">Phase 5</div>
+    <div class="phase-name">Prescriptions, referrals &amp; forms</div>
+    <div class="phase-time">During / after encounter</div>
+  </div>
+  <div class="phase-header ph-6">
+    <div class="phase-num">Phase 6</div>
+    <div class="phase-name">Post-visit &amp; day close</div>
+    <div class="phase-time">End of day / between patients</div>
+  </div>
+
+  <!-- ── ACTIONS ── -->
+  <div class="row-label">Actions</div>
+  <div class="chip-wrap">
+    <span class="chip chip-purple">Log into PVS</span>
+    <span class="chip chip-purple">Review appointment calendar</span>
+    <span class="chip chip-purple">Check unfinished items</span>
+    <span class="chip chip-purple">Mentally plan the day</span>
+    <span class="chip chip-purple">Print schedule as backup</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-blue">Receive "patient ready" signal</span>
+    <span class="chip chip-blue">Check registration completeness</span>
+    <span class="chip chip-blue">Read MFA intake notes / vitals</span>
+    <span class="chip chip-blue">Open patient profile &amp; orient</span>
+    <span class="chip chip-blue">Read scanned external documents</span>
+    <span class="chip chip-blue">Check enrollment status</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-teal">Greet patient &amp; establish rapport</span>
+    <span class="chip chip-teal">Review chief complaint</span>
+    <span class="chip chip-teal">Open timeline &amp; medical sidebar</span>
+    <span class="chip chip-teal">Conduct anamnesis conversation</span>
+    <span class="chip chip-teal">Perform physical examination</span>
+    <span class="chip chip-teal">Order / review device exams (EKG)</span>
+    <span class="chip chip-teal">Review incoming lab results</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-amber">Code diagnosis with ICD-10-GM</span>
+    <span class="chip chip-amber">Document findings in composer</span>
+    <span class="chip chip-amber">Check &amp; manage Schein</span>
+    <span class="chip chip-amber">Complete eDMP documentation</span>
+    <span class="chip chip-amber">Review Dauerdiagnosen</span>
+    <span class="chip chip-amber">Order lab tests</span>
+    <span class="chip chip-amber">Plan &amp; document therapy</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-coral">Search medication &amp; check dosage</span>
+    <span class="chip chip-coral">Review drug interaction alerts</span>
+    <span class="chip chip-coral">Generate E-Rezept or Muster 16</span>
+    <span class="chip chip-coral">Update medication plan (BMP)</span>
+    <span class="chip chip-coral">Fill forms (eAU, BFB, Heilmittel)</span>
+    <span class="chip chip-coral">Search specialist / create referral</span>
+    <span class="chip chip-coral">Dictate / write Arztbrief</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-pink">Process follow-up tasks</span>
+    <span class="chip chip-pink">Review &amp; sign pending documents</span>
+    <span class="chip chip-pink">Correct Schein / billing errors</span>
+    <span class="chip chip-pink">Clear offline to-do backlog</span>
+    <span class="chip chip-pink">Review daily statistics</span>
+  </div>
+
+  <!-- ── TOUCHPOINTS ── -->
+  <div class="row-label">Touchpoints</div>
+  <div class="chip-wrap">
+    <span class="chip chip-gray">PVS calendar view</span>
+    <span class="chip chip-gray">Waiting room board</span>
+    <span class="chip chip-gray">Offline to-do list</span>
+    <span class="chip chip-gray">Paper schedule printout</span>
+    <span class="chip chip-gray">MFA (verbal briefing)</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-gray">Waiting room board/list</span>
+    <span class="chip chip-gray">Patient profile</span>
+    <span class="chip chip-gray">MFA handoff (verbal/system)</span>
+    <span class="chip chip-gray">Scanned external PDFs</span>
+    <span class="chip chip-gray">Enrollment status indicator</span>
+    <span class="chip chip-gray">Timeline</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-gray">Patient profile &amp; sidebar</span>
+    <span class="chip chip-gray">Medical timeline</span>
+    <span class="chip chip-gray">GDT-connected devices</span>
+    <span class="chip chip-gray">Patient (face-to-face)</span>
+    <span class="chip chip-gray">Paper notes (during consult)</span>
+    <span class="chip chip-gray">Lab result inbox</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-gray">ICD-10-GM search</span>
+    <span class="chip chip-gray">SDKRW validation engine</span>
+    <span class="chip chip-gray">Befund composer</span>
+    <span class="chip chip-gray">Text templates / modules</span>
+    <span class="chip chip-gray">Schein management view</span>
+    <span class="chip chip-gray">eDMP sidebar</span>
+    <span class="chip chip-gray">Lab order module</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-gray">Medication search + ABDA DB</span>
+    <span class="chip chip-gray">Prescription module</span>
+    <span class="chip chip-gray">E-Rezept / QES / HBA card</span>
+    <span class="chip chip-gray">BMP editor</span>
+    <span class="chip chip-gray">Forms module</span>
+    <span class="chip chip-gray">KBV doctor search</span>
+    <span class="chip chip-gray">Letter/document composer</span>
+  </div>
+  <div class="chip-wrap">
+    <span class="chip chip-gray">Offline to-do / follow-up queue</span>
+    <span class="chip chip-gray">Document signing interface</span>
+    <span class="chip chip-gray">Schein edit mode</span>
+    <span class="chip chip-gray">Billing correction view</span>
+    <span class="chip chip-gray">Stats / reporting dashboard</span>
+    <span class="chip chip-gray">MFA (verbal requests)</span>
+  </div>
+
+  <!-- ── EMOTION ── -->
+  <div class="row-label">Emotion &amp; experience</div>
+  <div class="emotion-cell">
+    <div class="score-bar score-2">
+      <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="score-label">2/5</span>
+    </div>
+    <div style="font-size:11px;color:#525252;line-height:1.4;">Mild anxiety about volume; resignation about system limits. Multi-location disorientation if rotating.</div>
+  </div>
+  <div class="emotion-cell">
+    <div class="score-bar score-2">
+      <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="score-label">2/5</span>
+    </div>
+    <div style="font-size:11px;color:#525252;line-height:1.4;">Frustration when handoff is incomplete. Cognitive load spike with every context switch. ~40–60 switches/day.</div>
+  </div>
+  <div class="emotion-cell">
+    <div class="score-bar score-4">
+      <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+      <span class="score-label">4/5</span>
+    </div>
+    <div style="font-size:11px;color:#525252;line-height:1.4;">"This is why I became a doctor." Flow state when patient interaction is smooth. Frustration when PVS intrudes. Time pressure looms.</div>
+  </div>
+  <div class="emotion-cell">
+    <div class="score-bar score-2">
+      <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="score-label">2/5</span>
+    </div>
+    <div style="font-size:11px;color:#525252;line-height:1.4;">Documentation feels like a second job on top of patient care. Anxiety about coding accuracy and billing consequences.</div>
+  </div>
+  <div class="emotion-cell">
+    <div class="score-bar score-2">
+      <div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="score-label">2/5</span>
+    </div>
+    <div style="font-size:11px;color:#525252;line-height:1.4;">Alert fatigue is real. Referral creation feels like busywork for a colleague two doors down. E-Rezept chain fragile.</div>
+  </div>
+  <div class="emotion-cell">
+    <div class="score-bar score-1">
+      <div class="dot filled"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="score-label">1/5 — Exhausted</span>
+    </div>
+    <div style="font-size:11px;color:#525252;line-height:1.4;">Exhaustion and resentment. 30–60 min of admin overtime normalized. Guilt about deferred documentation growing less accurate by the hour.</div>
+  </div>
+
+  <!-- ── DOCTOR VOICE ── -->
+  <div class="row-label">Doctor voice</div>
+  <div class="quote-cell">
+    <div class="quote">"42 patients today, 3 slots double-booked again. Going to run late by 10am."</div>
+    <div class="quote">"Which location am I at today? Do I have my settings/preferences here?"</div>
+  </div>
+  <div class="quote-cell">
+    <div class="quote">"MFA says patient is ready, but I can see the Schein isn't created yet — do I wait or start?"</div>
+    <div class="quote">"There's a hospital discharge letter scanned in — a 4-page PDF with no summary."</div>
+  </div>
+  <div class="quote-cell">
+    <div class="quote">"I need to look at the screen to check history, but I want to maintain eye contact with the patient."</div>
+    <div class="quote">"The timeline shows 8 years of visits. I need the last 3 entries, not all of them."</div>
+  </div>
+  <div class="quote-cell">
+    <div class="quote">"I know the diagnosis, but what's the exact ICD code? Is it M54.5 or M54.4?"</div>
+    <div class="quote">"This DMP form has 30 fields. The patient has been stable for 2 years. Why can't I just confirm 'no change'?"</div>
+  </div>
+  <div class="quote-cell">
+    <div class="quote">"Another alert for ibuprofen + aspirin. Yes, I know. I've dismissed this 400 times."</div>
+    <div class="quote">"The E-Rezept signing failed again — TI connector issue. Now I have to print Muster 16 anyway."</div>
+  </div>
+  <div class="quote-cell">
+    <div class="quote">"It's 18:30. I still have 12 unsigned letters and 3 Schein corrections. My family is waiting."</div>
+    <div class="quote">"I never look at the stats screen. I don't trust the numbers and I don't have time."</div>
+  </div>
+
+  <!-- ── PAIN POINTS ── -->
+  <div class="row-label">Pain points</div>
+  <div class="pain-cell">
+    <div class="pain-card" onclick="showDetail('Calendar lacks clinical context','Doctor sees appointment slots but not why the patient is coming. Must click into each patient to understand visit complexity — wasting time before a single patient has been seen.')">Calendar lacks clinical context</div>
+    <div class="pain-card" onclick="showDetail('No cross-day continuity','Yesterday\'s unfinished work (pending lab results, unsigned letters) lives in a separate queue with no connection to today\'s schedule.')">No cross-day continuity</div>
+    <div class="pain-card" onclick="showDetail('Multi-location disorientation','Rotating doctors arrive at a different Standort and the PVS doesn\'t carry over workspace preferences, recent patient context, or pending tasks from the other location.')">Multi-location disorientation</div>
+    <div class="pain-card" onclick="showDetail('Paper shadow system','Many doctors print the schedule because the PVS calendar is too slow or information-sparse to scan efficiently.')">Paper shadow system</div>
+  </div>
+  <div class="pain-cell">
+    <div class="pain-card" onclick="showDetail('Unreliable handoff signal','No clear system-level indicator that intake is truly complete. Doctor opens the patient and discovers missing Schein, unread eGK, or no anamnesis. Wasted time backtracking.')">Unreliable handoff signal</div>
+    <div class="pain-card" onclick="showDetail('Scanned documents without structure','External documents are flat PDFs. No highlights, no summary, no tagging of key findings. Doctor must read everything linearly — a 4-page letter takes 2+ minutes.')">Flat PDFs, no structure</div>
+    <div class="pain-card" onclick="showDetail('Context switch cost — no patient briefing','PVS doesn\'t help the doctor transition between patients. No briefing view that summarises: reason for visit, relevant history, open items from last encounter.')">No patient briefing view</div>
+    <div class="pain-card" onclick="showDetail('MFA-Doctor communication gap','Handoff is often verbal ("Frau Müller is in room 2, she has back pain") because the PVS doesn\'t surface intake notes prominently in the doctor\'s view.')">MFA↔doctor comm gap</div>
+    <div class="pain-card" onclick="showDetail('Enrollment blind spots','Doctor doesn\'t easily see if the patient is enrolled in HZV/FAV or eDMP, which affects what documentation is required for the current visit.')">Enrollment blind spots</div>
+  </div>
+  <div class="pain-cell">
+    <div class="pain-card" onclick="showDetail('Screen vs. patient attention split','The PVS requires the doctor to look at and interact with the screen during a conversation that demands eye contact and active listening. No voice input, no ambient capture.')">Screen vs. patient split</div>
+    <div class="pain-card" onclick="showDetail('Timeline overload','Long-term patients have years of entries. No intelligent filtering by relevance. Doctor must manually scroll to find what matters for today\'s complaint.')">Timeline overload</div>
+    <div class="pain-card" onclick="showDetail('GDT device friction','Device-based exams (EKG, spirometry) require separate GDT workflows that don\'t integrate smoothly. Results appear asynchronously and may not link to the current encounter.')">GDT device friction</div>
+    <div class="pain-card" onclick="showDetail('Lab result scattering','Lab results from external labs arrive via different channels (LDT import, fax, scanned PDF) and land in different places in the PVS. No unified results inbox with trend visualization.')">Lab results scattered</div>
+    <div class="pain-card" onclick="showDetail('No visit-reason-driven workspace','Whether the patient comes for a cold, DMP follow-up, or acute chest pain, the doctor sees the same generic patient profile. No contextual adaptation of what\'s shown.')">One-size-fits-all workspace</div>
+  </div>
+  <div class="pain-cell">
+    <div class="pain-card" onclick="showDetail('ICD search friction','The ICD-10-GM catalog is massive. Current PVS search is often keyword-based with poor ranking. Doctors resort to memorising common codes or using personal cheat sheets.')">ICD search friction</div>
+    <div class="pain-card" onclick="showDetail('SDKRW validation is cryptic','When the rule engine rejects a code combination, the error message is technical (rule IDs, field references). Doctor doesn\'t know what to fix without looking up the rule.')">Cryptic SDKRW errors</div>
+    <div class="pain-card" onclick="showDetail('eDMP documentation burden','Structured eDMP forms are repetitive for stable chronic patients. No "carry forward with confirmation" pattern. Every quarter requires re-entering the same stable values.')">eDMP repetition burden</div>
+    <div class="pain-card" onclick="showDetail('Composer limitations — copy-paste risk (Anti-pattern #12)','Free-text Befund writing lacks intelligent templates. Copy-paste from prior visits carries forward errors. Anti-pattern #12.')">Composer copy-paste errors (AP #12)</div>
+    <div class="pain-card" onclick="showDetail('Documentation happens after the patient leaves','Many doctors defer documentation to between patients or end of day, leading to recall errors and 30–60 min overtime.')">Deferred documentation drift</div>
+  </div>
+  <div class="pain-cell">
+    <div class="pain-card" onclick="showDetail('Alert fatigue (Anti-pattern #7)','Drug interaction warnings are undifferentiated — every alert looks the same regardless of severity. Override rates of 49–96% mean real safety signals get lost in noise. Anti-pattern #7.')">Alert fatigue (AP #7)</div>
+    <div class="pain-card" onclick="showDetail('E-Rezept fragility (Anti-pattern #6)','E-Rezept requires TI connection + HBA card + QES PIN. Any failure = fallback to paper Muster 16. 62.4% of practices report connector issues. Anti-pattern #6.')">E-Rezept fragility (AP #6)</div>
+    <div class="pain-card" onclick="showDetail('Modal dialog gauntlet (Anti-pattern #8)','Prescription workflows often present each step as a blocking modal. A task that takes 15 seconds on paper becomes 45 seconds of click-through. Anti-pattern #8.')">Modal dialog gauntlet (AP #8)</div>
+    <div class="pain-card" onclick="showDetail('No MVZ-internal referral shortcut','Referring to a colleague within the same MVZ uses the same workflow as referring to an external specialist. No awareness of the organisation\'s own doctor pool.')">No internal referral shortcut</div>
+    <div class="pain-card" onclick="showDetail('Form redundancy (Anti-pattern #15)','Each Muster form is an isolated module. Patient data, diagnoses, and LANR/BSNR must be re-entered instead of auto-filling from the current encounter. Anti-pattern #15.')">Form redundancy (AP #15)</div>
+    <div class="pain-card" onclick="showDetail('Arztbrief is time-consuming','Composing a doctor letter requires pulling together findings, diagnoses, therapy, and recommendations. No intelligent pre-filling from the encounter documentation.')">Arztbrief is manual</div>
+  </div>
+  <div class="pain-cell">
+    <div class="pain-card" onclick="showDetail('Administrative debt accumulates','Every shortcut taken during the rushed encounter (deferred documentation, skipped DMP fields, unsigned letters) becomes end-of-day work. PVS doesn\'t help manage or prioritise this debt.')">Admin debt is invisible</div>
+    <div class="pain-card" onclick="showDetail('Billing corrections are retrospective (Anti-pattern #9)','Errors surface days or weeks after the encounter. Doctor has lost clinical context and must reconstruct what happened from incomplete notes. Anti-pattern #9.')">Billing corrections are retrospective (AP #9)</div>
+    <div class="pain-card" onclick="showDetail('Schein corrections require full context reload','Editing a Schein from a prior visit means reopening the patient, finding the correct Schein, understanding the problem, and fixing it — a 5-minute navigation for a 30-second correction.')">Schein corrections are expensive</div>
+    <div class="pain-card" onclick="showDetail('Stats are an afterthought','Reporting screens in current PVS are data dumps, not actionable insights. No traffic-light overview, no drill-down, no connection to daily decisions.')">Stats: data dumps only</div>
+    <div class="pain-card" onclick="showDetail('No "day complete" signal','Doctor has no clear indicator that all required work for the day is done. Items lurk in separate queues (unsigned letters, open lab orders, unvalidated Scheine) without a unified view.')">No "day complete" indicator</div>
+  </div>
+
+  <!-- ── DESIGN GAPS ── -->
+  <div class="row-label">Design gaps</div>
+  <div class="gap-cell">
+    <span class="gap-badge gap-medium" onclick="showGap('G1','Login &amp; workspace initialisation','Medium','The bird-eye flow starts at "Schedule appointment" — it doesn\'t account for system entry, authentication, multi-location workspace setup, or preference loading. For rotating MVZ doctors, a real daily friction point.')">G1 Login &amp; workspace</span>
+    <span class="gap-badge gap-high" onclick="showGap('G2','Cross-day continuity / overnight queue','High','No representation of how yesterday\'s unfinished work connects to today. "Offline to-do" (step 4) exists but isn\'t positioned as a day-start activity. Doctors begin their day catching up, not just preparing.')">G2 Cross-day continuity ★</span>
+    <span class="gap-badge gap-high" onclick="showGap('G17','Multi-location context switching','High','The entire bird-eye flow assumes a single-location context. For MVZ doctors rotating between Standorte, workspace preferences, pending tasks, and patient context need to follow them. Core MVZ differentiator.','Top 5 #2')">G17 Multi-location ★</span>
+  </div>
+  <div class="gap-cell">
+    <span class="gap-badge gap-high" onclick="showGap('G3','Patient briefing / pre-consultation summary','High','The flow shows "Doctor preparation" (step 10) but misses the cognitive task of synthesising a briefing — why is this patient here, what happened last time, what\'s pending. Distinct from G4 (which is about MFA communication).')">G3 Patient briefing ★</span>
+    <span class="gap-badge gap-high" onclick="showGap('G4','MFA-to-Doctor structured handoff','High','Steps 7-9 describe MFA examination and anamnesis, but the handoff mechanism is invisible. Currently verbal in most practices. Most repeated interaction in the day (~40-60×). Mirror of MFA gap G7.','Top 5 #1')">G4 MFA→Doctor handoff ★</span>
+    <span class="gap-badge gap-medium" onclick="showGap('G5','Screen vs. patient attention management','Medium','The flow lists consultation steps but doesn\'t acknowledge the fundamental tension between looking at the PVS and the patient. This core UX constraint shapes every screen design decision.')">G5 Screen vs. patient</span>
+    <span class="gap-badge gap-medium" onclick="showGap('G6','Visit-reason-driven workspace adaptation','Medium','A cold, a DMP follow-up, and acute chest pain all show the same UI surfaces. No contextual adaptation of what\'s shown based on visit type. Relates to anti-pattern #10.')">G6 Visit-type adaptation</span>
+  </div>
+  <div class="gap-cell">
+    <span class="gap-badge gap-medium" onclick="showGap('G7','Lab result consolidation and trending','Medium','Lab results arrive from multiple sources (LDT, fax, scan), at different times, and need trend visualisation. A complex subflow, not a single step.')">G7 Lab result trending</span>
+    <span class="gap-badge gap-medium" onclick="showGap('G5','Screen vs. patient attention','Medium','Core UX constraint shaping every screen. See Phase 2 for full description.')">G5 Screen attention split</span>
+  </div>
+  <div class="gap-cell">
+    <span class="gap-badge gap-medium" onclick="showGap('G8','Dauerdiagnosen review/confirmation','Medium','Chronic diagnoses carry forward across quarters and need explicit review. Not represented in the bird-eye flow despite being a recurring documentation task for every returning patient.')">G8 Dauerdiagnosen review</span>
+    <span class="gap-badge gap-high" onclick="showGap('G9','Documentation timing split','High','The bird-eye flow implies documentation happens in sequence during the encounter. In reality, many doctors defer to between patients or end of day. Shapes whether the PVS is designed for "during" or "after" — two different interaction models.','Top 5 #4')">G9 Docs timing split ★</span>
+  </div>
+  <div class="gap-cell">
+    <span class="gap-badge gap-medium" onclick="showGap('G10','Drug interaction alert handling','Medium','Prescription (step 18) doesn\'t represent the alert/override workflow. Given 49-96% override rates and alert fatigue, this is a critical experience gap.')">G10 Alert override flow</span>
+    <span class="gap-badge gap-high" onclick="showGap('G11','E-Rezept failure and fallback','High','The prescription step doesn\'t acknowledge that E-Rezept signing can fail. The fallback to paper Muster 16 is a daily reality for many practices. Affects every prescription.','Top 5 #5')">G11 E-Rezept fallback ★</span>
+    <span class="gap-badge gap-medium" onclick="showGap('G12','MVZ-internal referral awareness','Medium','Doctor search (step 20) doesn\'t distinguish between MVZ-internal colleagues and external providers. The MVZ organisational context is invisible.')">G12 Internal referral</span>
+    <span class="gap-badge gap-medium" onclick="showGap('G13','Arztbrief composition','Medium','Composing an Arztbrief requires synthesising the entire encounter into a structured letter — a 5-10 minute task that benefits significantly from auto-generation.')">G13 Arztbrief auto-gen</span>
+  </div>
+  <div class="gap-cell">
+    <span class="gap-badge gap-medium" onclick="showGap('G14','Unsigned document queue','Medium','Follow-up processing (step 23) doesn\'t explicitly cover the daily accumulation of unsigned letters, unfinished forms, and pending approvals the doctor must clear before leaving.')">G14 Unsigned doc queue</span>
+    <span class="gap-badge gap-high" onclick="showGap('G15','Continuous billing validation','High','Billing correction (step 25) is positioned as a post-visit step. Anti-pattern #9 argues for continuous inline validation throughout the encounter — the flow doesn\'t show where validation triggers appear.','Top 5 #3')">G15 Continuous billing ★</span>
+    <span class="gap-badge gap-medium" onclick="showGap('G16','Day-complete indicator','Medium','Stats / report (step 26) exists but there\'s no concept of a unified "day done" view confirming all required tasks are complete across all queues.')">G16 Day-complete signal</span>
+    <span class="gap-badge gap-low" onclick="showGap('G19','Break / non-clinical time','Low','A real doctor day includes breaks, phone calls, colleague consultations, administrative meetings. These interruptions fragment the linear flow and create re-entry challenges.')">G19 Breaks &amp; interruptions</span>
+    <span class="gap-badge gap-medium" onclick="showGap('G18','Emotional &amp; cognitive load patterns','Medium','The bird-eye flow is purely functional — it maps tasks, not the experience. The cumulative cognitive load of 40-60 context switches per day and constant time pressure shape every design decision.')">G18 Cognitive load</span>
+  </div>
+
+  <!-- ── MOMENTS OF TRUTH ── -->
+  <div class="row-label">Moment of truth</div>
+  <div class="mot-cell">
+    <div class="mot-card">The first 5 minutes of the day set the doctor's confidence. A clear, dense overview with clinical context means the day starts controlled. A blank calendar with time slots means the doctor is already behind.</div>
+  </div>
+  <div class="mot-cell">
+    <div class="mot-card">The handoff is the most fragile point. If everything is ready — Schein, anamnesis, relevant history surfaced — consultation starts immediately. If anything is missing, the doctor loses 1–2 min per patient, compounding to 30–60 min lost per day.</div>
+  </div>
+  <div class="mot-cell">
+    <div class="mot-card">The quality of the clinical encounter depends on how little the PVS intrudes. The best experience: the doctor can focus entirely on the patient. The worst: more time navigating the PVS than listening.</div>
+  </div>
+  <div class="mot-cell">
+    <div class="mot-card">ICD coding is the single highest-friction documentation task. If the PVS helps find the right code fast and explains validation errors in clinical language, documentation flows. Each patient adds 30–60 seconds of friction = 20–30 min lost per day.</div>
+  </div>
+  <div class="mot-cell">
+    <div class="mot-card">Prescriptions and referrals are where clinical decision meets administrative execution. Every second of friction is time stolen from the next patient. Best: "one click to prescribe what I just decided." Worst: a 5-dialog journey with a physical signature.</div>
+  </div>
+  <div class="mot-cell">
+    <div class="mot-card">End of day reveals the true cost of every friction point accumulated. A PVS that prevents administrative debt (continuous validation, smart defaults, auto-filled forms) gives the doctor their evening back. A deferral-first PVS creates burnout.</div>
+  </div>
+
+</div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <span style="font-size:11px;font-weight:500;color:#525252;">Experience score:</span>
+  <span class="legend-item"><span style="width:10px;height:10px;border-radius:50%;background:#E24B4A;display:inline-block;"></span>1 – Crisis</span>
+  <span class="legend-item"><span style="width:10px;height:10px;border-radius:50%;background:#EF9F27;display:inline-block;"></span>2 – Stressed</span>
+  <span class="legend-item"><span style="width:10px;height:10px;border-radius:50%;background:#639922;display:inline-block;"></span>3 – Neutral</span>
+  <span class="legend-item"><span style="width:10px;height:10px;border-radius:50%;background:#1D9E75;display:inline-block;"></span>4 – Positive</span>
+  <span style="margin-left:8px;font-size:11px;font-weight:500;color:#525252;">Gap severity:</span>
+  <span class="legend-item"><span class="gap-badge gap-high" style="cursor:default;">High ★</span></span>
+  <span class="legend-item"><span class="gap-badge gap-medium" style="cursor:default;">Medium</span></span>
+  <span class="legend-item"><span class="gap-badge gap-low" style="cursor:default;">Low</span></span>
+  <span style="font-size:11px;color:#a3a3a3;margin-left:8px;">★ = Top 5 design priority · Click any pain point or gap badge for details</span>
+</div>
+
+<!-- Detail modal -->
+<div class="detail-panel" id="detail-panel" onclick="closeDetail(event)">
+  <div class="detail-box">
+    <button class="detail-close" onclick="closePanel()">×</button>
+    <div id="detail-sev" class="sev-badge" style="display:none"></div>
+    <h3 id="detail-title"></h3>
+    <p id="detail-body"></p>
+    <div id="detail-top5" class="top5-banner" style="display:none">
+      <span style="font-size:14px;">★</span>
+      <span id="detail-top5-text"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+function showDetail(title, body) {
+  document.getElementById('detail-title').textContent = title;
+  document.getElementById('detail-body').textContent = body;
+  document.getElementById('detail-sev').style.display = 'none';
+  document.getElementById('detail-top5').style.display = 'none';
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+function showGap(id, title, severity, body, top5) {
+  document.getElementById('detail-title').textContent = id + ': ' + title;
+  document.getElementById('detail-body').textContent = body;
+  const badge = document.getElementById('detail-sev');
+  badge.style.display = 'inline-block';
+  badge.textContent = 'Impact: ' + severity;
+  badge.className = 'sev-badge';
+  if (severity === 'High') {
+    badge.style.cssText = 'display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:4px;margin-bottom:8px;background:#FCEBEB;color:#A32D2D;border:0.5px solid #F09595;';
+  } else if (severity === 'Medium') {
+    badge.style.cssText = 'display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:4px;margin-bottom:8px;background:#FAEEDA;color:#633806;border:0.5px solid #FAC775;';
+  } else {
+    badge.style.cssText = 'display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:4px;margin-bottom:8px;background:#E1F5EE;color:#085041;border:0.5px solid #9FE1CB;';
+  }
+  const t5 = document.getElementById('detail-top5');
+  if (top5) {
+    t5.style.display = 'flex';
+    document.getElementById('detail-top5-text').textContent = 'Design Priority ' + top5 + ' — highest leverage for CorePVS design';
+  } else {
+    t5.style.display = 'none';
+  }
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+function closeDetail(e) {
+  if (e.target === document.getElementById('detail-panel')) closePanel();
+}
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('open');
+}
+</script>

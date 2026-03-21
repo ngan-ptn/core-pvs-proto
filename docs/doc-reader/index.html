@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Reader</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: Inter, sans-serif;
+  background: #f8fafb;
+  color: #1a3a47;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body { display: flex; flex-direction: column; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e1e8f0;
+  flex-shrink: 0;
+}
+
+.topbar-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0f2633;
+}
+
+.topbar-actions { display: flex; gap: 16px; align-items: center; }
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-switch-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #8db4c0;
+  transition: color 0.5s ease;
+}
+
+.toggle-switch.active .toggle-switch-label {
+  color: #1a3a47;
+}
+
+.toggle-track {
+  width: 36px;
+  height: 20px;
+  background: #d2dfe9;
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.5s ease;
+}
+
+.toggle-switch.active .toggle-track {
+  background: #5a8fa3;
+}
+
+.toggle-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.15s ease;
+}
+
+.toggle-switch.active .toggle-thumb {
+  transform: translateX(16px);
+}
+
+.layout { display: flex; flex: 1; overflow: hidden; }
+
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-right: 1px solid #e1e8f0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 8px;
+}
+
+.sidebar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #5a8fa3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: 1px solid #e1e8f0;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #8db4c0;
+  cursor: pointer;
+  transition: color 0.5s, border-color 0.5s;
+}
+.sort-btn:hover { color: #1a3a47; border-color: #c3d6e2; }
+.sort-icon { font-size: 12px; }
+
+.doc-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #1a3a47;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.5s;
+}
+
+.doc-item:hover { background: #f0f3f7; }
+.doc-item.active { background: #e1e8f0; font-weight: 700; color: #0f2633; }
+.doc-item-nested { padding-left: 28px; color: #5a8fa3; }
+.doc-item-nested.active { color: #0f2633; }
+
+.folder-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px 4px;
+  margin-top: 12px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 6px;
+  transition: background 0.5s;
+}
+.folder-header:hover { background: #f0f3f7; }
+.folder-toggle { font-size: 10px; color: #8db4c0; width: 10px; }
+.folder-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #5a8fa3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.main {
+  flex: 1;
+  padding: 32px 48px;
+  overflow-y: auto;
+}
+
+.content h1 { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 500; margin-bottom: 16px; color: #0f2633; }
+.content h2 { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 500; margin-top: 32px; margin-bottom: 12px; color: #0f2633; }
+.content h3 { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 500; margin-top: 24px; margin-bottom: 8px; color: #1a3a47; }
+.content h4 { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; margin-top: 16px; margin-bottom: 8px; color: #1a3a47; }
+.content p { font-family: Inter, sans-serif; font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
+.content ul, .content ol { font-size: 14px; line-height: 1.7; margin-bottom: 12px; padding-left: 24px; }
+.content li { margin-bottom: 4px; }
+.content a { color: #5a8fa3; text-decoration: none; transition: color 0.5s; }
+.content a:hover { color: #1a3a47; }
+.content code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #f0f3f7; padding: 3px 6px; border-radius: 6px; border: 1px solid #e1e8f0; color: #5a8fa3; }
+.content pre { background: #f0f3f7; padding: 16px; border-radius: 6px; overflow-x: auto; margin-bottom: 16px; border: 1px solid #e1e8f0; }
+.content pre code { background: none; padding: 0; border: none; }
+.content blockquote { border-left: 3px solid #c3d6e2; padding-left: 16px; color: #5a8fa3; margin-bottom: 12px; }
+.content strong { font-weight: 700; }
+
+.content table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; line-height: 1.5; }
+.content thead { position: sticky; top: 0; }
+.content th { background: #0f2633; color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 12px; text-align: left; white-space: nowrap; }
+.content td { padding: 8px 12px; border-bottom: 1px solid #e8ecf0; color: #1a3a47; vertical-align: top; }
+.content tbody tr:hover { background: #f4f7fa; }
+.content td code { font-size: 11px; padding: 2px 5px; }
+.content td a { color: #5a8fa3; text-decoration: none; font-weight: 500; }
+.content td a:hover { color: #0f2633; text-decoration: underline; }
+
+.mermaid-container {
+  background: #ffffff;
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(15,38,51,0.04);
+}
+
+.mermaid-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  color: #dc2626;
+  font-size: 13px;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #8db4c0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+
+.main { position: relative; }
+
+.toc {
+  position: sticky;
+  top: 0;
+  float: right;
+  margin-left: 16px;
+  margin-bottom: 16px;
+  width: 220px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+  background: #fff;
+  padding: 16px 20px;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(15,38,51,0.06);
+}
+
+.toc-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8db4c0;
+  margin-bottom: 12px;
+}
+
+.toc a {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: #5a8fa3;
+  text-decoration: none;
+  padding: 4px 0;
+}
+
+.toc a:hover { color: #1a3a47; }
+
+.toc-list { list-style: none; padding: 0; }
+.toc-h1 { font-weight: 700; }
+.toc-h2 { padding-left: 0; }
+.toc-h3 { padding-left: 16px; }
+.toc-h4 { padding-left: 32px; }
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,38,51,0.5);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 12px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(15,38,51,0.2);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e1e8f0;
+}
+
+.modal-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f2633;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #8db4c0;
+  line-height: 1;
+  transition: color 0.5s;
+}
+.modal-close:hover { color: #1a3a47; }
+
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-title">Document Reader</div>
+    <div class="topbar-actions">
+      <div class="toggle-switch" id="btn-toc" onclick="toggleToc()">
+        <span class="toggle-switch-label">TOC</span>
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+      </div>
+      <div class="toggle-switch" id="btn-diagrams" onclick="toggleDiagrams()">
+        <span class="toggle-switch-label">Diagrams</span>
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-label">Documents</div>
+        <button class="sort-btn" onclick="toggleSort()" title="Toggle sort order">
+          <span class="sort-icon">&#x21C5;</span> <span id="sort-label">Modified</span>
+        </button>
+      </div>
+      <div id="doc-list"></div>
+    </nav>
+    <main class="main" id="main-content">
+      <div class="empty-state">Select a document to begin</div>
+    </main>
+  </div>
+  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title"></div>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/marked@15/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+const DOCUMENTS = [{"filename":"design-pipeline.html","content":"<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>CorePVS Design Process v2<\/title>\n<link href=\"https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap\" rel=\"stylesheet\">\n<style>\n  :root {\n    --bg:        #F5F0E8;\n    --surface:   #FDFAF5;\n    --ink:       #1A1A1A;\n    --forest:    #1E4D2B;\n    --forest2:   #4A7C59;\n    --sage:      #8AAF7E;\n    --olive:     #A3B899;\n    --bluegrey:  #B8C9D4;\n    --border:    #2A2A2A;\n    --border-lt: #C8C0B0;\n    --muted:     #6A6A5A;\n    --done-bg:   #EEF5EC;\n    --done-border: #4A7C59;\n    --done-acc:  #1E4D2B;\n    --wip-bg:    #F5F2E8;\n    --wip-border:#A3905A;\n    --wip-acc:   #7A5A18;\n    --todo-bg:   #F5F0E8;\n  }\n\n  * { box-sizing: border-box; margin: 0; padding: 0; }\n\n  body {\n    background: var(--bg);\n    color: var(--ink);\n    font-family: 'Inter', sans-serif;\n    font-size: 13px;\n    line-height: 1.55;\n    min-height: 100vh;\n  }\n\n  .page { max-width: 1180px; margin: 0 auto; padding: 52px 48px 96px; }\n\n  /* ── TOP NAV BAR ── */\n  .topbar {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding-bottom: 18px;\n    border-bottom: 2px solid var(--forest);\n    margin-bottom: 48px;\n  }\n  .brand-row { display: flex; align-items: center; gap: 10px; }\n  .brand-icon {\n    width: 26px; height: 26px;\n    background: var(--forest);\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    grid-template-rows: 1fr 1fr;\n    gap: 2px;\n    padding: 4px;\n  }\n  .brand-icon span { background: #fff; display: block; }\n  .brand-icon span:nth-child(2) { background: rgba(255,255,255,.4); }\n  .brand-name {\n    font-family: 'DM Mono', monospace;\n    font-size: 11px;\n    letter-spacing: .22em;\n    text-transform: uppercase;\n    color: var(--forest);\n    font-weight: 500;\n  }\n  .topbar-meta {\n    font-family: 'DM Mono', monospace;\n    font-size: 10px;\n    letter-spacing: .12em;\n    text-transform: uppercase;\n    color: var(--muted);\n  }\n\n  /* ── HEADER ── */\n  .header {\n    display: flex;\n    justify-content: space-between;\n    align-items: flex-start;\n    padding-bottom: 36px;\n    border-bottom: 1px solid var(--border-lt);\n    margin-bottom: 48px;\n    gap: 32px;\n    flex-wrap: wrap;\n  }\n\n  .overline {\n    font-family: 'DM Mono', monospace;\n    font-size: 10px;\n    letter-spacing: .2em;\n    text-transform: uppercase;\n    color: var(--forest2);\n    margin-bottom: 10px;\n  }\n\n  h1 {\n    font-family: 'Playfair Display', serif;\n    font-size: clamp(28px, 3.2vw, 46px);\n    font-weight: 700;\n    line-height: 1.1;\n    letter-spacing: -.01em;\n    color: var(--ink);\n    max-width: 560px;\n  }\n  h1 em {\n    font-style: italic;\n    color: var(--forest);\n  }\n\n  .header-stats {\n    display: flex;\n    gap: 0;\n    border: 1.5px solid var(--border);\n    border-radius: 8px;\n    overflow: hidden;\n    align-self: flex-start;\n    margin-top: 8px;\n  }\n  .stat-block {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    padding: 16px 24px;\n    border-right: 1px solid var(--border-lt);\n    background: var(--surface);\n    min-width: 80px;\n  }\n  .stat-block:last-child { border-right: none; }\n  .stat-num {\n    font-family: 'Playfair Display', serif;\n    font-size: 26px;\n    font-weight: 700;\n    color: var(--forest);\n    line-height: 1;\n    margin-bottom: 4px;\n  }\n  .stat-label {\n    font-family: 'DM Mono', monospace;\n    font-size: 9px;\n    color: var(--muted);\n    letter-spacing: .12em;\n    text-transform: uppercase;\n  }\n\n  /* ── SECTION LABEL ── */\n  .section-label {\n    font-family: 'DM Mono', monospace;\n    font-size: 9px;\n    letter-spacing: .24em;\n    text-transform: uppercase;\n    color: var(--muted);\n    margin-bottom: 16px;\n    display: flex;\n    align-items: center;\n    gap: 12px;\n  }\n  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border-lt); }\n\n  /* ── PIPELINE ── */\n  .pipeline-wrap { margin-bottom: 52px; }\n  .pipeline { display: flex; align-items: stretch; gap: 8px; }\n\n  .phase-block { display: flex; flex-direction: column; flex: 1; }\n\n  .phase-tag {\n    font-family: 'DM Mono', monospace;\n    font-size: 8px;\n    letter-spacing: .18em;\n    text-transform: uppercase;\n    padding: 5px 12px;\n    font-weight: 500;\n    align-self: flex-start;\n    border-radius: 4px 4px 0 0;\n    margin-bottom: 0;\n  }\n  .phase-tag.p1 {\n    background: var(--ink);\n    color: #fff;\n  }\n  .phase-tag.p2 {\n    background: var(--forest);\n    color: #fff;\n  }\n\n  .pipeline-steps {\n    display: flex;\n    align-items: center;\n    flex: 1;\n    background: var(--surface);\n    border: 1.5px solid var(--border);\n    border-radius: 0 8px 8px 8px;\n    padding: 20px 16px;\n    gap: 0;\n  }\n  .phase-block:first-child .pipeline-steps { border-radius: 8px 8px 8px 0; }\n\n  .p-step {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    flex: 1;\n    position: relative;\n    padding: 0 10px;\n    text-align: center;\n  }\n  .p-step::after {\n    content: '→';\n    position: absolute;\n    right: -8px;\n    top: 36%;\n    color: var(--border-lt);\n    font-size: 14px;\n  }\n  .p-step:last-child::after { display: none; }\n\n  .step-num {\n    width: 32px; height: 32px;\n    display: flex; align-items: center; justify-content: center;\n    font-family: 'DM Mono', monospace;\n    font-size: 11px;\n    font-weight: 500;\n    color: var(--surface);\n    margin-bottom: 8px;\n    background: var(--ink);\n    border-radius: 50%;\n    letter-spacing: .03em;\n  }\n  .phase-block:last-child .p-step .step-num {\n    background: var(--forest);\n  }\n\n  .step-name { font-size: 12px; font-weight: 600; color: var(--ink); line-height: 1.3; }\n  .step-scope {\n    font-family: 'DM Mono', monospace;\n    font-size: 9px;\n    color: var(--muted);\n    margin-top: 3px;\n    letter-spacing: .04em;\n  }\n\n  .phase-sep {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 24px;\n    color: var(--forest2);\n    font-size: 20px;\n    padding-top: 22px;\n    flex-shrink: 0;\n  }\n\n  .loop-note {\n    font-family: 'DM Mono', monospace;\n    font-size: 9px;\n    color: var(--muted);\n    text-align: right;\n    margin-top: 10px;\n    letter-spacing: .06em;\n  }\n  .loop-note::before { content: '↻  '; color: var(--forest); }\n\n  /* ── KANBAN ── */\n  .kanban-section { margin-top: 0; }\n  .kanban-grid {\n    display: flex;\n    flex-direction: column;\n    gap: 8px;\n  }\n\n  .kanban-row {\n    display: flex;\n    align-items: stretch;\n    gap: 8px;\n    border: 1.5px solid var(--border);\n    border-radius: 8px;\n    overflow: hidden;\n    background: var(--surface);\n  }\n\n  .col-header {\n    font-family: 'DM Mono', monospace;\n    font-size: 9px;\n    letter-spacing: .18em;\n    text-transform: uppercase;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    width: 116px;\n    flex-shrink: 0;\n    padding: 18px 16px;\n    background: var(--forest);\n    color: rgba(255,255,255,.6);\n  }\n  .col-header.wip-col  { background: var(--ink); }\n  .col-header.todo-col { background: var(--muted); }\n\n  .col-label { font-size: 9px; letter-spacing: .18em; margin-bottom: 10px; color: rgba(255,255,255,.55); }\n  .col-count {\n    font-family: 'Playfair Display', serif;\n    font-size: 32px;\n    font-weight: 700;\n    color: #fff;\n    line-height: 1;\n  }\n\n  .cards-row {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 8px;\n    flex: 1;\n    padding: 12px;\n    align-items: flex-start;\n  }\n\n  .card {\n    padding: 14px 16px;\n    border: 1.5px solid var(--border);\n    border-radius: 8px;\n    position: relative;\n    width: 214px;\n    flex-shrink: 0;\n    background: #fff;\n  }\n  .card.done { background: var(--done-bg); border-color: var(--done-border); }\n  .card.wip  { background: var(--wip-bg);  border-color: var(--wip-border); }\n  .card.todo { background: var(--todo-bg); border-color: var(--border-lt); }\n\n  .card-step {\n    font-family: 'DM Mono', monospace;\n    font-size: 8px;\n    letter-spacing: .14em;\n    text-transform: uppercase;\n    margin-bottom: 7px;\n    display: flex;\n    align-items: center;\n    gap: 6px;\n    color: var(--muted);\n  }\n  .step-pip { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }\n\n  .card-title { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 5px; line-height: 1.35; }\n  .card-detail { font-size: 11px; color: var(--muted); line-height: 1.5; }\n\n  .card-artifact {\n    margin-top: 11px;\n    padding-top: 9px;\n    border-top: 1px solid var(--border-lt);\n    font-family: 'DM Mono', monospace;\n    font-size: 9px;\n    color: var(--muted);\n    display: flex;\n    align-items: center;\n    gap: 6px;\n  }\n  .artifact-code {\n    background: var(--forest);\n    color: #fff;\n    padding: 1px 6px;\n    font-size: 8px;\n    letter-spacing: .1em;\n    font-weight: 500;\n    border-radius: 3px;\n  }\n  .card.done .artifact-code { background: var(--done-acc); }\n  .card.wip  .artifact-code { background: var(--wip-acc); }\n  .card.todo .artifact-code { background: var(--ink); }\n\n  .wip-bar {\n    height: 3px;\n    background: var(--border-lt);\n    border-radius: 99px;\n    margin-top: 10px;\n    overflow: hidden;\n  }\n  .wip-fill { height: 100%; background: var(--forest2); border-radius: 99px; }\n  .card.wip .wip-fill { background: var(--wip-acc); }\n\n  .blocker {\n    margin-top: 8px;\n    font-family: 'DM Mono', monospace;\n    font-size: 9px;\n    color: var(--wip-acc);\n    display: flex;\n    align-items: flex-start;\n    gap: 6px;\n    line-height: 1.4;\n  }\n  .blocker::before {\n    content: '!';\n    width: 13px; height: 13px;\n    background: #F5ECD0;\n    border: 1px solid var(--wip-border);\n    border-radius: 50%;\n    display: flex; align-items: center; justify-content: center;\n    flex-shrink: 0;\n    font-size: 8px; font-weight: 700;\n    color: var(--wip-acc);\n  }\n\n  /* ── LEGEND ── */\n  .legend {\n    margin-top: 36px;\n    padding-top: 20px;\n    border-top: 1px solid var(--border-lt);\n    display: flex;\n    gap: 24px;\n    flex-wrap: wrap;\n    align-items: center;\n  }\n  .legend-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }\n  .legend-item { display: flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .04em; }\n  .legend-pip { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }\n\n  @media (max-width: 820px) {\n    .kanban-row { flex-direction: column; }\n    .col-header { width: 100%; flex-direction: row; align-items: center; padding: 12px 16px; }\n    .col-count { font-size: 22px; }\n    .pipeline { flex-direction: column; }\n    .page { padding: 36px 20px 72px; }\n    .card { width: 100%; }\n    .header-stats { flex-wrap: wrap; }\n  }\n<\/style>\n<\/head>\n<body>\n<div class=\"page\">\n\n  <!-- TOP NAV BAR -->\n  <div class=\"topbar\">\n    <div class=\"brand-row\">\n      <div class=\"brand-icon\"><span><\/span><span><\/span><span><\/span><span><\/span><\/div>\n      <div class=\"brand-name\">CorePVS<\/div>\n    <\/div>\n    <div class=\"topbar-meta\">Design Process · v2.0 · 2026-03-20<\/div>\n  <\/div>\n\n  <!-- HEADER -->\n  <header class=\"header\">\n    <div>\n      <div class=\"overline\">From audit to prototype<\/div>\n      <h1>From <em>garrioPRO<\/em> audit<br>to visual prototype<\/h1>\n    <\/div>\n    <div class=\"header-stats\">\n      <div class=\"stat-block\">\n        <div class=\"stat-num\">604<\/div>\n        <div class=\"stat-label\">Obligations<\/div>\n      <\/div>\n      <div class=\"stat-block\">\n        <div class=\"stat-num\">14<\/div>\n        <div class=\"stat-label\">Workflows<\/div>\n      <\/div>\n      <div class=\"stat-block\">\n        <div class=\"stat-num\">5<\/div>\n        <div class=\"stat-label\">Steps<\/div>\n      <\/div>\n      <div class=\"stat-block\">\n        <div class=\"stat-num\">2<\/div>\n        <div class=\"stat-label\">Phases<\/div>\n      <\/div>\n    <\/div>\n  <\/header>\n\n  <!-- PIPELINE -->\n  <div class=\"pipeline-wrap\">\n    <div class=\"section-label\">Design pipeline<\/div>\n    <div class=\"pipeline\">\n\n      <div class=\"phase-block\" style=\"flex:2;\">\n        <div class=\"phase-tag p1\">Phase 1 — one-time audit<\/div>\n        <div class=\"pipeline-steps\">\n          <div class=\"p-step\">\n            <div class=\"step-num\">01<\/div>\n            <div class=\"step-name\">Audit garrioPRO<\/div>\n            <div class=\"step-scope\">all TUI flows<\/div>\n          <\/div>\n          <div class=\"p-step\">\n            <div class=\"step-num\">02<\/div>\n            <div class=\"step-name\">Gap analysis<\/div>\n            <div class=\"step-scope\">vs 604 obligations<\/div>\n          <\/div>\n        <\/div>\n      <\/div>\n\n      <div class=\"phase-sep\">→<\/div>\n\n      <div class=\"phase-block\" style=\"flex:3;\">\n        <div class=\"phase-tag p2\">Phase 2 — per workflow × 14<\/div>\n        <div class=\"pipeline-steps\">\n          <div class=\"p-step\">\n            <div class=\"step-num\">03<\/div>\n            <div class=\"step-name\">Finalize flows<\/div>\n            <div class=\"step-scope\">obligation-traced<\/div>\n          <\/div>\n          <div class=\"p-step\">\n            <div class=\"step-num\">04<\/div>\n            <div class=\"step-name\">Design screens<\/div>\n            <div class=\"step-scope\">hi-fi, all states<\/div>\n          <\/div>\n          <div class=\"p-step\">\n            <div class=\"step-num\">05<\/div>\n            <div class=\"step-name\">Visual prototype<\/div>\n            <div class=\"step-scope\">clickable flows<\/div>\n          <\/div>\n        <\/div>\n      <\/div>\n\n    <\/div>\n    <div class=\"loop-note\">Steps 3–5 repeat for each of the 14 compliance workflows, starting with Patient Check-In<\/div>\n  <\/div>\n\n  <!-- KANBAN -->\n  <div class=\"kanban-section\">\n    <div class=\"section-label\">Progress<\/div>\n\n    <div class=\"kanban-grid\">\n\n      <!-- DONE -->\n      <div class=\"kanban-row\">\n        <div class=\"col-header\">\n          <div class=\"col-label\">Done<\/div>\n          <div class=\"col-count\">4<\/div>\n        <\/div>\n        <div class=\"cards-row\">\n          <div class=\"card done\">\n            <div class=\"card-step\"><span class=\"step-pip\" style=\"background:var(--done-acc);\"><\/span>Phase 1 · Step 1<\/div>\n            <div class=\"card-title\">Compliance obligations mapped<\/div>\n            <div class=\"card-detail\">604 items across 14 workflows<\/div>\n            <div class=\"card-artifact\"><span class=\"artifact-code\">DATA<\/span>compliance-inventory.md<\/div>\n          <\/div>\n          <div class=\"card done\">\n            <div class=\"card-step\"><span class=\"step-pip\" style=\"background:var(--done-acc);\"><\/span>Phase 1 · Step 1<\/div>\n            <div class=\"card-title\">garrioPRO screen inventory<\/div>\n            <div class=\"card-detail\">12 screens documented<\/div>\n            <div class=\"card-artifact\"><span class=\"artifact-code\">IA<\/span>IA260319-gpro-screen-inventory.md<\/div>\n          <\/div>\n          <div class=\"card done\">\n            <div class=\"card-step\"><span class=\"step-pip\" style=\"background:var(--done-acc);\"><\/span>Phase 1 · Step 1<\/div>\n            <div class=\"card-title\">Master compliance workflows<\/div>\n            <div class=\"card-detail\">14 flow diagrams baseline<\/div>\n            <div class=\"card-artifact\"><span class=\"artifact-code\">FLOW<\/span>FLOW260318-master-compliance-workflows.md<\/div>\n          <\/div>\n          <div class=\"card done\">\n            <div class=\"card-step\"><span class=\"step-pip\" style=\"background:var(--done-acc);\"><\/span>Phase 1 · Step 1<\/div>\n            <div class=\"card-title\">V1 KV gap matrix (partial)<\/div>\n            <div class=\"card-detail\">KV scope only — superseded by Step 2<\/div>\n            <div class=\"card-artifact\"><span class=\"artifact-code\">DATA<\/span>DATA260319-gpro-v1-kv-compliance-gap.md<\/div>\n          <\/div>\n        <\/div>\n      <\/div>\n\n      <!-- IN PROGRESS -->\n      <div class=\"kanban-row\">\n        <div class=\"col-header wip-col\">\n          <div class=\"col-label\">In progress<\/div>\n          <div class=\"col-count\">2<\/div>\n        <\/div>\n        <div class=\"cards-row\">\n          <div class=\"card wip\">\n            <div class=\"card-step\"><span class=\"step-pip\" style=\"background:var(--wip-acc);\"><\/span>Phase 1 · Step 2<\/div>\n            <div class=\"card-title\">Full gap analysis — all 14 workflows<\/div>\n            <div class=\"card-detail\">Cross-ref garrioPRO flows vs 604 obligations. Tagged: covered / partial / missing.<\/div>\n            <div class=\"wip-bar\"><div class=\"wip-fill\" style=\"width:20%;\"><\/div><\/div>\n            <div class=\"card-artifact\"><span class=\"artifact-code\">DATA<\/span>DATA[YYMMDD]-gpro-compliance-gap-matrix.md<\/div>\n            <div class=\"blocker\">Needs inventory-reader → gap-analyst → report-writer agent chain<\/div>\n          <\/div>\n          <div class=\"card wip\">\n            <div class=\"card-step\"><span class=\"step-pip\" style=\"background:var(--wip-acc);\"><\/span>Phase 2 · Step 3 · Workflow 1<\/div>\n            <div class=\"card-title\">Patient Check-In — finalize flow<\/div>\n            <div class=\"card-detail\">64 obligations. Integrating gaps → obligation-traced Mermaid flow.<\/div>\n            <div class=\"wip-bar\"><div class=\"wip-fill\" style=\"width:55%;\"><\/div><\/div>\n            <div class=\"card-artifact\"><span class=\"artifact-code\">FLOW<\/span>FLOW[YYMMDD]-patient-checkin.md<\/div>\n          <\/div>\n        <\/div>\n      <\/div>\n\n      <!-- TO DO -->\n      <div class=\"kanban-row\">\n        <div class=\"col-header todo-col\">\n          <div class=\"col-label\">To do<\/div>\n          <div class=\"col-count\">3<\/div>\n        <\/div>\n        <div class=\"cards-row\">\n          <div class=\"card todo\">\n            <div class=\"card-step\"><span class=\"step-pip\" style=\"background:var(--border-lt);\"><\/span>Phase 2 · Step 4 · Workflow 1<\/div>\n            <div class=\"card-title\">Patient Check-In — design screens<\/div>\n            <div class=\"card-detail\">Hi-fi screens. Start CI-002 (12 states, 17 gap obligations). 3-panel layout.<\/div>\n            <div class=\"card-artifact\"><span class=\"artifact-code\">SCRN<\/span>SCRN[YYMMDD]-patient-checkin-screens.md<\/div>\n          <\/div>\n          <div class=\"card todo\">\n            <div class=\"card-step\"><span class=\"step-pip\" style=\"background:var(--border-lt);\"><\/span>Phase 2 · Step 5 · Workflow 1<\/div>\n            <div class=\"card-title\">Patient Check-In — visual prototype<\/div>\n            <div class=\"card-detail\">Clickable flow: happy path + error paths. Compliance gates visible.<\/div>\n            <div class=\"card-artifact\"><span class=\"artifact-code\">—<\/span>Figma or apps/<\/div>\n          <\/div>\n          <div class=\"card todo\" style=\"opacity:.5;\">\n            <div class=\"card-step\"><span class=\"step-pip\" style=\"background:var(--border-lt);\"><\/span>Phase 2 · Workflows 2–14<\/div>\n            <div class=\"card-title\">Remaining 13 workflows<\/div>\n            <div class=\"card-detail\">Priority by gap matrix — obligation count + user impact.<\/div>\n          <\/div>\n        <\/div>\n      <\/div>\n\n    <\/div>\n  <\/div>\n\n  <!-- LEGEND -->\n  <div class=\"legend\">\n    <span class=\"legend-label\">Steps<\/span>\n    <div class=\"legend-item\"><span class=\"legend-pip\" style=\"background:var(--ink);\"><\/span>01 Audit<\/div>\n    <div class=\"legend-item\"><span class=\"legend-pip\" style=\"background:var(--ink);\"><\/span>02 Gap analysis<\/div>\n    <div class=\"legend-item\"><span class=\"legend-pip\" style=\"background:var(--forest);\"><\/span>03 Finalize flows<\/div>\n    <div class=\"legend-item\"><span class=\"legend-pip\" style=\"background:var(--forest);\"><\/span>04 Design screens<\/div>\n    <div class=\"legend-item\"><span class=\"legend-pip\" style=\"background:var(--forest);\"><\/span>05 Prototype<\/div>\n  <\/div>\n\n<\/div>\n<\/body>\n<\/html>\n","mtime":1774066722439.8584,"folder":null,"navLabel":"Design Pipeline"},{"filename":"FLOW260319-gpro-master-workflow.md","content":"---\nVersion: 2.0\nLast Updated: 2026-03-19\nScope: As-built from codebase analysis of tini-works/pvs-base-1 (ext/tui/)\n---\n\n# gPRO (TUI) User Workflow Diagrams\n\nDerived from the gPRO TUI codebase (tini-works/pvs-base-1). Each diagram shows **user goals → steps → decision points → outcomes**. Screens (IA260319-gpro-screen-inventory.md) are derived from these workflows.\n\n**Convention:** `==>` primary/happy path. `-->` alternate path. `-.->` edge case / optional.\n\n---\n\n## Workflow Index\n\n| # | Workflow | Trigger | Role | Screens Required |\n|---|---|---|---|---|\n| WF-1 | Authentication & Session Setup | App launch, no valid token | All | G001, G002 |\n| WF-2 | Select a Patient | User navigates to Patients page | All | G003 |\n| WF-3 | Select a Schein | User navigates to Scheins page | All | G004 |\n| WF-4 | Browse Timeline Entries | User navigates to Timelines page | All | G005 |\n| WF-5 | Create a Timeline Entry | User opens QuickEntry (`:` key) | All | G005, G006 |\n| WF-6 | Logout | User triggers Logout from sidebar | All | G001 |\n\n---\n\n## WF-1 — Authentication & Session Setup\n\n**Goal:** Establish a valid, authenticated session so the user can access patient data.\n\n```mermaid\nflowchart TD\n    START([\"Launch gPRO\"])\n    START ==>|\"Load config\"| CONN[\"Connect to Backend\"]\n\n    CONN --> CONN_RESULT{\"Connection\\nSuccessful?\"}\n    CONN_RESULT -->|\"Failed\"| CONN_ERR[\"Connection Error\\n(retry shown)\"]\n    CONN_ERR -.->|\"Auto-retry\"| CONN\n\n    CONN_RESULT ==>|\"Connected\"| AUTH_CHECK{\"Valid Token\\nFound?\"}\n\n    AUTH_CHECK -->|\"No\"| AUTH_SCREEN[\"G001: Auth Overlay\\n(login URL displayed)\"]\n    AUTH_CHECK ==>|\"Yes\"| PROFILE[\"Resolve User Profile\"]\n\n    subgraph LoginFlow[\"G001: Login States\"]\n        URL_SHOWN[\"Login URL Displayed\"]\n        USER_ACTION[\"User Opens URL in Browser\"]\n        WAITING[\"Waiting for Login Callback\"]\n        LOGIN_OK[\"Login Successful\"]\n        LOGIN_FAIL[\"Login Failed\"]\n\n        URL_SHOWN ==>|\"User opens browser\"| USER_ACTION\n        URL_SHOWN -->|\"c: copy URL\"| USER_ACTION\n        USER_ACTION ==> WAITING\n        WAITING ==>|\"Callback received\"| LOGIN_OK\n        WAITING -->|\"Error / timeout\"| LOGIN_FAIL\n        LOGIN_FAIL -.->|\"User retries\"| URL_SHOWN\n    end\n\n    AUTH_SCREEN ==> URL_SHOWN\n    LOGIN_OK ==> PROFILE\n\n    subgraph ProfileLoad[\"G002: Profile Resolution States\"]\n        RESOLVING[\"Resolving User Identity\"]\n        RESOLVED[\"Identity Confirmed\"]\n        LOAD_PROF[\"Loading User Profile\"]\n        PROF_READY[\"Profile Ready\"]\n        PROF_ERR[\"Resolution Failed\"]\n\n        RESOLVING ==>|\"Identity found\"| RESOLVED\n        RESOLVING -->|\"Not found\"| PROF_ERR\n        RESOLVED ==> LOAD_PROF\n        LOAD_PROF ==>|\"Success\"| PROF_READY\n        LOAD_PROF -->|\"Error\"| PROF_ERR\n    end\n\n    PROFILE ==> RESOLVING\n    PROF_READY ==> READY([\"Session Ready\\n→ G002: Home Page\"])\n```\n\n---\n\n## WF-2 — Select a Patient\n\n**Goal:** Set a patient in context so Scheins and Timeline entries can be loaded for them.\n\n```mermaid\nflowchart TD\n    START([\"Navigate to Patients\\n(key 2 or sidebar)\"])\n    START ==> LOAD[\"Load Patient List\\n(paginated, 20 per page)\"]\n\n    LOAD --> LOAD_RESULT{\"Load\\nSuccessful?\"}\n    LOAD_RESULT ==>|\"Patients found\"| TABLE[\"G003: Patients List\\n(table with rows)\"]\n    LOAD_RESULT -->|\"Empty\"| EMPTY[\"No Patients Found\"]\n    LOAD_RESULT -->|\"Error\"| ERR[\"Load Error\\n(re-navigate to retry)\"]\n\n    subgraph Browse[\"Browse & Paginate\"]\n        SCROLL[\"Scroll rows (↑/↓)\"]\n        NEXT_PAGE[\"Next page (n)\"]\n        PREV_PAGE[\"Previous page (p)\"]\n    end\n\n    TABLE ==> SCROLL\n\n    SCROLL ==>|\"Enter\"| SELECT_CHECK{\"Already\\nSelected?\"}\n    SELECT_CHECK ==>|\"No\"| SELECT[\"Set as Active Patient\\n(✓ marker shown)\"]\n    SELECT_CHECK -->|\"Yes\"| DESELECT[\"Deselect Patient\\n(✓ removed)\"]\n\n    SELECT ==> CONTEXT[\"Patient in Context:\\n• Schein selection cleared\\n• Scheins page queued to reload\\n• Timeline page queued to reload\"]\n\n    CONTEXT ==> DONE([\"Patient Selected\\n→ Ready for WF-3\"])\n\n    TABLE --> NEXT_PAGE\n    TABLE --> PREV_PAGE\n    NEXT_PAGE --> TABLE\n    PREV_PAGE --> TABLE\n```\n\n---\n\n## WF-3 — Select a Schein\n\n**Goal:** Set a Schein in context so Timeline entries can be scoped to the correct billing record.\n\n```mermaid\nflowchart TD\n    START([\"Navigate to Scheins\\n(key 3 or sidebar)\"])\n    START ==> PREREQ{\"Patient\\nSelected?\"}\n\n    PREREQ -->|\"No\"| NO_PAT[\"Prompt: Select a patient first\\n(no data loads)\"]\n    NO_PAT -.->|\"User goes to Patients page\"| WF2[\"→ WF-2: Select a Patient\"]\n\n    PREREQ ==>|\"Yes\"| LOAD[\"Load Scheins for Active Patient\"]\n\n    LOAD --> LOAD_RESULT{\"Load\\nSuccessful?\"}\n    LOAD_RESULT ==>|\"Scheins found\"| TABLE[\"G004: Scheins List\\n(table with rows)\"]\n    LOAD_RESULT -->|\"Empty\"| EMPTY[\"No Scheins for This Patient\"]\n    LOAD_RESULT -->|\"Error\"| ERR[\"Load Error\"]\n\n    subgraph ScheinRow[\"Each Row Shows\"]\n        TYPE[\"Type: KV | BG | Private | HZV | FAV | IGEL\"]\n        CASE[\"Treatment Case: Outpatient | Referral | Emergency | etc.\"]\n        QUARTER[\"Quarter: Q#/YYYY\"]\n        STATUS[\"Status: Normal | Printed | Billed | Cancelled\"]\n    end\n\n    TABLE ==> SCROLL[\"Scroll rows (↑/↓)\"]\n\n    SCROLL ==>|\"Enter\"| SELECT_CHECK{\"Already\\nSelected?\"}\n    SELECT_CHECK ==>|\"No\"| SELECT[\"Set as Active Schein\\n(✓ marker shown)\"]\n    SELECT_CHECK -->|\"Yes\"| DESELECT[\"Deselect Schein\\n(✓ removed)\"]\n\n    SELECT ==> CONTEXT[\"Schein in Context:\\n• Timeline page queued to reload\\n• QuickEntry now enabled\"]\n\n    CONTEXT ==> DONE([\"Schein Selected\\n→ Ready for WF-4 / WF-5\"])\n\n    subgraph AutoReload[\"Auto-Reload Trigger\"]\n        PAT_CHANGED[\"Patient Changed → Reload Scheins\\nfor New Patient Automatically\"]\n        PAT_CLEARED[\"Patient Cleared → Clear Schein Table\\n+ Clear Active Schein\"]\n    end\n```\n\n---\n\n## WF-4 — Browse Timeline Entries\n\n**Goal:** Review the clinical history for the active patient and schein.\n\n```mermaid\nflowchart TD\n    START([\"Navigate to Timelines\\n(key 4 or sidebar)\"])\n    START ==> PREREQ{\"Patient +\\nSchein Selected?\"}\n\n    PREREQ -->|\"No\"| NO_PREREQ[\"Prompt: Select a patient\\nand schein first\"]\n    NO_PREREQ -.->|\"User completes WF-2/WF-3\"| START\n\n    PREREQ ==>|\"Yes\"| LOAD[\"Load Timeline Entries\\n(2 quarters per page)\"]\n\n    LOAD --> LOAD_RESULT{\"Load\\nSuccessful?\"}\n    LOAD_RESULT ==>|\"Entries found\"| TABLE[\"G005: Timeline View\\n(date | type | description | quarter)\"]\n    LOAD_RESULT -->|\"Empty\"| EMPTY[\"No Entries for This Patient/Schein\"]\n    LOAD_RESULT -->|\"Error\"| ERR[\"Load Error\\n(press r to reload)\"]\n\n    TABLE ==> SCROLL[\"Scroll rows (↑/↓)\"]\n\n    SCROLL ==>|\"Enter\"| DETAIL[\"View Entry Detail\\n(detail panel opens)\"]\n    DETAIL -->|\"Esc\"| SCROLL\n\n    subgraph InfiniteScroll[\"Infinite Scroll\"]\n        AT_BOTTOM[\"User Scrolls to Bottom\"]\n        LOAD_MORE[\"Load Older Entries\\n(next page appended)\"]\n        ALL_LOADED[\"All Entries Loaded\\n(no more pages)\"]\n\n        AT_BOTTOM ==>|\"More pages\"| LOAD_MORE\n        AT_BOTTOM -->|\"Last page\"| ALL_LOADED\n        LOAD_MORE ==> SCROLL\n    end\n\n    SCROLL --> AT_BOTTOM\n\n    TABLE -->|\"r\"| RELOAD[\"Reload from Page 1\\n(clears + refetches)\"]\n    RELOAD ==> TABLE\n\n    TABLE ==>|\":\"| QE[\"Open QuickEntry\\n→ WF-5\"]\n```\n\n---\n\n## WF-5 — Create a Timeline Entry\n\n**Goal:** Document a clinical event (diagnosis, service, or note) against the active patient and schein.\n\n**Prerequisite:** Patient selected (WF-2) AND Schein selected (WF-3).\n\n```mermaid\nflowchart TD\n    START([\"Press ':' on\\nTimelines Page (G005)\"])\n    START ==> QE_OPEN[\"G006: QuickEntry Input\\n(opens at bottom of screen)\"]\n\n    QE_OPEN ==> PREFIX{\"Type Prefix\"}\n\n    PREFIX ==>|\"d: or diag:\"| DIAG[\"Diagnosis Search Mode\\n(ICD-10)\"]\n    PREFIX -->|\"s: or service:\"| SVC[\"Service Search Mode\\n(EBM)\"]\n    PREFIX -->|\"n: or note:\"| NOTE[\"Freetext Note Mode\"]\n    PREFIX -->|\"Esc\"| CANCEL([\"QuickEntry Closed\\n→ Return to Timeline\"])\n\n    subgraph DiagSearch[\"Diagnosis Search (ICD-10)\"]\n        D_TYPE[\"User types ICD code or term\\n(e.g. d:J06)\"]\n        D_RESULTS[\"Suggestions appear\\n(code + description, up to 10)\"]\n        D_NAV[\"Navigate with ↑/↓\"]\n        D_SELECT[\"Tab: autocomplete input\\nEnter: submit selected\"]\n\n        D_TYPE ==>|\"Debounced search\"| D_RESULTS\n        D_RESULTS ==> D_NAV\n        D_NAV ==> D_SELECT\n    end\n\n    DIAG ==> D_TYPE\n\n    subgraph SvcSearch[\"Service Search (EBM)\"]\n        S_TYPE[\"User types GNR code or term\\n(e.g. s:01100)\"]\n        S_RESULTS[\"Suggestions appear\\n(code + service name, up to 10)\"]\n        S_NAV[\"Navigate with ↑/↓\"]\n        S_SELECT[\"Tab: autocomplete input\\nEnter: submit selected\"]\n\n        S_TYPE ==>|\"Debounced search\"| S_RESULTS\n        S_RESULTS ==> S_NAV\n        S_NAV ==> S_SELECT\n    end\n\n    SVC ==> S_TYPE\n\n    NOTE ==>|\"Enter\"| SUBMIT\n\n    D_SELECT ==>|\"Enter\"| SUBMIT[\"Submit Entry to Backend\"]\n    S_SELECT ==>|\"Enter\"| SUBMIT\n\n    SUBMIT --> SUBMIT_RESULT{\"Saved\\nSuccessfully?\"}\n    SUBMIT_RESULT ==>|\"Success\"| RELOAD[\"Timeline Reloads\\n(new entry visible)\"]\n    SUBMIT_RESULT -->|\"Error\"| QE_ERR[\"Error shown in QuickEntry bar\\n(input preserved)\"]\n    QE_ERR -.->|\"User edits and retries\"| QE_OPEN\n\n    RELOAD ==> DONE([\"Entry Created\\nQuickEntry clears,\\nstays open for next entry\"])\n    DONE -.->|\"Add another\"| QE_OPEN\n    DONE -->|\"Esc\"| CLOSE([\"QuickEntry Closed\\n→ Return to Timeline\"])\n```\n\n---\n\n## WF-6 — Logout\n\n**Goal:** End the current session and return the app to the login state.\n\n```mermaid\nflowchart TD\n    START([\"Select 'Logout'\\nfrom Sidebar\"])\n\n    START ==> CLEAR_TOKEN[\"Clear Access Token\\n+ User Credentials\"]\n    CLEAR_TOKEN ==> CLEAR_STATE[\"Clear Active Context:\\n• Selected Patient removed\\n• Selected Schein removed\\n• All page data cleared\"]\n    CLEAR_STATE ==> RESET[\"Return to Home Page\"]\n    RESET ==> SHOW_AUTH[\"G001: Auth Overlay Appears\\n(new login required)\"]\n    SHOW_AUTH ==> WAITING([\"Waiting for\\nNew Authentication\\n→ WF-1\"])\n```\n\n---\n\n## End-to-End — Full Clinical Documentation Session\n\n```mermaid\nflowchart TD\n    START([\"Launch gPRO\"])\n\n    subgraph Auth[\"WF-1: Authenticate\"]\n        A1[\"Check for valid token\"]\n        A2{\"Token valid?\"}\n        A3[\"G001: Auth Overlay → Login via browser\"]\n        A4[\"G002: Home Page\"]\n        A1 ==> A2\n        A2 -->|\"No\"| A3\n        A2 ==>|\"Yes\"| A4\n        A3 ==>|\"Login success\"| A4\n    end\n\n    subgraph SelectPat[\"WF-2: Select Patient\"]\n        B1[\"G003: Patients List (key 2)\"]\n        B2[\"Browse list → Enter to select\"]\n        B1 ==> B2\n    end\n\n    subgraph SelectSchein[\"WF-3: Select Schein\"]\n        C1[\"G004: Scheins List (key 3)\"]\n        C2[\"Browse list → Enter to select\"]\n        C1 ==> C2\n    end\n\n    subgraph Document[\"WF-4 + WF-5: Review & Document\"]\n        D1[\"G005: Timeline View (key 4)\"]\n        D2[\"Browse entries (↑/↓, infinite scroll)\"]\n        D3[\"Open QuickEntry (:)\"]\n        D4[\"G006: Add diagnosis (d:), service (s:), or note (n:)\"]\n        D5[\"Submit → Timeline reloads\"]\n        D1 ==> D2\n        D2 ==>|\":\"| D3\n        D3 ==> D4 ==> D5 ==> D2\n    end\n\n    START ==> A1\n    A4 ==> B1\n    B2 ==> C1\n    C2 ==> D1\n\n    D2 -->|\"Done\"| END{\"End Session?\"}\n    END -->|\"New patient\"| B1\n    END -->|\"WF-6: Logout\"| LOGOUT[\"Sidebar → Logout → G001: Auth Overlay\"]\n    END ==>|\"Quit\"| QUIT([\"q / Ctrl+C → Exit\"])\n```\n","mtime":1773916313000,"folder":"AUDIT","navLabel":null},{"filename":"FLOW260320-gpro-workflow-compliance-aligned.md","content":"---\nVersion: 1.1\nLast Updated: 2026-03-20\nScope: Translation of FLOW260319-gpro-user-workflow-detail.md into compliance-aligned style\nSource: gPRO TUI codebase (pvs-base-1) → rewritten with natural language + compliance IDs\n---\n\n# gPRO Workflows — Compliance-Aligned Translation\n\nTranslated from `FLOW260319-gpro-user-workflow-detail.md` (as-built from pvs-base-1 codebase). Each block uses natural language and maps to compliance inventory IDs where applicable.\n\n**Convention:**\n- `==>` primary/happy path. `-->` alternate path. `-.->` edge case / optional.\n- `(ID)` = compliance inventory reference. Blocks without IDs = no compliance mapping found.\n- Only **user goals, decisions, compliance actions, and meaningful outcomes** are shown. UI mechanics (pagination, keyboard shortcuts, scroll behavior) are omitted.\n\n---\n\n## Workflow Index\n\n| # | Workflow | Compliance Areas Touched | Coverage |\n|---|---|---|---|\n| WF-1 | Authentication & Session Setup | ALLG (general software requirements) | Minimal — infrastructure only |\n| WF-2 | Select a Patient | KVDT Patient Data (KP2/P2), PSDV | Partial — read-only display, no card read |\n| WF-3 | Select a Schein | KVDT Patient Data (KP2-500, P2-501) | Partial — list/select only, no creation rules |\n| WF-4 | Browse Timeline Entries | ABRD659 (patient documentation) | Partial — display only |\n| WF-5 | Create a Timeline Entry | ICD-10-GM (P10), KBV EBM (#306-319), KVDT Service (P2-600+), ABRD | Low — basic entry, missing all validation |\n| WF-6 | Logout | None | N/A — session management only |\n\n---\n\n## WF-1 — Authentication & Session Setup\n\n**Goal:** Establish a valid session so the user can access patient data.\n\n**Compliance relevance:** Low. Authentication is infrastructure. Some ALLG items apply indirectly (ALLG799 user manual, ALLG824 change documentation).\n\n```mermaid\nflowchart TD\n    START([\"Launch Application\"])\n    START ==> CONN{\"Backend\\nReachable?\"}\n\n    CONN -->|\"No\"| CONN_ERR[\"Connection Error\\n(auto-retry)\"]\n    CONN_ERR -.->|\"Retry\"| CONN\n\n    CONN ==>|\"Yes\"| AUTH{\"Valid Session\\nExists?\"}\n\n    AUTH -->|\"No\"| LOGIN[\"User Logs In\\nvia Browser\"]\n    AUTH ==>|\"Yes\"| PROFILE[\"Resolve User Identity\\n& Load Profile\"]\n\n    LOGIN ==> LOGIN_RESULT{\"Login\\nSuccessful?\"}\n    LOGIN_RESULT ==>|\"Yes\"| PROFILE\n    LOGIN_RESULT -->|\"Failed\"| LOGIN\n\n    PROFILE ==> PROF_RESULT{\"Identity\\nConfirmed?\"}\n    PROF_RESULT ==>|\"Yes\"| READY([\"Session Ready\\n→ Home Page\"])\n    PROF_RESULT -->|\"Not Found\"| PROF_ERR[\"Identity Resolution Failed\"]\n```\n\n### Compliance Gaps in WF-1\n\n| Gap | Compliance Ref | Description |\n|-----|---------------|-------------|\n| No HÄEVG-ID management | ALLG657 | System should manage HÄEVG-ID per physician during profile resolution |\n| No VP-ID type management | ALLG1850 | System should manage VP-ID types (GP \"H\", specialist \"F\", care team \"B\") |\n| No VP-ID retrieval via HPM | ALLG1851, ALLG1852 | If physician has HÄEVG-ID but no VP-ID, system should retrieve via HPM |\n\n---\n\n## WF-2 — Select a Patient\n\n**Goal:** Set a patient in context so Scheins and Timeline entries can be loaded.\n\n**Compliance relevance:** Medium. gPRO displays patient data read-only (loaded from backend). Does not perform card reading or VSDM verification.\n\n```mermaid\nflowchart TD\n    START([\"Navigate to Patient List\"])\n    START ==> LOAD{\"Patients\\nLoaded?\"}\n\n    LOAD ==>|\"Yes\"| TABLE[\"Display Patient List\\n(name, DOB, insurance)\\n(P2-105, P2-200)\"]\n    LOAD -->|\"Empty\"| EMPTY[\"No Patients Found\"]\n    LOAD -->|\"Error\"| ERR[\"Load Error\"]\n\n    TABLE ==> SELECT[\"Select a Patient\"]\n\n    SELECT ==> CONTEXT[\"Patient in Context:\\n• Schein selection cleared\\n• Related data reloaded\"]\n\n    CONTEXT ==> DONE([\"Patient Selected\\n→ Ready for WF-3\"])\n```\n\n### Compliance Gaps in WF-2\n\ngPRO only displays pre-loaded patient data. All card reading, VSDM, and data entry happen in the web app.\n\n| Gap | Compliance Ref | Description |\n|-----|---------------|-------------|\n| No eGK/KVK card reading | KP2-100 | Patient data must be capturable from card terminals |\n| No legacy KVK rejection | KP2-101, KP2-121 | Legacy KVK must be rejected for statutory insured since 01/2015 |\n| No manual data transfer | KP2-102 | Manual transfer from rejected/mobile cards not supported |\n| No field-level controls | KP2-185 | Card data fields should distinguish official (read-only) vs user-editable |\n| No VSDM online verification | KP2-190 | VSDM proof status (FK 4136) must be captured |\n| No VSDM timestamp validation | KP2-191 | Timestamp must be validated against current quarter; under-18 auto fee-exempt |\n| No card read date capture | P2-135 | FK 4109 must be auto-captured, read-only |\n| No card read date propagation | P2-136, P2-150 | Re-read must update FK 4109 across all billing records |\n| No insurance coverage check | P2-140, P2-166 | Coverage validity must be verified; alert if expired |\n| No cost carrier resolution | P2-200, P2-210, P2-220, P2-230, P2-260 | Full cost carrier lifecycle (active/dissolved/merged/invalid IK) |\n| No duplicate patient prevention | KP2-300 | Must match card data against existing records |\n| No insurance change detection | KP2-310, P2-530, P2-535 | Changes must be detected, billing records split |\n| No gender/DOB validation | P2-470, P2-430 | All gender options (incl. diverse) and special DOB ranges |\n| No postal code validation | P2-460 | PLZ must be validated against master data |\n| No KT master data file support | PSDV654 | ehd file support required |\n\n---\n\n## WF-3 — Select a Schein\n\n**Goal:** Set a Schein (billing record) in context so Timeline entries are scoped to the correct billing case.\n\n**Compliance relevance:** Medium. gPRO displays Schein list and types. Does not create Scheins or enforce billing record rules.\n\n```mermaid\nflowchart TD\n    START([\"Navigate to Schein List\"])\n    START ==> PREREQ{\"Patient\\nSelected?\"}\n\n    PREREQ -->|\"No\"| NO_PAT[\"Prompt: Select a Patient First\"]\n    NO_PAT -.->|\"Go to Patient List\"| WF2[\"→ WF-2\"]\n\n    PREREQ ==>|\"Yes\"| LOAD{\"Scheins\\nLoaded?\"}\n\n    LOAD ==>|\"Yes\"| TABLE[\"Display Schein List\\n(type, treatment case,\\nquarter, status)\"]\n    LOAD -->|\"Empty\"| EMPTY[\"No Scheins for This Patient\"]\n    LOAD -->|\"Error\"| ERR[\"Load Error\"]\n\n    TABLE ==> SELECT[\"Select a Schein\"]\n\n    SELECT ==> CONTEXT[\"Schein in Context:\\n• Timeline reloaded\\n• Entry creation enabled\"]\n\n    CONTEXT ==> DONE([\"Schein Selected\\n→ Ready for WF-4 / WF-5\"])\n```\n\n### Compliance Gaps in WF-3\n\n| Gap | Compliance Ref | Description |\n|-----|---------------|-------------|\n| No billing record type selection on first card read | KP2-500 | Satzart 010x selection required on first read per quarter |\n| No multiple 010x records management | P2-501 | Multiple billing records per patient per quarter must be supported |\n| No TSS case marking | KP2-502, KP2-503 | TSS appointment cases must be marked and maintained separately |\n| No TSS referral code capture | KP2-504, KP2-505, KP2-507, KP2-508 | TSS Vermittlungscode, appointment date, referral source |\n| No TSS case completion | KP2-509, P2-510 | TSS Fallabschluss and data integrity |\n| No TSS surcharge calculation | KP2-513 | Time-graded surcharges (A/B/C/D) based on days between referral and appointment |\n| No quarter transition handling | P2-520, P2-521 | Quarter closure, initialization, and case carry-forward |\n| No insurance change within quarter | P2-530, P2-535, P2-540 | Billing record split on insurance/status change |\n| No referral case processing | KP2-560, KP2-561, KP2-562 | Muster 6/10 referral handling |\n| No preventive case marking | ABRD920 | Vorsorge-Behandlungsfall must be flagged |\n| No case type assignment | ABRD921, ABRD968 | Treatment case type rules |\n\n---\n\n## WF-4 — Browse Timeline Entries\n\n**Goal:** Review the clinical history for the active patient and schein.\n\n**Compliance relevance:** Low. Read-only display of existing documentation.\n\n```mermaid\nflowchart TD\n    START([\"Navigate to Timeline\"])\n    START ==> PREREQ{\"Patient +\\nSchein Selected?\"}\n\n    PREREQ -->|\"No\"| NO_PREREQ[\"Prompt: Select Patient\\nand Schein First\"]\n    NO_PREREQ -.->|\"Complete WF-2/WF-3\"| START\n\n    PREREQ ==>|\"Yes\"| LOAD{\"Entries\\nLoaded?\\n(ABRD659)\"}\n\n    LOAD ==>|\"Yes\"| TABLE[\"Display Timeline\\n(date | type | description | quarter)\"]\n    LOAD -->|\"Empty\"| EMPTY[\"No Entries Found\"]\n    LOAD -->|\"Error\"| ERR[\"Load Error\"]\n\n    TABLE ==> VIEW[\"View Entry Detail\"]\n\n    TABLE ==>|\"Create new\"| QE[\"Create Entry\\n→ WF-5\"]\n```\n\n### Compliance Gaps in WF-4\n\n| Gap | Compliance Ref | Description |\n|-----|---------------|-------------|\n| No structured patient documentation display | ABRD659 | Documentation exists as timeline but lacks structured clinical record format |\n| No service-to-diagnosis linkage display | P2-609, P10-029 | Timeline shows entries but no explicit linkage between services and diagnoses |\n| No audit trail for deletions | P2-603, P10-026 | Deleted entries should be audit-logged |\n| No permanent vs acute diagnosis distinction | P10-019, ABRD609 | No visual distinction or carry-forward management |\n| No diagnosis certainty display | P10-003 | V/G/A/Z qualifiers not shown on diagnosis entries |\n| No laterality display | P10-004 | R/L/B not shown on applicable diagnosis entries |\n\n---\n\n## WF-5 — Create a Timeline Entry\n\n**Goal:** Document a clinical event (diagnosis, service, or note) against the active patient and schein.\n\n**Compliance relevance:** **HIGH.** This is the core clinical documentation workflow. Most compliance gaps are here.\n\n**Prerequisite:** Patient selected (WF-2) AND Schein selected (WF-3).\n\n```mermaid\nflowchart TD\n    START([\"Create New Entry\\n(from Timeline)\"])\n    START ==> TYPE{\"Entry Type?\"}\n\n    TYPE ==>|\"Diagnosis\"| DIAG[\"Search ICD-10 Catalog\\n(P10-001)\"]\n    TYPE -->|\"Service\"| SVC[\"Search EBM Catalog\\n(P2-606)\"]\n    TYPE -->|\"Note\"| NOTE[\"Enter Free-Text Note\\n(P2-610, P10-024)\"]\n    TYPE -->|\"Cancel\"| CANCEL([\"Return to Timeline\"])\n\n    subgraph DiagFlow[\"Diagnosis Entry\"]\n        D_SEARCH[\"Search by Code or Description\\n(P10-001)\"]\n        D_RESULTS[\"Display Matching Codes\\n(code + description)\\n(P10-014, P10-030)\"]\n        D_SELECT[\"Select Diagnosis Code\"]\n\n        D_SEARCH ==>|\"Results found\"| D_RESULTS\n        D_RESULTS ==> D_SELECT\n    end\n\n    DIAG ==> D_SEARCH\n\n    subgraph SvcFlow[\"Service Entry\"]\n        S_SEARCH[\"Search by EBM Code or Name\\n(P2-606)\"]\n        S_RESULTS[\"Display Matching Services\\n(code + name)\"]\n        S_SELECT[\"Select Service Code\"]\n\n        S_SEARCH ==>|\"Results found\"| S_RESULTS\n        S_RESULTS ==> S_SELECT\n    end\n\n    SVC ==> S_SEARCH\n\n    D_SELECT ==> SUBMIT[\"Save Entry\\n(P2-600)\"]\n    S_SELECT ==> SUBMIT\n    NOTE ==> SUBMIT\n\n    SUBMIT ==> RESULT{\"Saved?\"}\n    RESULT ==>|\"Yes\"| DONE([\"Entry Created\\n→ Timeline Updated\"])\n    RESULT -->|\"Error\"| ERR[\"Save Error\"] -.->|\"Retry\"| START\n```\n\n### Compliance Gaps in WF-5 — Diagnosis Entry\n\n**Critical (billing-blocking):**\n\n| Gap | Compliance Ref | Description |\n|-----|---------------|-------------|\n| No Diagnosensicherheit (V/G/A/Z) | P10-003, ICD-GM.1-4 | Certainty qualifier must be selectable — KV rejects without it |\n| No terminal code enforcement | P10-008, ABRD611, ABRD612 | Non-terminal (group) codes must trigger warning; confirmed diagnoses ('G') require terminal codes |\n| No ICD validity check against catalog | P10-002, ABRD679 | Code must be validated against current annual catalog version |\n| No diagnoses required per §295 | ABRD608 | At least one diagnosis must be present per billing case |\n\n**Required (audit-relevant):**\n\n| Gap | Compliance Ref | Description |\n|-----|---------------|-------------|\n| No laterality (R/L/B) | P10-004, ICD-GM.7 | Laterality must be selectable for applicable codes |\n| No cross-reference codes (Kreuz-Stern) | P10-005 | Dagger/asterisk pairing must be supported |\n| No exclamation mark code validation | P10-006 | Cannot stand alone — requires primary code |\n| No gender plausibility check | P10-010, ICD-GM.14 | Gender-specific codes must be validated against patient |\n| No age plausibility check | P10-011, ICD-GM.15 | Age-specific codes must be validated against patient |\n| No coding rules (SDKRW) execution | KP10-018, ICD-GM.40-47 | Cross-reference warnings must be applied |\n| No SDICD validation | KP10-016 | SDICD rules must be applied during entry |\n| No retired/deleted code handling | P10-009 | Retired codes must flag with replacement suggestion |\n| No permanent diagnosis management | P10-019, P10-020, ABRD609 | Permanent vs acute distinction and quarter carry-forward |\n| No acute-as-permanent warning | P10-021, ABRD514, ABRD969 | Warning when acute diagnosis marked as permanent |\n| No suspected diagnosis review | P10-022, ABRD887 | Warning when 'V' persists across multiple quarters |\n| No 'Z' marker warning for acute | ABRD786 | 'Z' (Zustand nach) must not be used for acute diseases |\n| No UUU restriction | P10-028, ABRD613 | \"UUU\" only with Auftragsleistung |\n| No diagnosis date capture | P10-023 | Date must be captured and validated |\n| No diagnosis deletion audit | P10-026 | Deletion must be audit-logged |\n| No diagnosis-to-service linkage | P10-029, P2-609 | Explicit linkage for billing justification |\n| No code 0000 (APK) prompt | ABRD456 | System must prompt when no Arzt-Patienten-Kontakt code |\n\n### Compliance Gaps in WF-5 — Service Entry\n\n**Critical (billing-blocking):**\n\n| Gap | Compliance Ref | Description |\n|-----|---------------|-------------|\n| No EBM gender check | #306 (KBV EBM) | Gender-restricted codes must warn on wrong patient gender |\n| No EBM age check | #307 (KBV EBM) | Age-restricted codes must warn when outside range |\n| No EBM frequency limit | #308 (KBV EBM) | Frequency limits per reference period must be enforced |\n| No EBM exclusion rules | #314 (KBV EBM), P2-607 | Same-day/same-case exclusions must be validated |\n| No ICD prerequisite check | #309 (KBV EBM) | Services requiring ICD must block without diagnosis |\n\n**Required (audit-relevant):**\n\n| Gap | Compliance Ref | Description |\n|-----|---------------|-------------|\n| No KV region filter | ABRD603, KP6-809 | Service lookup must filter by KV region |\n| No IK assignment filter | ABRD606 | Service lookup must filter by IK |\n| No IK group filter | ABRD830 | Service lookup must filter by IK group |\n| No doctor specialty gate | #317 (KBV EBM), EBM.4 | Doctor specialty must match EBM code requirements |\n| No service time capture | P2-601 | Time-based codes require time documentation |\n| No service frequency documentation | P2-602 | Mehrfacherbringung must be documentable |\n| No service deletion audit | P2-603 | Deletion must be audit-logged with reason |\n| No OPS code support | ABRD991, ABRD992, P2-617 | OPS codes mandatory when applicable, validity checked |\n| No material cost documentation | ABRD994, P2-618 | Sachkosten with manufacturer/supplier details |\n| No billing justification text | ABRD995, P2-619 | Required for flagged services |\n| No service deletion protection | ABRD607 | Submitted services must be protected from deletion |\n| No contract-specific service catalog | ABRD602, KP6-801 | Services must be filtered by contract |\n| No substitute doctor marking | #313 (KBV EBM), KP6-800 | Substitute LANR required |\n| No TSS surcharge calculation | #321 (KBV TSS), KP2-513 | A/B/C/D surcharges based on appointment timing |\n| No EBM point value display | P2-620 | Service point values from current catalog |\n| No service prerequisites check | P2-608 | Voraussetzungen must be checked |\n\n---\n\n## WF-6 — Logout\n\n**Goal:** End the current session and return to login.\n\n**Compliance relevance:** None. Session management only.\n\n```mermaid\nflowchart TD\n    START([\"Select Logout\"])\n    START ==> END[\"End Session\\n(credentials + context cleared)\"]\n    END ==> LOGIN([\"Return to Login\\n→ WF-1\"])\n```\n\n### Compliance Gaps in WF-6\n\nNone identified. Session management is not directly covered by compliance obligations.\n\n---\n\n## Consolidated Gap Summary\n\n### By Priority\n\n| Priority | Count | Description |\n|----------|-------|-------------|\n| **Critical (billing-blocking)** | 9 | Without these, entries will be rejected at KV billing |\n| **Required (audit-relevant)** | 30+ | Missing = Prüfmodul warnings during billing |\n| **Infrastructure (web app scope)** | 60+ | Card reading, VSDM, billing submission — outside gPRO |\n\n### By Workflow\n\n| Workflow | Compliance IDs Mapped | Gaps Found | Severity |\n|----------|----------------------|------------|----------|\n| WF-1 Auth | 0 mapped | 3 (ALLG) | Low |\n| WF-2 Patient | ~4 display-only | 15+ | Medium — all entry/validation missing |\n| WF-3 Schein | ~2 display-only | 11+ | Medium — no creation/TSS/quarter rules |\n| WF-4 Timeline | ~1 (ABRD659) | 6 | Medium — no structured display |\n| WF-5 Entry | ~5 (basic search/entry) | **40+** | **HIGH — core gaps here** |\n| WF-6 Logout | 0 | 0 | None |\n\n### What This Means for CorePVS\n\n1. **pvs-base-1 (gPRO) covers ~3% of V1 KV compliance** — mostly basic search and display\n2. **WF-5 (Create Entry) is the highest-value reuse target** — the search/select/submit pattern exists, but needs a validation layer added between selection and submission\n3. **WF-2 and WF-3 patterns are reusable** — list/select/context-setting works, but needs card reading and data entry added upstream\n4. **WF-1 and WF-6 are reusable as-is** — authentication and logout have no compliance requirements beyond infrastructure\n5. **File B (master compliance workflows) remains the blueprint** — this file only audits what pvs-base-1 does today\n","mtime":1773976473000,"folder":"AUDIT","navLabel":null}];
+const SCREENSHOTS = {};
+const NAV_SECTIONS = [{"label":"Design Pipeline","isSingleItem":true,"docIndices":[0]},{"label":"AUDIT","isSingleItem":false,"docIndices":[1,2]}];
+
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'default',
+  securityLevel: 'loose',
+  flowchart: { htmlLabels: true, curve: 'basis' },
+});
+
+let currentIndex = -1;
+let tocVisible = false;
+let diagramsOnly = false;
+let sortMode = 'modified';
+let sortedIndices = [];
+let folderState = {};
+
+function buildSortedIndices() {
+  sortedIndices = DOCUMENTS.map(function(_, i) { return i; });
+  if (sortMode === 'name') {
+    sortedIndices.sort(function(a, b) {
+      return DOCUMENTS[a].filename.localeCompare(DOCUMENTS[b].filename);
+    });
+  } else {
+    sortedIndices.sort(function(a, b) {
+      return DOCUMENTS[b].mtime - DOCUMENTS[a].mtime;
+    });
+  }
+}
+
+function toggleSort() {
+  sortMode = sortMode === 'modified' ? 'name' : 'modified';
+  document.getElementById('sort-label').textContent = sortMode === 'modified' ? 'Modified' : 'Name';
+  populateSidebar();
+}
+
+function makeDocBtn(docIndex) {
+  const doc = DOCUMENTS[docIndex];
+  const btn = document.createElement('button');
+  btn.className = doc.folder ? 'doc-item doc-item-nested' : 'doc-item';
+  if (docIndex === currentIndex) btn.classList.add('active');
+  btn.textContent = doc.navLabel || doc.filename.replace(/\.md$/, '').replace(/\.html$/, '');
+  btn.title = doc.filename;
+  btn.onclick = function() { selectDocument(docIndex); };
+  return btn;
+}
+
+function populateSidebar() {
+  buildSortedIndices();
+  const list = document.getElementById('doc-list');
+  list.innerHTML = '';
+  NAV_SECTIONS.forEach(function(section) {
+    var sectionDocIndices = sortedIndices.filter(function(docIndex) {
+      return section.docIndices.indexOf(docIndex) !== -1;
+    });
+    if (sectionDocIndices.length === 0) return;
+    if (section.isSingleItem) {
+      list.appendChild(makeDocBtn(sectionDocIndices[0]));
+      return;
+    }
+    var expanded = folderState[section.label] !== false;
+    var header = document.createElement('div');
+    header.className = 'folder-header';
+    header.innerHTML = '<span class="folder-toggle">' + (expanded ? '&#9662;' : '&#9656;') + '</span><span class="folder-name">' + section.label + '</span>';
+    header.onclick = function() { folderState[section.label] = !expanded; populateSidebar(); };
+    list.appendChild(header);
+    if (expanded) {
+      sectionDocIndices.forEach(function(docIndex) {
+        list.appendChild(makeDocBtn(docIndex));
+      });
+    }
+  });
+  return;
+  // Root documents
+  sortedIndices.filter(function(i) { return !DOCUMENTS[i].folder; }).forEach(function(docIndex) {
+    list.appendChild(makeDocBtn(docIndex));
+  });
+  // Subfolder sections
+  var folderNames = [];
+  DOCUMENTS.forEach(function(d) { if (d.folder && folderNames.indexOf(d.folder) === -1) folderNames.push(d.folder); });
+  folderNames.sort();
+  folderNames.forEach(function(folder) {
+    var expanded = folderState[folder] !== false;
+    var header = document.createElement('div');
+    header.className = 'folder-header';
+    header.innerHTML = '<span class="folder-toggle">' + (expanded ? '▾' : '▸') + '</span><span class="folder-name">' + folder + '</span>';
+    header.onclick = function() { folderState[folder] = !expanded; populateSidebar(); };
+    list.appendChild(header);
+    if (expanded) {
+      sortedIndices.filter(function(i) { return DOCUMENTS[i].folder === folder; }).forEach(function(docIndex) {
+        list.appendChild(makeDocBtn(docIndex));
+      });
+    }
+  });
+}
+
+function selectDocument(index) {
+  currentIndex = index;
+  populateSidebar();
+  renderDocument();
+}
+
+function generateTocHtml(content, isHtml) {
+  var match;
+  var items = [];
+  if (isHtml) {
+    var htmlHeadingRegex = /<h([1-4])[^>]*>([\s\S]*?)<\/h\1>/gi;
+    while ((match = htmlHeadingRegex.exec(content)) !== null) {
+      var level = parseInt(match[1]);
+      var text = match[2].replace(/<[^>]+>/g, '').trim();
+      var id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      items.push({ level: level, text: text, id: id });
+    }
+  } else {
+    var headingRegex = /^(#{1,4})\s+(.+)$/gm;
+    while ((match = headingRegex.exec(content)) !== null) {
+      var level = match[1].length;
+      var text = match[2].trim();
+      var id = text.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      items.push({ level: level, text: text, id: id });
+    }
+  }
+  if (items.length === 0) return '';
+  let html = '<div class="toc">';
+  html += '<div class="toc-title">Table of Contents</div>';
+  html += '<ul class="toc-list">';
+  items.forEach(function(item) {
+    const cls = 'toc-h' + item.level;
+    html += '<li class="' + cls + '"><a href="#' + item.id + '">' + item.text + '</a></li>';
+  });
+  html += '</ul></div>';
+  return html;
+}
+
+function renderDocument() {
+  if (currentIndex < 0 || currentIndex >= DOCUMENTS.length) return;
+  const doc = DOCUMENTS[currentIndex];
+  const main = document.getElementById('main-content');
+
+  if (diagramsOnly) {
+    renderDiagramsOnly(doc, main);
+    return;
+  }
+
+  var isHtml = doc.filename.endsWith('.html');
+  var html = isHtml ? doc.content : marked.parse(doc.content);
+  // Add IDs to headings for TOC linking (markdown only)
+  if (!isHtml) {
+    html = html.replace(/<(h[1-4])(?=[^>]*>)((?:(?!\bid=)[^>])*)>(.*?)<\/\1>/gi, function(match, tag, attrs, text) {
+      if (match.indexOf('id=') !== -1) return match;
+      var id = text.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      return '<' + tag + attrs + ' id="' + id + '">' + text + '</' + tag + '>';
+    });
+  }
+
+  var tocHtml = '';
+  if (tocVisible && !isHtml) {
+    tocHtml = generateTocHtml(doc.content, isHtml);
+  }
+
+  if (isHtml) {
+    // Avoid CSS collisions (and weird layout) by rendering HTML artifacts in an iframe.
+    main.style.padding = '0';
+    main.style.overflow = 'hidden';
+    main.innerHTML = '<iframe class="doc-iframe" id="doc-iframe" title="Document" style="width:100%;height:100%;border:0;display:block;"></iframe>';
+    var frame = document.getElementById('doc-iframe');
+    var srcdoc = doc.content;
+    if (doc.filename === 'design-pipeline.html') {
+      var normalizeCss = '<style>html,body{margin:0!important;padding:0!important;} .page{padding-top:0!important;} .topbar{margin-bottom:24px!important;}</style>';
+      if (/<head[^>]*>/i.test(srcdoc)) {
+        srcdoc = srcdoc.replace(/<head[^>]*>/i, function(m) { return m + "\n" + normalizeCss; });
+      } else {
+        srcdoc = normalizeCss + srcdoc;
+      }
+    }
+    frame.srcdoc = srcdoc;
+    return;
+  }
+
+  // Reset any iframe-specific inline styles
+  main.style.padding = '';
+  main.style.overflow = '';
+
+  main.innerHTML = tocHtml + '<div class="content">' + html + '</div>';
+  // Clean up modals from previous document
+  document.querySelectorAll('body > .detail-panel').forEach(function(m) { m.remove(); });
+  // Scripts inserted via innerHTML do not execute — re-create them
+  var scripts = main.querySelectorAll('script');
+  scripts.forEach(function(old) {
+    var s = document.createElement('script');
+    s.textContent = old.textContent;
+    old.parentNode.replaceChild(s, old);
+  });
+  // Move modals out of .content to body so they overlay everything
+  main.querySelectorAll('.detail-panel').forEach(function(m) { document.body.appendChild(m); });
+  // Intercept links to .md files — navigate in-app instead of opening the file
+  main.querySelectorAll('a[href$=".md"]').forEach(function(link) {
+    var target = link.getAttribute('href');
+    var idx = DOCUMENTS.findIndex(function(d) { return d.filename === target; });
+    if (idx !== -1) {
+      link.href = 'javascript:void(0)';
+      link.onclick = function(e) { e.preventDefault(); selectDocument(idx); };
+    }
+  });
+  renderMermaidDiagrams();
+}
+
+function renderDiagramsOnly(doc, main) {
+  const bt = String.fromCharCode(96, 96, 96);
+  const blockRegex = new RegExp(bt + 'mermaid\\n([\\s\\S]*?)' + bt, 'g');
+  const headingRegex = /^#{1,4}\s+(.+)$/m;
+  const lines = doc.content.split('\n');
+  let diagrams = [];
+  let i = 0;
+  while (i < lines.length) {
+    if (lines[i].trimEnd() === bt + 'mermaid') {
+      // Find nearest preceding heading
+      let heading = '';
+      for (let j = i - 1; j >= 0; j--) {
+        const hm = lines[j].match(/^(#{1,4})\s+(.+)$/);
+        if (hm) { heading = hm[2].trim(); break; }
+      }
+      // Collect block content
+      let codeLines = [];
+      i++;
+      while (i < lines.length && lines[i].trimEnd() !== bt) {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      const codeStr = codeLines.join('\n');
+      const yamlMatch = codeStr.match(/^---[\r\n]+title:\s*(.+?)[\r\n]+---/);
+      const diagramTitle = yamlMatch ? yamlMatch[1].trim() : '';
+      diagrams.push({ heading: heading, diagramTitle: diagramTitle, code: codeStr });
+    }
+    i++;
+  }
+
+  if (diagrams.length === 0) {
+    main.innerHTML = '<div class="empty-state">No diagrams found in this document</div>';
+    return;
+  }
+
+  let html = '<div class="content">';
+  diagrams.forEach(function(d, idx) {
+    const label = d.diagramTitle || d.heading;
+    if (label) {
+      html += '<h2>' + label + '</h2>';
+    }
+    html += '<div class="mermaid-container" id="diagonly-' + idx + '"></div>';
+  });
+  html += '</div>';
+  main.innerHTML = html;
+
+  diagrams.forEach(function(d, idx) {
+    const container = document.getElementById('diagonly-' + idx);
+    mermaid.render('diagonly-svg-' + idx, d.code).then(function(result) {
+      container.innerHTML = result.svg;
+    }).catch(function(err) {
+      const errDiv = document.createElement('div');
+      errDiv.className = 'mermaid-error';
+      errDiv.innerHTML = '<pre>' + d.code.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</pre>';
+      container.replaceWith(errDiv);
+    });
+  });
+}
+
+function renderMermaidDiagrams() {
+  const blocks = document.querySelectorAll('code.language-mermaid');
+  let diagramIndex = 0;
+  blocks.forEach(function(block) {
+    const pre = block.parentElement;
+    const code = block.textContent;
+    const container = document.createElement('div');
+    container.className = 'mermaid-container';
+    const id = 'mermaid-diagram-' + diagramIndex++;
+    container.id = id;
+    pre.parentNode.replaceChild(container, pre);
+    mermaid.render(id + '-svg', code).then(function(result) {
+      container.innerHTML = result.svg;
+    }).catch(function(err) {
+      const errDiv = document.createElement('div');
+      errDiv.className = 'mermaid-error';
+      errDiv.innerHTML = '<pre>' + code.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</pre>';
+      container.replaceWith(errDiv);
+    });
+  });
+}
+
+function toggleToc() {
+  tocVisible = !tocVisible;
+  document.getElementById('btn-toc').classList.toggle('active', tocVisible);
+  renderDocument();
+}
+
+function toggleDiagrams() {
+  diagramsOnly = !diagramsOnly;
+  document.getElementById('btn-diagrams').classList.toggle('active', diagramsOnly);
+  renderDocument();
+}
+
+window.showScreenshot = function(nodeId) {
+  const src = SCREENSHOTS[nodeId];
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalBody = document.getElementById('modal-body');
+  if (!src) {
+    modalTitle.textContent = 'Screenshot not found';
+    modalBody.innerHTML = '<p style="color:#a3a3a3;font-size:13px;">No screenshot available for node: ' + nodeId + '</p>';
+  } else {
+    modalTitle.textContent = nodeId;
+    modalBody.innerHTML = '<img src="' + src + '" style="max-width:100%;height:auto;display:block;" />';
+  }
+  modal.style.display = 'flex';
+};
+
+function closeModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  document.getElementById('modal').style.display = 'none';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('modal').style.display = 'none';
+  }
+});
+
+populateSidebar();
+if (DOCUMENTS.length > 0) { selectDocument(0); }
+  </script>
+</body>
+</html>

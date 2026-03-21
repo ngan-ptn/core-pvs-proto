@@ -7,7 +7,7 @@
 
 **See also:**
 - Design system: [tini-library](https://github.com/tini-works/tini-library)
-- Copy & tone: `../../guidelines/copy-guidelines.md`
+- Copy & tone: [copy-guideline.md](../guidelines/copy-guideline.md)
 - Domain glossary: [domain-glossary.md](domain-glossary.md)
 
 ---
@@ -58,7 +58,7 @@ MVZs (Medizinische Versorgungszentren) face complexity that single-practice PVS 
 
 ## Competitive Landscape
 
-Primary positioning: clear differentiation from single-practice PVS. Full analysis in [competitive-landscape.md](../product-context/RSYN260316-competitive-landscape.md).
+Primary positioning: clear differentiation from single-practice PVS. Full analysis in [RSYN260320-competitive-landscape.md](../discover/RSYN260320-competitive-landscape.md).
 
 ### What existing PVS systems offer
 
@@ -197,7 +197,7 @@ Core tasks:
 
 ## Compliance Inventory
 
-All compliance obligations are tracked in the compliance inventory. See [compliance-inventory.md](../compliances/compliance-inventory.md) for the full phase-by-phase breakdown, requirement counts, and confirmation status across all 604 items.
+All compliance obligations are tracked in the compliance inventory. See [compliance-inventory.md](../discover/compliance-inventory.md) for the full phase-by-phase breakdown, requirement counts, and confirmation status across all 604 items.
 
 
 ---

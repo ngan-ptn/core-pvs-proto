@@ -1,0 +1,15 @@
+[
+  {
+    "url": "https://example.com",
+    "output": "docs/screenshots/example-home.png",
+    "waitFor": "text=Example Domain",
+    "delay": 500,
+    "fullPage": true,
+    "viewport": "1440x900"
+  },
+  {
+    "url": "https://example.com",
+    "output": "docs/screenshots/example-home-tight.png",
+    "viewport": "1280x720"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "nodeId": "1239:27454",
+    "frameName": ".Mobile card reader",
+    "fileName": "01-mobile-card-reader-1239_27454.png",
+    "filePath": "/Users/nganpham/core-pvs-proto/figma-exports/mobile-card-reader-v2/01-mobile-card-reader-1239_27454.png"
+  },
+  {
+    "nodeId": "1253:30636",
+    "frameName": ".Mobile card reader",
+    "fileName": "02-mobile-card-reader-02-1253_30636.png",
+    "filePath": "/Users/nganpham/core-pvs-proto/figma-exports/mobile-card-reader-v2/02-mobile-card-reader-02-1253_30636.png"
+  },
+  {
+    "nodeId": "1239:27610",
+    "frameName": "Create private schein",
+    "fileName": "03-create-private-schein-1239_27610.png",
+    "filePath": "/Users/nganpham/core-pvs-proto/figma-exports/mobile-card-reader-v2/03-create-private-schein-1239_27610.png"
+  },
+  {
+    "nodeId": "1255:37194",
+    "frameName": "Create KV schein",
+    "fileName": "04-create-kv-schein-1255_37194.png",
+    "filePath": "/Users/nganpham/core-pvs-proto/figma-exports/mobile-card-reader-v2/04-create-kv-schein-1255_37194.png"
+  },
+  {
+    "nodeId": "1499:25446",
+    "frameName": "Dropdown",
+    "fileName": "05-dropdown-1499_25446.png",
+    "filePath": "/Users/nganpham/core-pvs-proto/figma-exports/mobile-card-reader-v2/05-dropdown-1499_25446.png"
+  },
+  {
+    "nodeId": "1499:25467",
+    "frameName": "Dropdown",
+    "fileName": "06-dropdown-02-1499_25467.png",
+    "filePath": "/Users/nganpham/core-pvs-proto/figma-exports/mobile-card-reader-v2/06-dropdown-02-1499_25467.png"
+  }
+]
