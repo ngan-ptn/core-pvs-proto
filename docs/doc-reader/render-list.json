@@ -1,10 +1,18 @@
 {
   "title": "Document Reader",
+  "theme": "classic",
   "sections": [
     {
       "label": "Design Pipeline",
+      "file": "docs/discover/design-pipeline.html"
+    },
+    {
+      "label": "Prescription Unified",
       "files": [
-        "docs/artifacts/design-pipeline.html"
+        "docs/artifacts/AUDIT260322-prescription-pvs-base.md",
+        "docs/artifacts/FLOW260322-prescription-unified-workspace.md",
+        "docs/artifacts/SCRN260322-prescription-unified-workspace.md",
+        "docs/artifacts/WIRE260322-prescription-unified-workspace.md"
       ]
     },
     {

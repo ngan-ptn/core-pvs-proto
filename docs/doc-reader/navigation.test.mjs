@@ -28,7 +28,7 @@ test('single-file sections render as direct menu items in manifest order', () =>
   const html = readFileSync(outputPath, 'utf8');
   const renderList = JSON.parse(readFileSync(manifestPath, 'utf8'));
   const documents = extractJsonBetween(html, 'const DOCUMENTS = ', ';\nconst SCREENSHOTS = ');
-  const navSections = extractJsonBetween(html, 'const NAV_SECTIONS = ', ';\n\nmermaid.initialize({');
+  const navSections = extractJsonBetween(html, 'const NAV_SECTIONS = ', ';\n\nconst THEME_NAME = ');
 
   assert.equal(navSections.length, renderList.sections.length);
   assert.deepEqual(
@@ -40,24 +40,24 @@ test('single-file sections render as direct menu items in manifest order', () =>
   assert.equal(documents[0].navLabel, renderList.sections[0].label);
 });
 
-test('doc reader matches the reference doc-reader visual tokens', () => {
+test('multi-file sections are rendered as collapsible groups', () => {
   execFileSync(process.execPath, [buildScriptPath], { stdio: 'ignore' });
 
   const html = readFileSync(outputPath, 'utf8');
+  const navSections = extractJsonBetween(html, 'const NAV_SECTIONS = ', ';\n\nconst THEME_NAME = ');
 
-  assert.ok(html.includes("background: #f8fafb;"));
-  assert.ok(html.includes("color: #1a3a47;"));
-  assert.ok(html.includes("family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500"));
-  assert.ok(html.includes(".sidebar-label"));
-  assert.ok(html.includes("color: #5a8fa3;"));
+  assert.equal(navSections[1].isSingleItem, false);
+  assert.ok(navSections[1].docIndices.length >= 2);
 });
 
-test('sidebar header uses \"Documents\"', () => {
+test('theme is loaded from render-list.json', () => {
   execFileSync(process.execPath, [buildScriptPath], { stdio: 'ignore' });
 
   const html = readFileSync(outputPath, 'utf8');
 
-  assert.ok(html.includes('<div class="sidebar-label">Documents</div>'));
+  assert.ok(html.includes('const THEME_NAME = "classic";'));
+  assert.ok(html.includes('--bg-app: #f8fafb;'));
+  assert.ok(html.includes('family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500'));
 });
 
 test('folder toggle glyphs are emitted with encoding-safe HTML entities', () => {
@@ -69,4 +69,15 @@ test('folder toggle glyphs are emitted with encoding-safe HTML entities', () => 
   assert.ok(html.includes("&#9656;"));
   assert.ok(!html.includes("â–¾"));
   assert.ok(!html.includes("â–¸"));
+});
+
+test('active navigation items keep a 16px horizontal inset', () => {
+  execFileSync(process.execPath, [buildScriptPath], { stdio: 'ignore' });
+
+  const html = readFileSync(outputPath, 'utf8');
+
+  assert.match(
+    html,
+    /\.doc-item\.active\s*\{[\s\S]*width:\s*calc\(100% - 32px\);[\s\S]*margin:\s*0 16px;[\s\S]*background:\s*var\(--bg-selected\);[\s\S]*\}/,
+  );
 });

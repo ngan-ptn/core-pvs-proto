@@ -1,3 +1,8 @@
+---
+description: Auto-map compliance obligations to workflow triggers and UX coverage (coverage matrix + gap table)
+argument-hint: [WORKFLOW="paste flow steps or link"] [COMPLIANCE_INVENTORY="paste normalized compliance JSON"] [SCOPE_NOTES="optional constraints"]
+---
+
 # Compliance Auto-Mapping Engine
 
 ## Purpose

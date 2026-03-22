@@ -1,0 +1,14 @@
+:root {
+  --bg-app: #0b1220;
+  --bg-surface: #0f172a;
+  --bg-hover: #172036;
+  --bg-selected: #1f2b44;
+  --line-soft: #22314f;
+  --line-strong: #2f4269;
+  --text-strong: #f8fafc;
+  --text-primary: #dbe9ff;
+  --text-accent: #8db8ff;
+  --text-muted: #7f96bf;
+  --toggle-track: #273659;
+  --toggle-track-active: #4f74d1;
+}

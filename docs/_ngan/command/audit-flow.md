@@ -27,11 +27,23 @@ Instructions:
 - Do NOT jump to UI structure or components yet.
 
 Output format:
-1. Flow summary (bullet list)
-2. Screen list
-3. Action list (user vs system)
-4. State list
-5. Branches and edge cases
+Preferred output structure:
+1. Flow summary as a Mermaid flow diagram
+2. Screen map with related user actions, system actions, and states grouped per screen
+3. Journey or state diagram as Mermaid when the workflow is multi-step, stateful, or branched
+4. Branches and edge cases
+5. Audit conclusion
+
+Output guidance:
+- Prefer grouped structure over separate flat lists when screens, actions, and states are closely related.
+- If the workflow is small and linear, you may simplify:
+  - omit the journey or state diagram
+  - keep the screen map concise
+- If the workflow is large, branched, or spans multiple technical layers, include both:
+  - a high-level Mermaid flow summary
+  - a Mermaid journey or state diagram
+- Keep the audit grounded in the reference system as-is.
+- Do not redesign the future-state flow in this step.
 
 Workflow: $WORKFLOW
 Scope notes: $SCOPE_NOTES

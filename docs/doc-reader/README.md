@@ -23,34 +23,40 @@ npx serve docs/doc-reader
 
 ### Add or remove documents
 
-Edit `render-list.json` to control which files appear and how they are grouped:
+Edit `render-list.json` to control style, files, and left-navigation grouping:
 
 ```json
 {
   "title": "Compliance Reader",
+  "theme": "classic",
   "sections": [
     {
       "label": "Discover",
-      "files": [
-        "docs/discover/FLOW260318-master-compliance-workflows.md"
-      ]
+      "file": "docs/discover/FLOW260318-master-compliance-workflows.md"
     },
     {
       "label": "garrioPRO",
       "files": [
         "garrioPRO/FLOW260319-gpro-user-workflow-detail.md"
       ]
+    },
+    {
+      "label": "Artifacts",
+      "folder": "docs/artifacts"
     }
   ]
 }
 ```
 
 - **title** — displayed in the top bar and browser tab
-- **sections** — each becomes a collapsible group in the sidebar
-- **files** — paths relative to the `docs/doc-reader/` folder
+- **theme** — visual preset (`classic` or `shell`)
+- **sections** — each section uses exactly one source type:
+- `file` — single file, rendered as direct menu-item on Left Nav
+- `files` — explicit list of files, rendered as expandable/collapsible section
+- `folder` — all `*.md` and `*.html` files in that folder, rendered as expandable/collapsible section
 
 Use forward slashes in JSON paths, even on Windows: `docs/artifacts/file.html`
-If a section resolves to exactly one file, its label becomes a direct left-nav menu item.
+For `files`/`folder` sections, the section label becomes a collapsible group.
 Section order in `render-list.json` is preserved in the left navigation.
 
 Then rebuild with `pnpm dev:doc-reader`.
@@ -59,6 +65,7 @@ Then rebuild with `pnpm dev:doc-reader`.
 
 - Files starting with `_` are excluded from rendering (use for drafts/notes)
 - `README.md` and `index.html` are always excluded
+- Folder sources only include `.md` and `.html`
 
 ### Features
 

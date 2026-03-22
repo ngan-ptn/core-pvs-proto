@@ -279,6 +279,10 @@ flowchart TD
 
 ## 15. Cross-Tier Dependency Chain
 
+This section captures **design dependencies** so we can sequence design work to minimize rework.
+
+### 15A. Screen-level foundation chain (as-is)
+
 These foundation surfaces cascade layout to all dependent screens.
 
 ```mermaid
@@ -291,3 +295,64 @@ flowchart TD
     PATIENT -.->|"extends to Phases 1.5, 1.8, 2A.1-2A.6"| PAT_EXT(["Clinical Extensions"])
     SCHEIN -.->|"extends to Phases 2A.6, 2B.1-2B.8"| SCH_EXT(["Billing Extensions"])
 ```
+
+### 15B. Workflow-level dependency chain (proposed)
+
+Workflows above are not independent. They share **contexts** (patient, billing case/Schein, contracts, master data, permissions) that create design coupling.
+
+```mermaid
+flowchart LR
+    WF12["WF-12 Admin: Practice Administration\n(System Status Bar, users/rights, settings shell)"] -->|"permissions + navigation shell"| WF1["WF-1 MFA: Check-In & Registration"]
+    WF12 -->|"permissions + navigation shell"| WF4["WF-4 Doctor: Clinical Documentation\n(Patient Record View)"]
+    WF12 -->|"permissions + navigation shell"| WF5["WF-5 Doctor: Service & Billing Documentation\n(Schein / Billing Record View)"]
+    WF12 -->|"permissions + navigation shell"| WF10["WF-10 Doctor: Billing & Submission\n(Billing Dashboard KV/HZV/ASV)"]
+
+    WF1 -->|"identified/created patient context"| WF4
+    WF1 -->|"optional patient context"| WF3["WF-3 MFA: Forms & Certificates"]
+    WF4 -->|"patient context"| WF6["WF-6 Doctor: Prescriptions (Core)"]
+    WF6 -->|"extends prescribing variants"| WF7["WF-7 Doctor: Prescriptions (Specialty)"]
+    WF4 -->|"patient context"| WF8["WF-8 Doctor: Forms & Certificates"]
+    WF4 -->|"patient context"| WF9["WF-9 Doctor: Chronic Care Programs"]
+    WF4 -->|"patient context"| WF11["WF-11 Doctor: ePA & Document Exchange"]
+
+    WF4 -->|"creates/anchors billing case context"| WF5
+    WF5 -->|"provides Schein + quarter context"| WF10
+    WF2["WF-2 MFA: Insurance & Enrollment (HZV/FAV)"] -->|"contract enrollment context"| WF10
+
+    WF14["WF-14 Admin: Data Import & Sync\n(ICode, catalogs, rule/master data)"] -.->|"enables lookups + validation"| WF6
+    WF14 -.->|"enables billing catalogs + validations"| WF10
+    WF14 -.->|"enables program forms + submissions"| WF9
+```
+
+#### Dependency summary (workflow → depends on)
+
+| Workflow | Depends on (design context) | Why it matters for design |
+|---|---|---|
+| **WF-12 Practice Administration** | — | Defines the **global shell** (status bar, settings entry points) and **RBAC** surfaces everything else lives under |
+| **WF-1 Check-In & Registration** | WF-12 | Needs global shell + permissions; creates the **patient context** that feeds downstream clinical work |
+| **WF-4 Clinical Documentation** | WF-12, (often WF-1) | Patient Record is a **hub surface**; many later screens are panels/dialogs launched from it |
+| **WF-5 Service & Billing Documentation** | WF-12, WF-4 | Schein view depends on patient hub context and becomes the anchor for billing lifecycle |
+| **WF-10 Billing & Submission** | WF-12, WF-5, (partly WF-2), WF-14 | Billing dashboard UI depends on Schein/quarter context and needs validations + catalogs |
+| **WF-6 Prescriptions (Core)** | WF-12, WF-4, WF-14 | Needs patient hub context + drug/coding master data for search and safety dialogs |
+| **WF-7 Prescriptions (Specialty)** | WF-6 | Reuses the prescribing workspace patterns; adds specialty variants |
+| **WF-3 MFA Forms & Certificates** | WF-12, (often WF-1) | Printing flows can be designed early, but feel “real” once patient identity is in place |
+| **WF-8 Doctor Forms & Certificates** | WF-12, WF-4 | Certificates/letters are launched from patient context; transmission status patterns should be consistent |
+| **WF-9 Chronic Care Programs** | WF-12, WF-4, WF-14 | Program-specific forms + submissions depend on patient hub and structured master data |
+| **WF-11 ePA & Document Exchange** | WF-12, WF-4 | Access/entitlement UI must live in the same patient context patterns |
+| **WF-2 Insurance & Enrollment (HZV/FAV)** | WF-12, WF-4 | Enrollment is often a patient-specific workflow; affects billing mode/eligibility surfaces |
+| **WF-14 Data Import & Sync** | WF-12 | Admin-only shell; enables catalogs and validation UIs used across clinical/billing |
+| **WF-13 System Infrastructure** | WF-12 | Mostly admin-only; can be designed in parallel unless TI/module UI is a prerequisite for ePA/KIM |
+
+### 15C. Proposed workflow-based design roadmap (dependency-minimizing)
+
+This is a **workflow-first** sequencing that aligns with the design-roadmap “Tier 1 → Tier 5” intent, but expressed as workflow milestones.
+
+1. **Global shells & access (WF-12)** — establish status bar, settings entry points, and user/rights patterns early so other workflows don’t re-invent layout/affordances.
+2. **Patient identity → patient hub (WF-1 → WF-4)** — design the check-in flows *and* Patient Record as a coupled pair (they share patient identity patterns, search/match patterns, and “context handoff” states).
+3. **Billing case anchor (WF-5)** — design Schein / Billing Record View next so downstream billing dashboards have a stable “case + quarter” object to reference.
+4. **Billing dashboard shell, then deep submission (WF-10)** — design the KV dashboard shell early, but defer HZV/FAV submission + protocol + post-submit editing until WF-5 (Schein) patterns are locked.
+5. **Prescribing core, then specialty variants (WF-6 → WF-7)** — lock the base prescribing workspace patterns before adding DiGA/Heilmittel/Hilfsmittel/MedPlan branches.
+6. **Certificates/printing (WF-3 + WF-8)** — reuse print-preview + transmission-status layout primitives across MFA and Doctor.
+7. **Chronic programs (WF-9)** — build on validated, consistent “form → validate → submit → audit” patterns established by earlier flows.
+8. **Document exchange (WF-11)** — design once patient hub and permissions are stable.
+9. **Enrollment + infra/admin deep-dive (WF-2, WF-14, WF-13)** — schedule in parallel or later unless contract/TI requirements are explicitly gating the earlier MVP.
