@@ -200,3 +200,21 @@ Track UI/UX design decisions that involve trade-offs, multiple valid approaches,
 **Trade-off:** The reader becomes slightly less clinical and neutral, but gains a softer long-form reading tone that better fits artifact browsing.
 
 **Pushback expected:** Someone may prefer keeping the colder palette for a more technical feel. Counter: the user explicitly wanted a different background, and the warm-neutral treatment achieves that with minimal behavioral or structural change.
+
+---
+
+## DD-011: Separate content link and inline-code tokens from the general accent system
+
+**Triggered by:** User request to make document links bluer and higher-contrast, and to give inline code snippets a distinct background color
+**Matched by:** `docs/doc-reader/themes/base.css`, `docs/doc-reader/themes/classic.css`, `docs/doc-reader/themes/shell.css`, `docs/doc-reader/navigation.test.mjs`, `docs/doc-reader/index.html`
+**Confirmed by:** Codex, 2026-03-23
+
+**Requirement said:** Content links should read clearly as blue links, and backtick-formatted labels such as `Card Read / Check-In Screen` should stand out with a different background.
+
+**Design decision:** Introduce dedicated theme tokens for content links and inline code (`--content-link`, `--content-link-hover`, `--inline-code-*`) instead of reusing the broader accent tokens already shared by navigation, TOC, and utility chrome.
+
+**Rationale:** Reusing `--text-accent` would have changed multiple unrelated surfaces and made future theme tuning brittle. Dedicated tokens localize the change to document content and let each theme tune readability independently without side effects.
+
+**Trade-off:** The theme contract grows by a few tokens, but styling intent becomes clearer and future visual changes become safer.
+
+**Pushback expected:** Someone may prefer fewer theme tokens for simplicity. Counter: these tokens capture real semantic differences between navigation accents, document links, and inline code chips, which reduces accidental regressions.

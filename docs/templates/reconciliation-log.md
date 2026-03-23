@@ -428,3 +428,26 @@ Track when upstream changes (bug fixes, new features, architecture shifts) force
 **Result:** The generated reader now opens on a warmer light background without altering structure or interaction patterns. Related design decision recorded in DD-010.
 
 **Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 21: Doc-reader content links and inline code now use dedicated readability tokens
+
+**Date:** 2026-03-23
+**Change:** Document-content links were changed to a stronger blue treatment, and inline code chips were given a distinct background system separate from generic accent and hover tokens.
+
+**Impact on Design:**
+- Links inside document content now read more clearly as links, especially in tables and workflow indexes
+- Inline code snippets such as filenames, paths, and labels now stand out from the warm paper background without changing chip size
+- Sidebar and other accent-driven UI areas remain visually stable because the change is scoped to content semantics only
+
+**Items reevaluated:**
+- `docs/doc-reader/themes/base.css` -> switched content links and inline code to dedicated semantic tokens
+- `docs/doc-reader/themes/classic.css` -> added classic-theme values for content-link and inline-code tokens
+- `docs/doc-reader/themes/shell.css` -> added shell-theme values for the same token contract
+- `docs/doc-reader/navigation.test.mjs` -> added regression coverage for the new link and inline-code treatment
+- `docs/doc-reader/index.html` -> rebuilt to reflect the updated generated CSS
+
+**Result:** Content links now appear as clearer blue links, and inline code chips have their own contrasting background without leaking style changes into unrelated navigation surfaces. Related design decision recorded in DD-011.
+
+**Assessed by:** Codex, 2026-03-23
