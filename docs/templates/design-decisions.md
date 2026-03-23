@@ -164,3 +164,21 @@ Track UI/UX design decisions that involve trade-offs, multiple valid approaches,
 **Trade-off:** The single workspace becomes denser and requires stronger state design to avoid overwhelming the user. It also increases implementation coupling between medication authoring and ERP lifecycle layers.
 
 **Pushback expected:** Some may prefer a separate signing or status module for technical separation. Counter: doctors experience prescribing as one task, and the UI should preserve that continuity even if the implementation stays modular behind the scenes.
+
+---
+
+## DD-009: Increase doc-reader inline code contrast without changing code-chip layout
+
+**Triggered by:** User request to make backtick-formatted text in `docs/doc-reader/index.html` easier to read
+**Matched by:** `docs/doc-reader/themes/base.css`, `docs/doc-reader/navigation.test.mjs`, `docs/doc-reader/index.html`
+**Confirmed by:** Codex, 2026-03-23
+
+**Requirement said:** Improve readability for inline code snippets while keeping the current doc-reader styling direction.
+
+**Design decision:** Keep the existing inline code size, padding, and rounded chip shape, and improve readability only by increasing visual contrast: stronger border and darker text for inline code, while code blocks keep inherited text color.
+
+**Rationale:** The request explicitly favored contrast over layout change. Preserving the existing chip geometry avoids reflow in dense paragraphs and tables, while stronger text and border separation make short paths, filenames, and commands easier to scan.
+
+**Trade-off:** The contrast gain is more subtle than a larger chip or larger text treatment, so it improves readability without dramatically increasing emphasis.
+
+**Pushback expected:** Someone may prefer bigger inline code pills for maximum emphasis. Counter: this reader contains many inline file paths and identifiers, so a contrast-only change improves legibility with minimal disruption to document rhythm.

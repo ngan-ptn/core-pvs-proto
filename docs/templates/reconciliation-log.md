@@ -340,3 +340,70 @@ Track when upstream changes (bug fixes, new features, architecture shifts) force
 **Result:** The left navigation now communicates sorting intent more directly.
 
 **Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 17: Doc reader supports manifest-defined footer actions in left navigation
+
+**Date:** 2026-03-23
+**Change:** The doc reader navigation was updated so single-file sections can be pinned to a dedicated footer area via `placement: "footer"` in `docs/doc-reader/render-list.json`. `Design Pipeline` now uses that footer placement and renders as a stroked footer action separate from the main document list.
+
+**Impact on Design:**
+- `Design Pipeline` no longer competes with primary document navigation and now behaves like a persistent utility action near the bottom of the sidebar
+- Footer actions are now configured through manifest metadata instead of hardcoded runtime logic
+- The render-list file now includes inline guidance so future footer actions can be defined consistently
+
+**Items reevaluated:**
+- `docs/doc-reader/render-list.json` -> added footer-placement guidance and marked `Design Pipeline` as a footer action
+- `docs/doc-reader/src/manifest.mjs` -> validated optional `placement` metadata and footer constraints
+- `docs/doc-reader/src/document-loader.mjs` -> carried placement data into generated navigation
+- `docs/doc-reader/src/runtime.js` -> rendered footer actions in a dedicated sidebar footer region
+- `docs/doc-reader/src/template.mjs` -> added footer container and updated sidebar header copy
+- `docs/doc-reader/themes/base.css` -> styled pinned footer actions with a bordered utility-action treatment
+- `docs/doc-reader/navigation.test.mjs` -> added footer-navigation and sidebar-label coverage
+- `docs/doc-reader/render-list.test.mjs` -> added placement validation coverage
+
+**Result:** The left nav now supports manifest-driven footer actions, and `Design Pipeline` is pinned at the bottom with a settings-like visual treatment.
+
+**Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 18: Doc reader now auto-opens the first main navigation item on initial load
+
+**Date:** 2026-03-23
+**Change:** The doc reader initial-load behavior was updated so `index.html` automatically opens the first item from the main left navigation, explicitly skipping footer actions such as `Design Pipeline`.
+
+**Impact on Design:**
+- The reader no longer lands in an empty state when a primary content page is available
+- Footer actions remain utility-style destinations and do not take over the default first-run experience
+- The initial document respects the current sort mode because it is derived from the same sorted navigation order
+
+**Items reevaluated:**
+- `docs/doc-reader/src/runtime.js` -> added main-nav-first initial document selection
+- `docs/doc-reader/navigation.test.mjs` -> added coverage for initial selection behavior
+
+**Result:** Opening `docs/doc-reader/index.html` now immediately shows the first main-nav document instead of a footer action or empty state.
+
+**Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 19: Doc reader inline code contrast increased for easier scanability
+
+**Date:** 2026-03-23
+**Change:** Inline code snippets in the generated doc reader were updated to use darker text and a stronger border so backtick-formatted paths, filenames, and commands are easier to read without changing chip sizing.
+
+**Impact on Design:**
+- Inline code is now visually distinct from surrounding paragraph text and from lower-contrast link styling
+- The change stays within the existing light doc-reader skin, so document rhythm and spacing remain unchanged
+- Multi-line code blocks keep their prior reading feel because only inline emphasis was strengthened
+
+**Items reevaluated:**
+- `docs/doc-reader/themes/base.css` -> increased inline code contrast and preserved code block inheritance
+- `docs/doc-reader/navigation.test.mjs` -> added regression coverage for the higher-contrast inline code treatment
+- `docs/doc-reader/index.html` -> rebuilt to reflect the updated generated CSS
+
+**Result:** Backtick-formatted text is easier to scan in long paragraphs and tables while the doc-reader layout stays visually stable. Related design decision recorded in DD-009.
+
+**Assessed by:** Codex, 2026-03-23
