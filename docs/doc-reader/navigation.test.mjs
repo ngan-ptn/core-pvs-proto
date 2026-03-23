@@ -77,6 +77,8 @@ test('theme is loaded from render-list.json', () => {
   assert.ok(html.includes('--bg-app: #f6f1e8;'));
   assert.ok(html.includes('--bg-surface: #fffaf2;'));
   assert.ok(html.includes('--line-soft: #e3d7c7;'));
+  assert.ok(html.includes('--content-link: #1e63d6;'));
+  assert.ok(html.includes('--inline-code-bg: #e6eeff;'));
   assert.ok(html.includes('family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500'));
 });
 
@@ -117,7 +119,26 @@ test('inline code uses stronger contrast than link styling', () => {
 
   assert.match(
     html,
-    /\.content code\s*\{[\s\S]*background:\s*var\(--bg-hover\);[\s\S]*border:\s*1px solid var\(--line-strong\);[\s\S]*color:\s*var\(--text-strong\);[\s\S]*\}/,
+    /\.content code\s*\{[\s\S]*background:\s*var\(--inline-code-bg\);[\s\S]*border:\s*1px solid var\(--inline-code-border\);[\s\S]*color:\s*var\(--inline-code-text\);[\s\S]*\}/,
+  );
+});
+
+test('content links use a dedicated high-contrast blue treatment', () => {
+  execFileSync(process.execPath, [buildScriptPath], { stdio: 'ignore' });
+
+  const html = readFileSync(outputPath, 'utf8');
+
+  assert.match(
+    html,
+    /\.content a\s*\{[\s\S]*color:\s*var\(--content-link\);[\s\S]*text-decoration:\s*underline;[\s\S]*font-weight:\s*500;[\s\S]*\}/,
+  );
+  assert.match(
+    html,
+    /\.content a:hover\s*\{\s*color:\s*var\(--content-link-hover\);\s*\}/,
+  );
+  assert.match(
+    html,
+    /\.content td a\s*\{[\s\S]*color:\s*var\(--content-link\);[\s\S]*text-decoration:\s*underline;[\s\S]*font-weight:\s*600;[\s\S]*\}/,
   );
 });
 

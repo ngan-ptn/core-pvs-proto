@@ -224,9 +224,9 @@ body { display: flex; flex-direction: column; }
 .content p { font-family: Inter, sans-serif; font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
 .content ul, .content ol { font-size: 14px; line-height: 1.7; margin-bottom: 12px; padding-left: 24px; }
 .content li { margin-bottom: 4px; }
-.content a { color: var(--text-accent); text-decoration: none; transition: color 0.2s ease; }
-.content a:hover { color: var(--text-primary); }
-.content code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--bg-hover); padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line-strong); color: var(--text-strong); }
+.content a { color: var(--content-link); text-decoration: underline; text-underline-offset: 0.14em; font-weight: 500; transition: color 0.2s ease; }
+.content a:hover { color: var(--content-link-hover); }
+.content code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--inline-code-bg); padding: 3px 6px; border-radius: 6px; border: 1px solid var(--inline-code-border); color: var(--inline-code-text); }
 .content pre { background: var(--bg-hover); padding: 16px; border-radius: 6px; overflow-x: auto; margin-bottom: 16px; border: 1px solid var(--line-soft); }
 .content pre code { background: none; padding: 0; border: none; color: inherit; }
 .content blockquote { border-left: 3px solid var(--line-strong); padding-left: 16px; color: var(--text-accent); margin-bottom: 12px; }
@@ -238,8 +238,8 @@ body { display: flex; flex-direction: column; }
 .content td { padding: 8px 12px; border-bottom: 1px solid var(--line-soft); color: var(--text-primary); vertical-align: top; }
 .content tbody tr:hover { background: var(--bg-hover); }
 .content td code { font-size: 11px; padding: 2px 5px; }
-.content td a { color: var(--text-accent); text-decoration: none; font-weight: 500; }
-.content td a:hover { color: var(--text-strong); text-decoration: underline; }
+.content td a { color: var(--content-link); text-decoration: underline; text-underline-offset: 0.14em; font-weight: 600; }
+.content td a:hover { color: var(--content-link-hover); }
 
 .mermaid-container {
   background: var(--bg-surface);

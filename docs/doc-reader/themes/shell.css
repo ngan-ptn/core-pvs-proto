@@ -9,6 +9,11 @@
   --text-primary: #dbe9ff;
   --text-accent: #8db8ff;
   --text-muted: #7f96bf;
+  --content-link: #7fb2ff;
+  --content-link-hover: #b3d0ff;
+  --inline-code-bg: #14213d;
+  --inline-code-border: #2f4d83;
+  --inline-code-text: #dbe7ff;
   --toggle-track: #273659;
   --toggle-track-active: #4f74d1;
 }
