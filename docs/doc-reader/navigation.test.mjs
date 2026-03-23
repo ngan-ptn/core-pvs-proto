@@ -45,9 +45,10 @@ test('multi-file sections are rendered as collapsible groups', () => {
 
   const html = readFileSync(outputPath, 'utf8');
   const navSections = extractJsonBetween(html, 'const NAV_SECTIONS = ', ';\n\nconst THEME_NAME = ');
+  const multiFileSection = navSections.find(({ isSingleItem }) => !isSingleItem);
 
-  assert.equal(navSections[1].isSingleItem, false);
-  assert.ok(navSections[1].docIndices.length >= 2);
+  assert.ok(multiFileSection, 'Expected at least one multi-file section in the generated navigation.');
+  assert.ok(multiFileSection.docIndices.length >= 2);
 });
 
 test('theme is loaded from render-list.json', () => {

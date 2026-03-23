@@ -4,6 +4,7 @@
 - Artifact code: `AUDIT`
 - Date: `260322`
 - Workflow: `Prescription`
+- Total screens: `10`
 - Reference system: `https://github.com/tini-works/pvs-base-1.git`
 - Audit basis: GitHub repository `https://github.com/tini-works/pvs-base-1.git`
 

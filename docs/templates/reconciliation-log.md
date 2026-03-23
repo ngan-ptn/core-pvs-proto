@@ -226,3 +226,117 @@ Track when upstream changes (bug fixes, new features, architecture shifts) force
 **Result:** CorePVS now has a concrete target artifact set for a seamless prescription workspace that closes the gap between the audited split workflow and the intended doctor-facing experience. Related design decision recorded in DD-007.
 
 **Assessed by:** Codex, 2026-03-22
+
+---
+
+## Entry 11: Design pipeline board aligned to workflow index and current audit completion
+
+**Date:** 2026-03-23
+**Change:** The workflow cards in `docs/discover/design-pipeline.html` were updated to use the real workflow list from `docs/artifacts/FLOW260322-master-user-workflow.md` instead of generic placeholder stage cards.
+
+**Impact on Design:**
+- The board now reflects the actual workflow inventory rather than abstract example cards
+- `WF-1` and `WF-6` now appear in `Spec` because their audit artifacts exist
+- All remaining workflows stay in `Audit`, making the board a concrete workflow tracking surface inside the stage-based pipeline model
+
+**Items reevaluated:**
+- `docs/artifacts/FLOW260322-master-user-workflow.md` -> reviewed as the source of truth for workflow names, roles, and audit completion
+- `docs/discover/design-pipeline.html` -> updated Kanban card content and column counts to match current workflow status
+
+**Result:** The design-pipeline artifact still follows the workflow-stage framing from DD-008, but now shows the real workflow backlog and which workflows have cleared audit.
+
+**Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 12: Design pipeline header stats aligned to real pipeline-state counts
+
+**Date:** 2026-03-23
+**Change:** The top header stats in `docs/discover/design-pipeline.html` were changed from generic artifact summary blocks to the five actual pipeline-state counts shown by the Kanban board.
+
+**Impact on Design:**
+- The header now summarizes the current workflow backlog by stage rather than the abstract pipeline model
+- The top row and the board now communicate the same operational snapshot
+- The page is easier to scan because stage counts are visible before the user reaches the Kanban section
+
+**Items reevaluated:**
+- `docs/discover/design-pipeline.html` -> updated top-bar stat blocks to `Audit`, `Spec`, `Gap`, `Design`, and `Proto`
+
+**Result:** The header now matches the board and reports the real current counts: `12`, `2`, `0`, `0`, `0`.
+
+**Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 13: Design pipeline board made self-synchronizing for live stage counts and equal card heights
+
+**Date:** 2026-03-23
+**Change:** `docs/discover/design-pipeline.html` was enhanced so the header stats and stage counts derive from the live Kanban DOM, and all workflow cards are normalized to the same height.
+
+**Impact on Design:**
+- The top header and column counts now stay in sync even when cards are changed live in the browser via JS or DevTools
+- The board no longer depends on manually maintained count values in the markup
+- Workflow cards now present as a more stable visual grid because every card adopts the tallest current card height
+
+**Items reevaluated:**
+- `docs/discover/design-pipeline.html` -> added stage mapping hooks, live DOM synchronization logic, and equal-height card behavior
+
+**Result:** The artifact now behaves like a live operational board instead of a static mockup, while preserving the existing visual structure and workflow-stage model.
+
+**Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 14: Workflow cards returned to content-driven height while keeping live count sync
+
+**Date:** 2026-03-23
+**Change:** The equal-height card behavior in `docs/discover/design-pipeline.html` was removed so workflow cards size to their own content again, while the live header and column count synchronization remains in place.
+
+**Impact on Design:**
+- Workflow cards now read more naturally because short cards no longer carry extra empty vertical space
+- The board keeps its live operational behavior for stage counts without enforcing a rigid visual grid
+- Content changes inside a card no longer affect the height of every other card on the board
+
+**Items reevaluated:**
+- `docs/discover/design-pipeline.html` -> removed tallest-card height normalization and restored content-driven card sizing
+
+**Result:** The board remains self-updating for counts, but workflow cards now use `hug contents` sizing instead of shared fixed heights.
+
+**Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 15: Workflow cards no longer grow to fill stage columns
+
+**Date:** 2026-03-23
+**Change:** The workflow card flex behavior in `docs/discover/design-pipeline.html` was corrected so cards keep their intrinsic content height instead of expanding to fill the vertical space of a stage column.
+
+**Impact on Design:**
+- Cards in shorter columns such as `Spec` now visually hug their content as intended
+- Stage columns can still grow independently without forcing extra blank space inside individual cards
+- The live count sync behavior remains unchanged
+
+**Items reevaluated:**
+- `docs/discover/design-pipeline.html` -> changed card flex sizing from fill behavior to content-sized behavior
+
+**Result:** Workflow cards now behave consistently as content-sized items across all pipeline columns.
+
+**Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 16: Doc reader left-navigation label changed from document category to sort control cue
+
+**Date:** 2026-03-23
+**Change:** The left-navigation header label in `docs/doc-reader/index.html` was changed from `Documents` to `Sort by`.
+
+**Impact on Design:**
+- The sidebar header now reflects the adjacent control's actual function instead of implying the area is only a document list
+- The label better matches the sorting affordance presented beside it
+
+**Items reevaluated:**
+- `docs/doc-reader/index.html` -> updated sidebar label copy
+
+**Result:** The left navigation now communicates sorting intent more directly.
+
+**Assessed by:** Codex, 2026-03-23

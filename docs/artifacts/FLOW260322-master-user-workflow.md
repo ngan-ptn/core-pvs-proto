@@ -13,23 +13,23 @@ This file is a Markdown version of the workflow-diagram artifact set (flowcharts
 
 ### 1.1 Workflow Index
 
-| Workflow | Role | Audit |
-|---|---|---|
-| [1.2 Cross-Tier Dependency Chain](#cross-tier) | Cross-tier | -- |
-| [2.1 (WF-1) Patient Check-In & Registration](#wf-1) | MFA | [View](docs/artifacts/AUDIT260322-patient-checkin-registration.md) |
-| [2.2 (WF-2) Insurance & Enrollment (HZV/FAV)](#wf-2) | MFA | -- |
-| [2.3 (WF-3) Forms & Certificates](#wf-3) | MFA | -- |
-| [2.4 (WF-4) Clinical Documentation](#wf-4) | Doctor | -- |
-| [2.5 (WF-5) Service & Billing Documentation](#wf-5) | Doctor | -- |
-| [2.6 (WF-6) Prescriptions (Core)](#wf-6) | Doctor | [View](docs/artifacts/AUDIT260322-prescriptions.md) |
-| [2.7 (WF-7) Prescriptions (Specialty)](#wf-7) | Doctor | -- |
-| [2.8 (WF-8) Forms & Certificates](#wf-8) | Doctor | -- |
-| [2.9 (WF-9) Chronic Care Programs](#wf-9) | Doctor | -- |
-| [2.10 (WF-10) Billing & Submission](#wf-10) | Doctor | -- |
-| [2.11 (WF-11) ePA & Document Exchange](#wf-11) | Doctor | -- |
-| [2.12 (WF-12) Practice Administration](#wf-12) | Admin | -- |
-| [2.13 (WF-13) System Infrastructure](#wf-13) | Admin | -- |
-| [2.14 (WF-14) Data Import & Sync](#wf-14) | Admin | -- |
+| Workflow | Role | No. of Screen | Audit |
+|---|---|---|---|
+| [1.2 Cross-Tier Dependency Chain](#cross-tier) | Cross-tier | -- | -- |
+| [2.1 (WF-1) Patient Check-In & Registration](#wf-1) | MFA | 6 | [View](docs/artifacts/AUDIT260322-patient-checkin-registration.md) |
+| [2.2 (WF-2) Insurance & Enrollment (HZV/FAV)](#wf-2) | MFA | -- | -- |
+| [2.3 (WF-3) Forms & Certificates](#wf-3) | MFA | -- | -- |
+| [2.4 (WF-4) Clinical Documentation](#wf-4) | Doctor | -- | -- |
+| [2.5 (WF-5) Service & Billing Documentation](#wf-5) | Doctor | -- | -- |
+| [2.6 (WF-6) Prescriptions (Core)](#wf-6) | Doctor | 10 | [View](docs/artifacts/AUDIT260322-prescriptions.md) |
+| [2.7 (WF-7) Prescriptions (Specialty)](#wf-7) | Doctor | -- | -- |
+| [2.8 (WF-8) Forms & Certificates](#wf-8) | Doctor | -- | -- |
+| [2.9 (WF-9) Chronic Care Programs](#wf-9) | Doctor | -- | -- |
+| [2.10 (WF-10) Billing & Submission](#wf-10) | Doctor | -- | -- |
+| [2.11 (WF-11) ePA & Document Exchange](#wf-11) | Doctor | -- | -- |
+| [2.12 (WF-12) Practice Administration](#wf-12) | Admin | -- | -- |
+| [2.13 (WF-13) System Infrastructure](#wf-13) | Admin | -- | -- |
+| [2.14 (WF-14) Data Import & Sync](#wf-14) | Admin | -- | -- |
 
 ---
 

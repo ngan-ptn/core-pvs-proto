@@ -1,9 +1,12 @@
 # Audit Flow — Patient Check-In & Registration
 
-**Date:** 2026-03-22  
-**Workflow:** Patient Check-In & Registration  
-**Reference:** `https://github.com/tini-works/pvs-base-1.git`  
-**Step:** CorePVS design pipeline — Step 1 (Audit Flow)
+## Artifact Info
+- Artifact code: `AUDIT`
+- Date: `260322`
+- Workflow: `Patient Check-In & Registration`
+- Total screens: `6`
+- Reference system: `https://github.com/tini-works/pvs-base-1.git`
+- Step: `CorePVS design pipeline - Step 1 (Audit Flow)`
 
 ## Audit scope
 

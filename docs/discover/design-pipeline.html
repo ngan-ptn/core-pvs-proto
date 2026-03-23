@@ -266,8 +266,10 @@
     border-radius: 8px;
     position: relative;
     width: 100%;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     background: #fff;
+    display: flex;
+    flex-direction: column;
   }
   .card.done { background: var(--done-bg); border-color: var(--done-border); }
   .card.wip  { background: var(--wip-bg);  border-color: var(--wip-border); }
@@ -349,21 +351,25 @@
       <div class="brand-name">CorePVS</div>
     </div>
     <div class="header-stats">
-      <div class="stat-block">
-        <div class="stat-num">5</div>
-        <div class="stat-label">Pipeline Steps</div>
+      <div class="stat-block" data-stage="audit">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Audit</div>
       </div>
-      <div class="stat-block">
-        <div class="stat-num">1</div>
-        <div class="stat-label">Reference Flow</div>
+      <div class="stat-block" data-stage="spec">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Spec</div>
       </div>
-      <div class="stat-block">
-        <div class="stat-num">1</div>
-        <div class="stat-label">Compliance Inventory</div>
+      <div class="stat-block" data-stage="gap">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Gap</div>
       </div>
-      <div class="stat-block">
-        <div class="stat-num">1</div>
-        <div class="stat-label">Prototype Package</div>
+      <div class="stat-block" data-stage="design">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Design</div>
+      </div>
+      <div class="stat-block" data-stage="proto">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Proto</div>
       </div>
     </div>
   </div>
@@ -414,93 +420,162 @@
     <div class="kanban-grid">
 
       <!-- AUDIT -->
-      <div class="kanban-row">
+      <div class="kanban-row" data-stage="audit">
         <div class="col-header">
           <div class="col-label">Audit</div>
-          <div class="col-count">1</div>
+          <div class="col-count">12</div>
         </div>
         <div class="cards-row">
-          <div class="card done">
+          <div class="card todo">
             <div class="card-step">
-              <div class="card-code"><span class="step-pip" style="background:var(--done-acc);"></span>ST01</div>
-              <div class="card-state">Done</div>
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-2</div>
+              <div class="card-state">Pending</div>
             </div>
-            <div class="card-title">Audit App X Flow</div>
-            <div class="card-subtitle">Reference flow</div>
+            <div class="card-title">Insurance &amp; Enrollment (HZV/FAV)</div>
+            <div class="card-subtitle">MFA workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-3</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">Forms &amp; Certificates</div>
+            <div class="card-subtitle">MFA workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-4</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">Clinical Documentation</div>
+            <div class="card-subtitle">Doctor workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-5</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">Service &amp; Billing Documentation</div>
+            <div class="card-subtitle">Doctor workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-7</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">Prescriptions (Specialty)</div>
+            <div class="card-subtitle">Doctor workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-8</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">Forms &amp; Certificates</div>
+            <div class="card-subtitle">Doctor workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-9</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">Chronic Care Programs</div>
+            <div class="card-subtitle">Doctor workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-10</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">Billing &amp; Submission</div>
+            <div class="card-subtitle">Doctor workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-11</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">ePA &amp; Document Exchange</div>
+            <div class="card-subtitle">Doctor workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-12</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">Practice Administration</div>
+            <div class="card-subtitle">Admin workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-13</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">System Infrastructure</div>
+            <div class="card-subtitle">Admin workflow</div>
+          </div>
+          <div class="card todo">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>WF-14</div>
+              <div class="card-state">Pending</div>
+            </div>
+            <div class="card-title">Data Import &amp; Sync</div>
+            <div class="card-subtitle">Admin workflow</div>
           </div>
         </div>
       </div>
 
       <!-- SPEC -->
-      <div class="kanban-row">
+      <div class="kanban-row" data-stage="spec">
         <div class="col-header wip-col">
           <div class="col-label">Spec</div>
-          <div class="col-count">1</div>
+          <div class="col-count">2</div>
         </div>
         <div class="cards-row">
           <div class="card wip">
             <div class="card-step">
-              <div class="card-code"><span class="step-pip" style="background:var(--wip-acc);"></span>ST02</div>
-              <div class="card-state">WIP</div>
+              <div class="card-code"><span class="step-pip" style="background:var(--wip-acc);"></span>WF-1</div>
+              <div class="card-state">Audit done</div>
             </div>
-            <div class="card-title">Structured Spec</div>
-            <div class="card-subtitle">Behavior spec</div>
+            <div class="card-title">Patient Check-In &amp; Registration</div>
+            <div class="card-subtitle">MFA workflow</div>
+          </div>
+          <div class="card wip">
+            <div class="card-step">
+              <div class="card-code"><span class="step-pip" style="background:var(--wip-acc);"></span>WF-6</div>
+              <div class="card-state">Audit done</div>
+            </div>
+            <div class="card-title">Prescriptions (Core)</div>
+            <div class="card-subtitle">Doctor workflow</div>
           </div>
         </div>
       </div>
 
       <!-- GAP -->
-      <div class="kanban-row">
+      <div class="kanban-row" data-stage="gap">
         <div class="col-header todo-col">
           <div class="col-label">Gap</div>
-          <div class="col-count">1</div>
+          <div class="col-count">0</div>
         </div>
-        <div class="cards-row">
-          <div class="card todo">
-            <div class="card-step">
-              <div class="card-code"><span class="step-pip" style="background:var(--border-lt);"></span>ST03</div>
-              <div class="card-state">Gap</div>
-            </div>
-            <div class="card-title">Compliance Gap</div>
-            <div class="card-subtitle">Gap report</div>
-          </div>
-        </div>
+        <div class="cards-row"></div>
       </div>
 
       <!-- DESIGN -->
-      <div class="kanban-row">
+      <div class="kanban-row" data-stage="design">
         <div class="col-header">
           <div class="col-label">Design</div>
-          <div class="col-count">1</div>
+          <div class="col-count">0</div>
         </div>
-        <div class="cards-row">
-          <div class="card done">
-            <div class="card-step">
-              <div class="card-code"><span class="step-pip" style="background:var(--done-acc);"></span>ST04</div>
-              <div class="card-state">Ready</div>
-            </div>
-            <div class="card-title">Final Artifacts</div>
-            <div class="card-subtitle">Flow + screens</div>
-          </div>
-        </div>
+        <div class="cards-row"></div>
       </div>
 
       <!-- PROTO -->
-      <div class="kanban-row">
+      <div class="kanban-row" data-stage="proto">
         <div class="col-header wip-col">
           <div class="col-label">Proto</div>
-          <div class="col-count">1</div>
+          <div class="col-count">0</div>
         </div>
-        <div class="cards-row">
-          <div class="card wip">
-            <div class="card-step">
-              <div class="card-code"><span class="step-pip" style="background:var(--wip-acc);"></span>ST05</div>
-              <div class="card-state">Next</div>
-            </div>
-            <div class="card-title">Prototype Structure</div>
-            <div class="card-subtitle">Prototype package</div>
-          </div>
-        </div>
+        <div class="cards-row"></div>
       </div>
 
     </div>
@@ -517,5 +592,71 @@
   </div>
 
 </div>
+<script>
+  (() => {
+    const stageRows = Array.from(document.querySelectorAll('.kanban-row[data-stage]'));
+    const stageStats = Array.from(document.querySelectorAll('.stat-block[data-stage]'));
+    const kanbanGrid = document.querySelector('.kanban-grid');
+
+    if (!stageRows.length || !stageStats.length || !kanbanGrid) {
+      return;
+    }
+
+    let rafId = null;
+
+    const syncStageCounts = () => {
+      const stageCounts = new Map();
+
+      stageRows.forEach((row) => {
+        const stage = row.dataset.stage;
+        const count = row.querySelectorAll('.cards-row .card').length;
+        const nextCount = String(count);
+        stageCounts.set(stage, count);
+
+        const colCount = row.querySelector('.col-count');
+        if (colCount && colCount.textContent !== nextCount) {
+          colCount.textContent = nextCount;
+        }
+      });
+
+      stageStats.forEach((stat) => {
+        const statNum = stat.querySelector('.stat-num');
+        if (!statNum) {
+          return;
+        }
+
+        const nextCount = String(stageCounts.get(stat.dataset.stage) ?? 0);
+        if (statNum.textContent !== nextCount) {
+          statNum.textContent = nextCount;
+        }
+      });
+    };
+
+    const syncBoard = () => {
+      rafId = null;
+      syncStageCounts();
+    };
+
+    const scheduleSync = () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+
+      rafId = requestAnimationFrame(syncBoard);
+    };
+
+    const observer = new MutationObserver(scheduleSync);
+    observer.observe(kanbanGrid, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true,
+    });
+
+    window.addEventListener('resize', scheduleSync);
+    window.addEventListener('load', scheduleSync);
+    scheduleSync();
+  })();
+</script>
 </body>
 </html>

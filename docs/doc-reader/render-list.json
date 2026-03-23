@@ -7,19 +7,14 @@
       "file": "docs/discover/design-pipeline.html"
     },
     {
-      "label": "Prescription Unified",
-      "files": [
-        "docs/artifacts/AUDIT260322-prescription-pvs-base.md",
-        "docs/artifacts/FLOW260322-prescription-unified-workspace.md",
-        "docs/artifacts/SCRN260322-prescription-unified-workspace.md",
-        "docs/artifacts/WIRE260322-prescription-unified-workspace.md"
-      ]
+      "label": "Master Workflow",
+      "file": "docs/artifacts/FLOW260322-master-user-workflow.md"
     },
     {
-      "label": "AUDIT",
+      "label": "Audit Workflow",
       "files": [
-        "docs/_ngan/garrioPRO/FLOW260319-gpro-master-workflow.md",
-        "docs/_ngan/garrioPRO/FLOW260320-gpro-workflow-compliance-aligned.md"
+        "docs/artifacts/AUDIT260322-patient-checkin-registration.md",
+        "docs/artifacts/AUDIT260322-prescriptions.md"
       ]
     }
   ]

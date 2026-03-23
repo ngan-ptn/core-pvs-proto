@@ -42,6 +42,9 @@ Output guidance:
 - If the workflow is large, branched, or spans multiple technical layers, include both:
   - a high-level Mermaid flow summary
   - a Mermaid journey or state diagram
+- Include an `Artifact Info` section near the top of the output file.
+- In `Artifact Info`, include the workflow metadata needed to identify and compare audits across artifacts.
+- `Artifact Info` must include `Total screens`, counted by unique screens in the screen map for that workflow.
 - Keep the audit grounded in the reference system as-is.
 - Do not redesign the future-state flow in this step.
 
