@@ -1,0 +1,62 @@
+[
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S001",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S001-patient-record.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  },
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S002",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S002-medication-tab.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  },
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S003",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S003-prescribed-medication.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  },
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S003B",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S003b-medication-plan.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  },
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S004",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S004-shopping-bag.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  },
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S005",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S005-print-preview.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  },
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S006",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S006-timeline-medication-form-detail.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  },
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S007",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S007-erp-bundle-creation.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  },
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S008",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S008-e-rezept-send-transmission.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  },
+  {
+    "url": "http://127.0.0.1:8123/docs/artifacts/screenshots/AUDIT260322-prescriptions/index.html?screen=S009",
+    "output": "docs/artifacts/screenshots/AUDIT260322-prescriptions/S009-e-rezept-list-retrieval-surface.png",
+    "waitFor": "body[data-ready=\"true\"]",
+    "viewport": "1600x1100"
+  }
+]
