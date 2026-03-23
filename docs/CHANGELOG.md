@@ -6,6 +6,7 @@
 - Add prescription audit screenshot set for AUDIT260322 (10 surfaces), built from a static local reconstruction harness after the live environment required login and the fallback stack was blocked by private Docker images; provenance labelled per screen (repo-derived vs. reconstructed)
 - Add active design decisions log (`docs/design-decisions.md`) and reconciliation log (`docs/reconciliation-log.md`) as working files separate from the template files
 - Add `flow-screen-interaction` artifact template covering Home flow design with screen list, navigation diagram, wireframes, and element state tables
+- Add second prescription screenshot set for AUDIT260322 (`Higher fidelity` direction) — same S001–S009 coverage but reworked to follow `pvs-base-1` shell structure, component grouping, locale copy, and ERezept table/action patterns more closely; kept separate from the original coverage-first set for side-by-side comparison
 
 ## 2026-03-20
 
