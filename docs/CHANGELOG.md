@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-23
+
+- Expand social listening synthesis into a full workflow opportunity matrix (8 workflows with user roles, failure costs, compliance pressure, UX opportunities, and prototype priorities); add three appendices covering Germany/EU signal highlights, pain cluster synthesis, and messaging/product checklist; retire the earlier flat synthesis file
+- Add prescription audit screenshot set for AUDIT260322 (10 surfaces), built from a static local reconstruction harness after the live environment required login and the fallback stack was blocked by private Docker images; provenance labelled per screen (repo-derived vs. reconstructed)
+- Add active design decisions log (`docs/design-decisions.md`) and reconciliation log (`docs/reconciliation-log.md`) as working files separate from the template files
+- Add `flow-screen-interaction` artifact template covering Home flow design with screen list, navigation diagram, wireframes, and element state tables
+
 ## 2026-03-20
 
 - Reorganize patient check-in compliance docs into `docs/compliances/1-patient-checkin/` subdirectory for better structure as compliance coverage grows
