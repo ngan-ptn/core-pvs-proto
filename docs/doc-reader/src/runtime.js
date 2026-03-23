@@ -28,9 +28,16 @@ function toggleSort() {
 }
 
 function makeDocButton(docIndex) {
+  return makeDocButtonForPlacement(docIndex, 'main');
+}
+
+function makeDocButtonForPlacement(docIndex, placement) {
   const doc = DOCUMENTS[docIndex];
   const button = document.createElement('button');
   button.className = doc.folder ? 'doc-item doc-item-nested' : 'doc-item';
+  if (placement === 'footer') {
+    button.classList.add('doc-item-footer');
+  }
   if (docIndex === currentIndex) button.classList.add('active');
   button.textContent = doc.navLabel || doc.filename.replace(/\.md$/i, '').replace(/\.html$/i, '');
   button.title = doc.filename;
@@ -38,36 +45,60 @@ function makeDocButton(docIndex) {
   return button;
 }
 
+function appendSection(container, section, sectionDocIndices) {
+  if (sectionDocIndices.length === 0) return;
+
+  if (section.isSingleItem) {
+    container.appendChild(makeDocButtonForPlacement(sectionDocIndices[0], section.placement));
+    return;
+  }
+
+  const expanded = folderState[section.label] !== false;
+  const header = document.createElement('div');
+  header.className = 'folder-header';
+  if (section.placement === 'footer') {
+    header.classList.add('folder-header-footer');
+  }
+  header.innerHTML = `<span class="folder-toggle">${expanded ? '&#9662;' : '&#9656;'}</span><span class="folder-name">${section.label}</span>`;
+  header.onclick = () => {
+    folderState[section.label] = !expanded;
+    populateSidebar();
+  };
+  container.appendChild(header);
+
+  if (expanded) {
+    sectionDocIndices.forEach((docIndex) => {
+      container.appendChild(makeDocButtonForPlacement(docIndex, section.placement));
+    });
+  }
+}
+
 function populateSidebar() {
   buildSortedIndices();
   const list = document.getElementById('doc-list');
+  const footer = document.getElementById('sidebar-footer');
   list.innerHTML = '';
+  footer.innerHTML = '';
 
   NAV_SECTIONS.forEach((section) => {
     const sectionDocIndices = sortedIndices.filter((docIndex) => section.docIndices.includes(docIndex));
-    if (sectionDocIndices.length === 0) return;
-
-    if (section.isSingleItem) {
-      list.appendChild(makeDocButton(sectionDocIndices[0]));
-      return;
-    }
-
-    const expanded = folderState[section.label] !== false;
-    const header = document.createElement('div');
-    header.className = 'folder-header';
-    header.innerHTML = `<span class="folder-toggle">${expanded ? '&#9662;' : '&#9656;'}</span><span class="folder-name">${section.label}</span>`;
-    header.onclick = () => {
-      folderState[section.label] = !expanded;
-      populateSidebar();
-    };
-    list.appendChild(header);
-
-    if (expanded) {
-      sectionDocIndices.forEach((docIndex) => {
-        list.appendChild(makeDocButton(docIndex));
-      });
-    }
+    appendSection(section.placement === 'footer' ? footer : list, section, sectionDocIndices);
   });
+}
+
+function getInitialDocumentIndex() {
+  buildSortedIndices();
+
+  for (const section of NAV_SECTIONS) {
+    if (section.placement === 'footer') continue;
+
+    const mainSectionDocIndices = sortedIndices.filter((docIndex) => section.docIndices.includes(docIndex));
+    if (mainSectionDocIndices.length > 0) {
+      return mainSectionDocIndices[0];
+    }
+  }
+
+  return -1;
 }
 
 function selectDocument(index) {
@@ -292,4 +323,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 populateSidebar();
-if (DOCUMENTS.length > 0) selectDocument(0);
+const initialDocumentIndex = getInitialDocumentIndex();
+if (initialDocumentIndex !== -1) {
+  selectDocument(initialDocumentIndex);
+}

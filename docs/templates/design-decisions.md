@@ -182,3 +182,21 @@ Track UI/UX design decisions that involve trade-offs, multiple valid approaches,
 **Trade-off:** The contrast gain is more subtle than a larger chip or larger text treatment, so it improves readability without dramatically increasing emphasis.
 
 **Pushback expected:** Someone may prefer bigger inline code pills for maximum emphasis. Counter: this reader contains many inline file paths and identifiers, so a contrast-only change improves legibility with minimal disruption to document rhythm.
+
+---
+
+## DD-010: Warm the classic doc-reader background without changing layout or typography
+
+**Triggered by:** User request to change the doc-reader background color to a warmer light tone
+**Matched by:** `docs/doc-reader/themes/classic.css`, `docs/doc-reader/navigation.test.mjs`, `docs/doc-reader/index.html`
+**Confirmed by:** Codex, 2026-03-23
+
+**Requirement said:** Keep the doc-reader in a light theme, but move the background away from the current cooler blue-gray base.
+
+**Design decision:** Update the `classic` theme tokens as a coordinated warm-paper palette by changing app background, surface, hover, selected, and line colors together instead of changing only the outer page background.
+
+**Rationale:** A single background swap would leave white surfaces and cool dividers feeling visually disconnected. Shifting the whole neutral layer keeps the reader coherent while preserving the established typography, spacing, and accent system.
+
+**Trade-off:** The reader becomes slightly less clinical and neutral, but gains a softer long-form reading tone that better fits artifact browsing.
+
+**Pushback expected:** Someone may prefer keeping the colder palette for a more technical feel. Counter: the user explicitly wanted a different background, and the warm-neutral treatment achieves that with minimal behavioral or structural change.

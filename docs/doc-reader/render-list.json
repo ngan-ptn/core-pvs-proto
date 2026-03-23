@@ -1,14 +1,35 @@
 {
   "title": "Document Reader",
   "theme": "classic",
+  "_guide": {
+    "placement": {
+      "main": "Default. Omit placement or use \"main\" for regular left-nav sections.",
+      "footer": "Use \"placement\": \"footer\" only on a section with a single \"file\" source. It renders as a pinned footer action at the bottom of the left nav."
+    },
+    "# example: add regular page to main left nav": {
+      "label": "Example Page",
+      "file": "docs/artifacts/EXAMPLE-page.md"
+    },
+    "# example: add page to sidebar footer": {
+      "label": "Example Footer Page",
+      "file": "docs/artifacts/EXAMPLE-footer-page.md",
+      "placement": "footer"
+    }
+  },
   "sections": [
     {
       "label": "Design Pipeline",
-      "file": "docs/discover/design-pipeline.html"
+      "file": "docs/discover/design-pipeline.html",
+      "placement": "footer"
     },
     {
       "label": "Master Workflow",
       "file": "docs/artifacts/FLOW260322-master-user-workflow.md"
+    },
+    {
+      "label": "Discovery",
+      "file": "docs/discover/RSYN260320-competitive-landscape.md",
+      "file": "docs/discover/RSYN260320-competitive-landscape.md"
     },
     {
       "label": "Audit Workflow",

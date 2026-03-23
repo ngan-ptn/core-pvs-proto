@@ -54,6 +54,9 @@ Edit `render-list.json` to control style, files, and left-navigation grouping:
 - `file` — single file, rendered as direct menu-item on Left Nav
 - `files` — explicit list of files, rendered as expandable/collapsible section
 - `folder` — all `*.md` and `*.html` files in that folder, rendered as expandable/collapsible section
+- **placement** — optional nav placement:
+- `main` — default; renders in the main left-nav list
+- `footer` — only valid for a single `file`; renders as a pinned footer action at the bottom of the left nav
 
 Use forward slashes in JSON paths, even on Windows: `docs/artifacts/file.html`
 For `files`/`folder` sections, the section label becomes a collapsible group.

@@ -102,6 +102,7 @@ export function collectDocuments({ manifest, docReaderDir, repoRoot }) {
       label: section.label,
       isSingleItem,
       docIndices,
+      placement: section.placement,
     });
   }
 

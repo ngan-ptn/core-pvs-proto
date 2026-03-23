@@ -69,3 +69,26 @@ test('render-list.json points to existing files/folders', () => {
     }
   }
 });
+
+test('render-list.json placement values are valid and footer items use a single file source', () => {
+  const renderList = JSON.parse(readFileSync(manifestPath, 'utf8'));
+
+  for (const section of renderList.sections) {
+    if (section.placement === undefined) continue;
+
+    assert.ok(
+      ['main', 'footer'].includes(section.placement),
+      `Section "${section.label}" must use placement "main" or "footer"`,
+    );
+
+    if (section.placement === 'footer') {
+      assert.equal(
+        typeof section.file,
+        'string',
+        `Footer section "${section.label}" must define a single "file" source`,
+      );
+      assert.equal(section.files, undefined, `Footer section "${section.label}" cannot define "files"`);
+      assert.equal(section.folder, undefined, `Footer section "${section.label}" cannot define "folder"`);
+    }
+  }
+});

@@ -2,6 +2,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, isAbsolute, join } from 'node:path';
 
 const SUPPORTED_THEMES = new Set(['classic', 'shell']);
+const SUPPORTED_PLACEMENTS = new Set(['main', 'footer']);
 
 function resolvePath(baseDir, rawPath) {
   if (isAbsolute(rawPath)) return rawPath;
@@ -42,9 +43,17 @@ export function loadManifest(manifestPath) {
   manifest.sections.forEach((section, index) => {
     const sectionId = section.label || `#${index + 1}`;
     assert(typeof section.label === 'string' && section.label.trim().length > 0, `render-list.json: section ${sectionId} must have a non-empty "label".`);
+    if (section.placement === undefined) section.placement = 'main';
+    assert(
+      SUPPORTED_PLACEMENTS.has(section.placement),
+      `render-list.json: section "${section.label}" placement must be one of ${Array.from(SUPPORTED_PLACEMENTS).join(', ')}.`,
+    );
 
     const sourceKeys = ['file', 'files', 'folder'].filter((key) => section[key] !== undefined);
     assert(sourceKeys.length === 1, `render-list.json: section "${section.label}" must define exactly one of "file", "files", or "folder".`);
+    if (section.placement === 'footer') {
+      assert(section.file !== undefined, `render-list.json: footer section "${section.label}" must define a single "file" source.`);
+    }
 
     if (section.file !== undefined) {
       assert(typeof section.file === 'string' && section.file.trim().length > 0, `render-list.json: section "${section.label}" has invalid "file".`);

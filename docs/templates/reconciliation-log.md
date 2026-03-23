@@ -407,3 +407,24 @@ Track when upstream changes (bug fixes, new features, architecture shifts) force
 **Result:** Backtick-formatted text is easier to scan in long paragraphs and tables while the doc-reader layout stays visually stable. Related design decision recorded in DD-009.
 
 **Assessed by:** Codex, 2026-03-23
+
+---
+
+## Entry 20: Classic doc-reader theme shifted from cool gray to warm paper neutrals
+
+**Date:** 2026-03-23
+**Change:** The `classic` doc-reader theme was updated from a cool blue-gray background system to a warmer paper-toned light palette.
+
+**Impact on Design:**
+- The reader now feels softer and less stark while staying clearly in the existing light-theme family
+- Surface, hover, selected, and divider tones now match the warmer page background instead of feeling like separate cool layers
+- Typography, spacing, navigation behavior, and accent color usage remain unchanged
+
+**Items reevaluated:**
+- `docs/doc-reader/themes/classic.css` -> updated the coordinated warm-neutral theme tokens
+- `docs/doc-reader/navigation.test.mjs` -> updated theme-token assertions for the new classic palette
+- `docs/doc-reader/index.html` -> rebuilt to reflect the updated generated CSS
+
+**Result:** The generated reader now opens on a warmer light background without altering structure or interaction patterns. Related design decision recorded in DD-010.
+
+**Assessed by:** Codex, 2026-03-23

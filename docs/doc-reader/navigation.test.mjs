@@ -40,6 +40,23 @@ test('single-file sections render as direct menu items in manifest order', () =>
   assert.equal(documents[0].navLabel, renderList.sections[0].label);
 });
 
+test('footer sections are marked in navigation data and rendered in a dedicated footer container', () => {
+  execFileSync(process.execPath, [buildScriptPath], { stdio: 'ignore' });
+
+  const html = readFileSync(outputPath, 'utf8');
+  const renderList = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  const navSections = extractJsonBetween(html, 'const NAV_SECTIONS = ', ';\n\nconst THEME_NAME = ');
+  const footerSection = navSections.find(({ placement }) => placement === 'footer');
+
+  assert.ok(footerSection, 'Expected at least one footer section in the generated navigation.');
+  assert.equal(footerSection.label, renderList.sections.find(({ placement }) => placement === 'footer')?.label);
+  assert.ok(html.includes('<div id="sidebar-footer" class="sidebar-footer"></div>'));
+  assert.match(
+    html,
+    /\.doc-item-footer\s*\{[\s\S]*border:\s*1px solid var\(--line-strong\);[\s\S]*\}/,
+  );
+});
+
 test('multi-file sections are rendered as collapsible groups', () => {
   execFileSync(process.execPath, [buildScriptPath], { stdio: 'ignore' });
 
@@ -57,8 +74,18 @@ test('theme is loaded from render-list.json', () => {
   const html = readFileSync(outputPath, 'utf8');
 
   assert.ok(html.includes('const THEME_NAME = "classic";'));
-  assert.ok(html.includes('--bg-app: #f8fafb;'));
+  assert.ok(html.includes('--bg-app: #f6f1e8;'));
+  assert.ok(html.includes('--bg-surface: #fffaf2;'));
+  assert.ok(html.includes('--line-soft: #e3d7c7;'));
   assert.ok(html.includes('family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500'));
+});
+
+test('sidebar header label is sourced as "Sort by"', () => {
+  execFileSync(process.execPath, [buildScriptPath], { stdio: 'ignore' });
+
+  const html = readFileSync(outputPath, 'utf8');
+
+  assert.ok(html.includes('<div class="sidebar-label">Sort by</div>'));
 });
 
 test('folder toggle glyphs are emitted with encoding-safe HTML entities', () => {
@@ -81,4 +108,27 @@ test('active navigation items keep a 16px horizontal inset', () => {
     html,
     /\.doc-item\.active\s*\{[\s\S]*width:\s*calc\(100% - 32px\);[\s\S]*margin:\s*0 16px;[\s\S]*background:\s*var\(--bg-selected\);[\s\S]*\}/,
   );
+});
+
+test('inline code uses stronger contrast than link styling', () => {
+  execFileSync(process.execPath, [buildScriptPath], { stdio: 'ignore' });
+
+  const html = readFileSync(outputPath, 'utf8');
+
+  assert.match(
+    html,
+    /\.content code\s*\{[\s\S]*background:\s*var\(--bg-hover\);[\s\S]*border:\s*1px solid var\(--line-strong\);[\s\S]*color:\s*var\(--text-strong\);[\s\S]*\}/,
+  );
+});
+
+test('initial selection prefers the first main-nav item instead of footer actions', () => {
+  execFileSync(process.execPath, [buildScriptPath], { stdio: 'ignore' });
+
+  const html = readFileSync(outputPath, 'utf8');
+
+  assert.ok(html.includes('function getInitialDocumentIndex() {'));
+  assert.ok(html.includes("if (section.placement === 'footer') continue;"));
+  assert.ok(html.includes('return mainSectionDocIndices[0];'));
+  assert.ok(html.includes('const initialDocumentIndex = getInitialDocumentIndex();'));
+  assert.ok(html.includes('selectDocument(initialDocumentIndex);'));
 });
